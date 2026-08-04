@@ -1,0 +1,48 @@
+name: Controle
+
+# Draait bij elke push naar main en bij elke pull request.
+# Faalt de build of een van de controles, dan zie je dat op GitHub voor
+# Cloudflare de site live zet.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  controle:
+    name: Bouwen en controleren
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Node klaarzetten
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Afhankelijkheden installeren
+        run: npm ci
+
+      - name: Bouwen
+        run: npm run build
+
+      # Vier controles, elk hard falend. Zie CLAUDE.md.
+      #   astro check          TypeScript
+      #   check-streepjes.mjs  geen gedachtestreepjes, emoji of verboden woorden
+      #   check-seo.mjs        de SEO-checklist per pagina
+      #   check-size.mjs       het JS-budget
+      - name: Controleren
+        run: npm run check
+
+      - name: Buildresultaat bewaren
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: dist
+          path: dist/
+          retention-days: 7
