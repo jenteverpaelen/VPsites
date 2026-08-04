@@ -23,7 +23,7 @@ export const faq: FaqItem[] = [
   {
     vraag: 'Waarom ben je zoveel goedkoper dan de rest?',
     antwoord:
-      'Omdat mijn kosten lager zijn, niet omdat ik minder doe. Vier redenen. Ik heb geen kantoor en geen team, dus geen overhead die doorgerekend moet worden. Ik val onder de btw-vrijstellingsregeling voor kleine ondernemingen, dus je betaalt geen 21 procent bovenop. Ik bouw statisch, wat sneller gaat dan een WordPress-site met twintig plugins in elkaar steken. En ik doe dit in bijberoep uit passie, niet om er een gezin mee te onderhouden. Een bureau in Antwerpen met twintig man moet die twintig man betalen. Ik niet.',
+      'Omdat mijn kosten lager zijn, niet omdat ik minder doe. Vier redenen. Ik heb geen kantoor en geen team, dus geen overhead die doorgerekend moet worden. Ik val onder de btw-vrijstellingsregeling voor kleine ondernemingen, dus je betaalt geen 21 procent bovenop. Ik bouw statisch, wat sneller gaat dan een WordPress-site met twintig plugins in elkaar steken. En ik doe dit in bijberoep uit passie, niet om er een gezin mee te onderhouden. Een bureau in Hasselt of Antwerpen met twintig man moet die twintig man betalen. Ik niet.',
     toon: ['home', 'prijzen'],
   },
   {
@@ -71,7 +71,7 @@ export const faq: FaqItem[] = [
   {
     vraag: 'Kom je aan huis?',
     antwoord:
-      'Als het in de buurt is, graag. Ik werk vooral in en rond Antwerpen en kom gerust langs om te bespreken wat je nodig hebt. Zit je verder, dan doen we het per telefoon en mail, dat werkt even goed. Bellen mag altijd. Je krijgt mij aan de lijn, geen callcenter en geen accountmanager.',
+      'Als het in de buurt is, graag. Ik werk vanuit Tessenderlo en kom gerust langs in Limburg om te bespreken wat je nodig hebt. Zit je verder, dan doen we het per telefoon en mail, dat werkt even goed. Bellen mag altijd. Je krijgt mij aan de lijn, geen callcenter en geen accountmanager.',
     toon: ['home'],
   },
 ];

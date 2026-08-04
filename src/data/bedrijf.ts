@@ -21,11 +21,10 @@ export const bedrijf = {
   // TODO(jente): echt e-mailadres op je eigen domein, niet gmail.
   email: 'hallo@vpsites.be',
 
-  // TODO(jente): adres zoals geregistreerd in de KBO.
   adres: {
-    straat: 'Straatnaam 1',
-    postcode: '2000',
-    gemeente: 'Antwerpen',
+    straat: 'Paalseweg 30A',
+    postcode: '3980',
+    gemeente: 'Tessenderlo',
     land: 'BE',
   },
 
@@ -38,9 +37,21 @@ export const bedrijf = {
     'Kleine onderneming onderworpen aan de vrijstellingsregeling van belasting. BTW niet toepasselijk, artikel 56bis van het BTW-Wetboek.',
   btwKort: 'Geen btw. Vrijstellingsregeling kleine ondernemingen.',
 
-  // TODO(jente): de gemeenten waar je effectief werkt. Gaat naar areaServed
-  // in de JSON-LD en stuurt je lokale vindbaarheid.
-  werkgebied: ['Antwerpen', 'Mechelen', 'Lier', 'Sint-Niklaas', 'Vlaanderen'],
+  // Gaat naar areaServed in de JSON-LD en stuurt je lokale vindbaarheid.
+  // Zet hier de gemeenten waar je effectief wil werken. Hoe specifieker,
+  // hoe beter je scoort op "webdesigner [gemeente]".
+  // TODO(jente): schrappen of aanvullen naar wat je echt wil bedienen.
+  werkgebied: [
+    'Tessenderlo',
+    'Beringen',
+    'Ham',
+    'Leopoldsburg',
+    'Hasselt',
+    'Limburg',
+  ],
+
+  /** Kort te gebruiken in lopende tekst. */
+  regio: 'Limburg',
 
   // TODO(jente): echte profielen. Leeg laten is beter dan een dode link.
   // Gaat naar sameAs in de JSON-LD, wat Google helpt de entiteit te koppelen.

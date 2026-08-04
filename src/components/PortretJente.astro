@@ -1,37 +1,56 @@
 ---
+import { existsSync } from 'node:fs';
 import { bedrijf } from '~/data/bedrijf';
 
 /**
- * TODO(jente): zet je foto in public/jente.jpg en verwijder de `heeftFoto`
- * schakelaar hieronder, of zet hem op true. Vul dan ook width en height in
- * met de echte pixelafmetingen, anders krijg je layout shift.
+ * Portret van Jente.
  *
- * Tot dan valt dit terug op een typografisch portret. Bewust géén doos met
- * "TODO" erin: als de site online gaat voor de foto er is, mag het er niet
- * stuk uitzien. Dit oogt als een keuze in plaats van als een gat.
+ * Zodra public/jente.jpg bestaat, gebruikt dit component de varianten die
+ * scripts/foto.mjs tijdens de build maakt. Geen bestand, geen probleem: dan
+ * valt het terug op een typografisch portret. Bewust géén doos met "TODO"
+ * erin, want als de site online gaat voor de foto er is, mag het er niet
+ * stuk uitzien.
+ *
+ * Er is dus niets aan te passen in de code. Foto erin zetten volstaat.
  */
 
 interface Props {
   class?: string;
+  /** Alleen het eerste portret op een pagina is een LCP-kandidaat. */
+  prioriteit?: boolean;
 }
 
-const { class: klasse = '' } = Astro.props;
+const { class: klasse = '', prioriteit = false } = Astro.props;
 
-const heeftFoto = false;
+const heeftFoto = existsSync('public/portret/jente-960.avif');
 const initialen = 'JVP';
 ---
 
 <div class:list={['relative aspect-4/5 overflow-hidden rounded-vp', klasse]}>
   {
     heeftFoto ? (
-      <img
-        src="/jente.jpg"
-        alt={`${bedrijf.persoon}, de webdesigner achter ${bedrijf.naam}`}
-        width="800"
-        height="1000"
-        fetchpriority="high"
-        class="h-full w-full object-cover"
-      />
+      <picture>
+        <source
+          type="image/avif"
+          srcset="/portret/jente-480.avif 480w, /portret/jente-960.avif 960w"
+          sizes="(min-width: 1024px) 28rem, (min-width: 640px) 24rem, 100vw"
+        />
+        <source
+          type="image/webp"
+          srcset="/portret/jente-480.webp 480w, /portret/jente-960.webp 960w"
+          sizes="(min-width: 1024px) 28rem, (min-width: 640px) 24rem, 100vw"
+        />
+        <img
+          src="/portret/jente-960.jpg"
+          alt={`${bedrijf.persoon}, de webdesigner achter ${bedrijf.naam}`}
+          width="960"
+          height="1200"
+          loading={prioriteit ? 'eager' : 'lazy'}
+          fetchpriority={prioriteit ? 'high' : 'auto'}
+          decoding="async"
+          class="h-full w-full object-cover"
+        />
+      </picture>
     ) : (
       <div class="portret flex h-full w-full flex-col justify-between border border-line bg-panel p-7">
         <span class="label-mono">{bedrijf.naam}</span>

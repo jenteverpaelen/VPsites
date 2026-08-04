@@ -27,18 +27,24 @@ JS-payload boven 20 KB is geen waarschuwing maar een fout.
 ## Wat je zelf nog moet invullen
 
 Alles staat op één plaats: [`src/data/bedrijf.ts`](src/data/bedrijf.ts).
+Zoek op `TODO` en je hebt ze alle drie.
 
-- ondernemingsnummer (KBO)
-- adres zoals geregistreerd
-- gsm-nummer en e-mailadres
-- gemeenten waar je werkt, dat stuurt je lokale vindbaarheid
-- LinkedIn en GitHub, als je die hebt
+- **ondernemingsnummer (KBO)**, wettelijk verplicht op de site
+- **gsm-nummer en e-mailadres**, nu nog voorbeeldwaarden
+- **LinkedIn en GitHub**, als je die hebt. Die gaan naar `sameAs` in de
+  JSON-LD en helpen Google je als één persoon te herkennen
+
+Adres en werkgebied staan er al in: Paalseweg 30A, 3980 Tessenderlo, met
+Limburg als werkgebied.
 
 Verder:
 
-- **Je foto** in `public/jente.jpg`, en `heeftFoto` op `true` in
-  [`PortretJente.astro`](src/components/PortretJente.astro). Tot dan staat er
-  een typografisch portret, geen lege doos.
+- **Je foto** als `public/jente.jpg`. Meer niet. Bij de volgende
+  `npm run build` maakt [`scripts/foto.mjs`](scripts/foto.mjs) er AVIF en
+  WebP van op twee breedtes, en
+  [`PortretJente.astro`](src/components/PortretJente.astro) schakelt vanzelf
+  over. Zolang er geen foto staat, toont de site een typografisch portret in
+  plaats van een leeg vak.
 - **Je domeinnaam** in [`src/data/site.mjs`](src/data/site.mjs) en onderaan
   `public/robots.txt`.
 - **Je eerste klantproject** zodra het af is: kopieer

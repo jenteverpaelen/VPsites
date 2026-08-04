@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "astro dev",
     "og": "node scripts/og.mjs",
-    "prebuild": "node scripts/og.mjs",
+    "foto": "node scripts/foto.mjs",
+    "prebuild": "node scripts/og.mjs && node scripts/foto.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check && node scripts/check-streepjes.mjs && node scripts/check-seo.mjs && node scripts/check-size.mjs",

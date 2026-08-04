@@ -15,7 +15,7 @@ titel: 'Naam van de klant'
 status: 'in-aanbouw'
 
 branche: 'schrijnwerker'
-gemeente: 'Lier'
+gemeente: 'Beringen'
 jaar: 2026
 pakket: 'Starter'
 
