@@ -52,9 +52,29 @@ prijskaarten, de command palette, de JSON-LD en de OG-kaarten.
 Stopt de introductieactie? Zet `introductie.actief` op `false`. De doorstreepte
 bedragen en het badge verdwijnen dan overal tegelijk.
 
+## Werken via GitHub
+
+De repo staat op [jenteverpaelen/VPsites](https://github.com/jenteverpaelen/VPsites).
+
+Bij elke push naar `main` en bij elke pull request draait
+[`.github/workflows/controle.yml`](.github/workflows/controle.yml): bouwen,
+daarna dezelfde vier controles als lokaal. Faalt er iets, dan zie je dat op
+het tabblad Actions voor de site live gaat.
+
+Voor een wijziging van enige omvang: werk op een aparte branch en open een
+pull request. Dan draait de controle voor je samenvoegt in plaats van erna.
+
+```bash
+git switch -c prijzen-aanpassen
+# wijzigen, npm run check
+git push -u origin prijzen-aanpassen
+```
+
 ## Online zetten
 
-Cloudflare Pages.
+Cloudflare Pages, gekoppeld aan de GitHub-repo. Elke push naar `main` zet dan
+vanzelf een nieuwe versie live, en elke pull request krijgt een eigen
+voorbeeld-URL.
 
 - Build command: `npm run build`
 - Output directory: `dist`
