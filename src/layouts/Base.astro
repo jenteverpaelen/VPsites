@@ -1,0 +1,130 @@
+---
+import '~/styles/global.css';
+import Nav from '~/components/Nav.astro';
+import Footer from '~/components/Footer.astro';
+import MobielActieBalk from '~/components/MobielActieBalk.astro';
+import CommandPalette from '~/components/CommandPalette.astro';
+import { bedrijf } from '~/data/bedrijf';
+import { bouwGraaf } from '~/lib/schema';
+
+interface Props {
+  /** Onder 60 tekens, zoekwoord vooraan. Zie de SEO-checklist in CLAUDE.md. */
+  titel: string;
+  /** Onder 155 tekens, met een reden om te klikken. */
+  beschrijving: string;
+  /** Slug van het OG-beeld in /og/. Zonder komt de standaard. */
+  og?: string;
+  /** Extra schema-blokken bovenop bedrijf, persoon en website. */
+  schema?: object[];
+  /** Uit de index houden, bijvoorbeeld voor de bedanktpagina. */
+  noindex?: boolean;
+  /** Actiebalk verbergen op pagina's waar het contactformulier al staat. */
+  actiebalk?: boolean;
+}
+
+const {
+  titel,
+  beschrijving,
+  og = 'home',
+  schema = [],
+  noindex = false,
+  actiebalk = true,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', Astro.site).href;
+const ogAfbeelding = new URL(`/og/${og}.png`, Astro.site).href;
+const graaf = bouwGraaf(schema);
+
+// TODO(jente): token uit Cloudflare Web Analytics. Cookieloos, dus geen
+// cookiebanner nodig. Leeg laten en er wordt niets geladen.
+const analyticsToken = '';
+---
+
+<!doctype html>
+<html lang="nl-BE">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+    <title>{titel}</title>
+    <meta name="description" content={beschrijving} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+
+    <!-- Fonts vroeg ophalen. Ze staan op hetzelfde domein maar woff2 wordt
+         zonder preload pas na de CSS ontdekt, en dat kost tijd bij LCP. -->
+    <link
+      rel="preload"
+      href="/fonts/archivo-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/jetbrains-mono-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={bedrijf.naam} />
+    <meta property="og:locale" content="nl_BE" />
+    <meta property="og:title" content={titel} />
+    <meta property="og:description" content={beschrijving} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogAfbeelding} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={titel} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={titel} />
+    <meta name="twitter:description" content={beschrijving} />
+    <meta name="twitter:image" content={ogAfbeelding} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#080908" />
+
+    <meta name="author" content={bedrijf.persoon} />
+    <meta name="geo.region" content="BE-VAN" />
+    <meta name="geo.placename" content={bedrijf.adres.gemeente} />
+
+    <script type="application/ld+json" is:inline set:html={graaf} />
+
+    {
+      analyticsToken && (
+        <script
+          is:inline
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon={`{"token": "${analyticsToken}"}`}
+        />
+      )
+    }
+  </head>
+
+  <body class="antialiased">
+    <a
+      href="#hoofd"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-100 focus:rounded-vp focus:bg-mint focus:px-4 focus:py-3 focus:font-medium focus:text-ink"
+    >
+      Naar de inhoud
+    </a>
+
+    <Nav />
+
+    <main id="hoofd">
+      <slot />
+    </main>
+
+    <Footer />
+
+    {actiebalk && <MobielActieBalk />}
+
+    <CommandPalette />
+  </body>
+</html>

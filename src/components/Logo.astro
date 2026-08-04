@@ -1,0 +1,56 @@
+---
+/**
+ * VPsites-logo.
+ *
+ * Opgebouwd uit echte letters in plaats van een afbeelding: scherp op elke
+ * maat, nul extra requests, en het volgt de sitefonts. De brackets staan in
+ * mono, dat is het developer-signaal. De wordmark is `SITES`, niet
+ * `WEBDESIGN`: vijf letters over dezelfde breedte betekent ruimere tracking.
+ *
+ * Screenreaders lezen "VPsites", niet "kleiner dan V P slash groter dan".
+ */
+interface Props {
+  /** sm voor de nav, md voor de footer, lg voor de hero. */
+  maat?: 'sm' | 'md' | 'lg';
+  /** Wordmark SITES tonen onder de mark. */
+  wordmark?: boolean;
+  class?: string;
+}
+
+const { maat = 'sm', wordmark = false, class: klasse = '' } = Astro.props;
+
+const marken = {
+  sm: 'text-[1.0625rem] md:text-[1.125rem]',
+  md: 'text-2xl',
+  lg: 'text-4xl sm:text-5xl',
+};
+
+const wordmarken = {
+  sm: 'text-[0.5rem]',
+  md: 'text-[0.5625rem]',
+  lg: 'text-[0.75rem]',
+};
+---
+
+<span class:list={['inline-flex flex-col items-center leading-none', klasse]} aria-label="VPsites" role="img">
+  <span class:list={['inline-flex items-baseline', marken[maat]]} aria-hidden="true">
+    <span class="font-mono font-medium text-mint">&lt;</span>
+    <span class="font-display font-bold tracking-[-0.045em] text-fg px-[0.14em]">VP</span>
+    <span class="font-mono font-medium text-mint">/&gt;</span>
+  </span>
+
+  {
+    wordmark && (
+      <span
+        class:list={[
+          'font-mono font-medium uppercase text-faint',
+          'mt-[0.55em] indent-[0.42em] tracking-[0.42em]',
+          wordmarken[maat],
+        ]}
+        aria-hidden="true"
+      >
+        Sites
+      </span>
+    )
+  }
+</span>

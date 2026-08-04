@@ -1,0 +1,323 @@
+---
+import Base from '~/layouts/Base.astro';
+import PaginaKop from '~/components/PaginaKop.astro';
+import { bedrijf, telHref, mailHref, adresRegel } from '~/data/bedrijf';
+import { pakketten } from '~/data/prijzen';
+import { contactSchema, kruimelSchema } from '~/lib/schema';
+
+const kruimels = [{ naam: 'contact', pad: '/contact' }];
+---
+
+<Base
+  titel="Contact | VPsites"
+  beschrijving={`Stuur me in één zin wat je doet. Ik antwoord binnen de dag met wat het kost en hoelang het duurt. Of bel ${bedrijf.telefoonWeergave}.`}
+  og="contact"
+  schema={[contactSchema(), kruimelSchema(kruimels)]}
+  actiebalk={false}
+>
+  <PaginaKop
+    comment="één zin volstaat"
+    titel="Vertel me wat je doet"
+    intro="Ik antwoord binnen de dag met wat het bij jou zou kosten en hoelang het duurt. Kost je niets en je zit nergens aan vast."
+    kruimels={kruimels}
+  />
+
+  <section class="sectie">
+    <div class="container-vp">
+      <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-7">
+          <form
+            id="contactformulier"
+            method="post"
+            action="/api/contact"
+            class="space-y-6"
+            novalidate
+          >
+            <!-- Honeypot. Verborgen voor mensen, zichtbaar voor bots. -->
+            <div class="honeypot" aria-hidden="true">
+              <label for="bedrijfsnaam">Bedrijfsnaam</label>
+              <input type="text" id="bedrijfsnaam" name="bedrijfsnaam" tabindex="-1" autocomplete="off" />
+            </div>
+            <input type="hidden" name="geladen" value="" data-geladen />
+
+            <div class="grid gap-6 sm:grid-cols-2">
+              <div>
+                <label for="naam" class="label-mono block">Je naam *</label>
+                <input
+                  type="text"
+                  id="naam"
+                  name="naam"
+                  required
+                  autocomplete="name"
+                  class="veld mt-2.5"
+                />
+              </div>
+
+              <div>
+                <label for="telefoon" class="label-mono block">Telefoon</label>
+                <input
+                  type="tel"
+                  id="telefoon"
+                  name="telefoon"
+                  inputmode="tel"
+                  autocomplete="tel"
+                  class="veld mt-2.5"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label for="email" class="label-mono block">E-mail *</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                inputmode="email"
+                autocomplete="email"
+                class="veld mt-2.5"
+              />
+            </div>
+
+            <div>
+              <label for="pakket" class="label-mono block">Waar denk je aan</label>
+              <select id="pakket" name="pakket" class="veld mt-2.5">
+                <option value="">Weet ik nog niet</option>
+                {
+                  pakketten.map((pakket) => (
+                    <option value={`${pakket.naam} (€${pakket.prijs})`}>
+                      {pakket.naam} &euro;{pakket.prijs}
+                    </option>
+                  ))
+                }
+              </select>
+            </div>
+
+            <div>
+              <label for="bericht" class="label-mono block">Wat doe je? *</label>
+              <textarea
+                id="bericht"
+                name="bericht"
+                required
+                rows="5"
+                class="veld mt-2.5 resize-y"
+                placeholder="Ik ben schrijnwerker in Lier en werk vooral voor particulieren. Ik heb nu niets online."
+              ></textarea>
+              <p class="mt-2 text-xs leading-relaxed text-faint">
+                Eén of twee zinnen volstaat. Foto's en teksten hoef je nu nog niet te
+                hebben.
+              </p>
+            </div>
+
+            <div
+              data-melding
+              class="hidden rounded-vp border px-4 py-3.5 text-sm leading-relaxed"
+              role="status"
+              aria-live="polite"
+            >
+            </div>
+
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
+              <button
+                type="submit"
+                class="inline-flex min-h-13 items-center justify-center rounded-vp bg-mint px-7 font-semibold text-ink transition-colors hover:bg-mint-dim disabled:opacity-60"
+              >
+                Verstuur
+              </button>
+              <p class="text-xs leading-relaxed text-faint">
+                Ik gebruik je gegevens alleen om te antwoorden.
+                <a href="/privacy" class="underline decoration-line underline-offset-4 hover:text-mint">
+                  Privacybeleid
+                </a>
+              </p>
+            </div>
+          </form>
+        </div>
+
+        <aside class="lg:col-span-5">
+          <div class="rounded-vp border border-line bg-panel p-7">
+            <h2 class="label-mono">Liever direct</h2>
+            <p class="mt-4 leading-relaxed text-muted">
+              Bellen mag altijd. Je krijgt mij, geen callcenter. Ik werk 's avonds aan
+              VPsites, dus overdag kan het even duren voor ik opneem.
+            </p>
+
+            <div class="mt-6 space-y-1">
+              <a href={telHref} class="flex min-h-12 items-center text-lg hover:text-mint">
+                {bedrijf.telefoonWeergave}
+              </a>
+              <a href={mailHref} class="flex min-h-12 items-center text-lg break-all hover:text-mint">
+                {bedrijf.email}
+              </a>
+            </div>
+
+            <address class="mt-6 border-t border-line pt-5 text-sm leading-relaxed text-muted not-italic">
+              {bedrijf.naam}<br />
+              {adresRegel}<br />
+              {bedrijf.ondernemingsnummer}
+            </address>
+          </div>
+
+          <div class="mt-6 rounded-vp border border-line p-7">
+            <h2 class="label-mono">Wat er daarna gebeurt</h2>
+            <ol class="mt-4 space-y-3 text-sm leading-relaxed text-muted">
+              <li class="flex gap-3">
+                <span class="font-mono text-xs text-mint-dim">01</span>
+                Ik antwoord binnen de dag met een prijs en een termijn.
+              </li>
+              <li class="flex gap-3">
+                <span class="font-mono text-xs text-mint-dim">02</span>
+                Past het, dan bellen we kort of kom ik langs.
+              </li>
+              <li class="flex gap-3">
+                <span class="font-mono text-xs text-mint-dim">03</span>
+                Past het niet, dan zeg ik dat en kost het je niets.
+              </li>
+            </ol>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .veld {
+    display: block;
+    width: 100%;
+    min-height: 3.25rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-vp);
+    background-color: var(--color-panel);
+    color: var(--color-fg);
+    /* 16px minimum, anders zoomt iOS in bij focus. */
+    font-size: 1rem;
+    transition:
+      border-color 150ms,
+      background-color 150ms;
+  }
+
+  .veld::placeholder {
+    color: var(--color-faint);
+  }
+
+  .veld:hover {
+    border-color: var(--color-line-soft);
+  }
+
+  .veld:focus-visible {
+    border-color: var(--color-mint);
+    background-color: var(--color-raise);
+  }
+
+  .veld[aria-invalid='true'] {
+    border-color: #e0796b;
+  }
+
+  select.veld {
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--color-faint) 50%),
+      linear-gradient(135deg, var(--color-faint) 50%, transparent 50%);
+    background-position:
+      calc(100% - 1.25rem) 1.4rem,
+      calc(100% - 1rem) 1.4rem;
+    background-size:
+      0.3125rem 0.3125rem,
+      0.3125rem 0.3125rem;
+    background-repeat: no-repeat;
+    padding-right: 2.75rem;
+  }
+</style>
+
+<script>
+  const formulier = document.querySelector<HTMLFormElement>('#contactformulier');
+
+  if (formulier) {
+    const melding = formulier.querySelector<HTMLElement>('[data-melding]')!;
+    const knop = formulier.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const geladenVeld = formulier.querySelector<HTMLInputElement>('[data-geladen]')!;
+
+    geladenVeld.value = String(Date.now());
+
+    const toon = (tekst: string, gelukt: boolean) => {
+      melding.textContent = tekst;
+      melding.classList.remove('hidden');
+      melding.classList.toggle('border-mint/40', gelukt);
+      melding.classList.toggle('bg-mint-deep/25', gelukt);
+      melding.classList.toggle('text-fg', gelukt);
+      melding.classList.toggle('border-line', !gelukt);
+      melding.classList.toggle('bg-panel', !gelukt);
+      melding.classList.toggle('text-muted', !gelukt);
+    };
+
+    formulier.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Eigen validatie zodat de meldingen in het Nederlands staan en
+      // niet in de taal van de browser.
+      const verplicht: Array<[string, string]> = [
+        ['naam', 'Vul je naam in.'],
+        ['email', 'Vul een geldig e-mailadres in.'],
+        ['bericht', 'Schrijf even kort wat je doet.'],
+      ];
+
+      for (const [naam, fout] of verplicht) {
+        const veld = formulier.elements.namedItem(naam) as HTMLInputElement;
+        const leeg = !veld.value.trim();
+        const emailFout = naam === 'email' && !/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(veld.value);
+        if (leeg || emailFout) {
+          veld.setAttribute('aria-invalid', 'true');
+          veld.focus();
+          toon(fout, false);
+          return;
+        }
+        veld.removeAttribute('aria-invalid');
+      }
+
+      knop.disabled = true;
+      knop.textContent = 'Bezig';
+
+      try {
+        const antwoord = await fetch(formulier.action, {
+          method: 'POST',
+          body: new FormData(formulier),
+          headers: { accept: 'application/json' },
+        });
+
+        // In `astro dev` bestaat de Pages Function niet en krijg je HTML terug.
+        const type = antwoord.headers.get('content-type') ?? '';
+        if (!type.includes('application/json')) {
+          toon(
+            'Het formulier werkt pas op de echte site, niet lokaal. Mail me gerust rechtstreeks.',
+            false
+          );
+          return;
+        }
+
+        const data = (await antwoord.json()) as { ok: boolean; fout?: string };
+
+        if (data.ok) {
+          formulier.reset();
+          geladenVeld.value = String(Date.now());
+          toon('Bedankt. Je bericht is binnen, ik antwoord binnen de dag.', true);
+        } else {
+          toon(data.fout ?? 'Er ging iets mis. Probeer opnieuw of bel me even.', false);
+        }
+      } catch {
+        toon('Geen verbinding. Probeer opnieuw of bel me even.', false);
+      } finally {
+        knop.disabled = false;
+        knop.textContent = 'Verstuur';
+      }
+    });
+  }
+</script>

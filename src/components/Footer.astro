@@ -1,0 +1,103 @@
+---
+import Logo from '~/components/Logo.astro';
+import { bedrijf, adresRegel, telHref, mailHref } from '~/data/bedrijf';
+
+const jaar = new Date().getFullYear();
+
+const kolommen = [
+  {
+    titel: 'Site',
+    links: [
+      { naam: 'Home', href: '/' },
+      { naam: 'Werk', href: '/werk' },
+      { naam: 'Prijzen', href: '/prijzen' },
+      { naam: 'Over Jente', href: '/over' },
+      { naam: 'Kennis', href: '/kennis' },
+      { naam: 'Contact', href: '/contact' },
+    ],
+  },
+  {
+    titel: 'Lezen',
+    links: [
+      { naam: 'Wat kost een website in België?', href: '/kennis/wat-kost-een-website-belgie' },
+      { naam: 'Waarom geen WordPress?', href: '/kennis/waarom-geen-wordpress' },
+      { naam: 'Wat moet wettelijk op je site?', href: '/kennis/verplicht-op-je-website' },
+    ],
+  },
+  {
+    titel: 'Klein lettertje',
+    links: [
+      { naam: 'Privacybeleid', href: '/privacy' },
+      { naam: 'Cookiebeleid', href: '/cookies' },
+      { naam: 'Algemene voorwaarden', href: '/algemene-voorwaarden' },
+    ],
+  },
+];
+---
+
+<footer class="border-t border-line bg-panel/40">
+  <div class="container-vp py-16 md:py-20">
+    <div class="grid gap-12 md:grid-cols-12 md:gap-8">
+      <div class="md:col-span-4">
+        <Logo maat="md" wordmark />
+
+        <p class="mt-6 max-w-xs text-sm leading-relaxed text-muted">
+          Snelle websites voor zelfstandigen en kleine bedrijven. Vaste prijs, geen btw,
+          geen abonnement.
+        </p>
+
+        <div class="mt-4 flex flex-col text-sm">
+          <a href={telHref} class="flex min-h-11 w-fit items-center text-fg hover:text-mint">
+            {bedrijf.telefoonWeergave}
+          </a>
+          <a href={mailHref} class="flex min-h-11 w-fit items-center text-fg hover:text-mint">
+            {bedrijf.email}
+          </a>
+        </div>
+      </div>
+
+      <div class="grid gap-10 sm:grid-cols-3 md:col-span-8 md:gap-8">
+        {
+          kolommen.map((kolom) => (
+            <div>
+              <h2 class="label-mono">{kolom.titel}</h2>
+              {/* py-2.5 op een blok-link maakt er een raakvlak van ruim
+                  44px van, zonder dat de footer uit zijn voegen barst. */}
+              <ul class="mt-2">
+                {kolom.links.map((link) => (
+                  <li>
+                    <a
+                      href={link.href}
+                      class="flex min-h-12 items-center py-2 text-sm leading-snug text-muted transition-colors hover:text-fg"
+                    >
+                      {link.naam}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <hr class="my-10 border-line" />
+
+    <!-- Wettelijk verplicht in België: handelsnaam, adres, ondernemingsnummer
+         en de vermelding van de vrijstellingsregeling. Zie CLAUDE.md deel 8. -->
+    <div class="grid gap-8 text-xs leading-relaxed text-faint md:grid-cols-12">
+      <address class="not-italic md:col-span-5">
+        <span class="text-muted">{bedrijf.naam}</span> is de handelsnaam van {bedrijf.persoon}.<br />
+        {adresRegel}<br />
+        Ondernemingsnummer {bedrijf.ondernemingsnummer}
+      </address>
+
+      <p class="md:col-span-4">{bedrijf.btwVermelding}</p>
+
+      <div class="md:col-span-3 md:text-right">
+        <p class="font-mono text-faint">Geen cookies. Geen banner. Geen tracking.</p>
+        <p class="mt-2">&copy; {jaar} {bedrijf.naam}</p>
+      </div>
+    </div>
+  </div>
+</footer>

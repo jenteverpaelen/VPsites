@@ -1,0 +1,128 @@
+---
+import Base from '~/layouts/Base.astro';
+import PaginaKop from '~/components/PaginaKop.astro';
+import ContactCta from '~/components/ContactCta.astro';
+import PortretJente from '~/components/PortretJente.astro';
+import { bedrijf, telHref, mailHref, adresRegel } from '~/data/bedrijf';
+import { kruimelSchema } from '~/lib/schema';
+
+const kruimels = [{ naam: 'over', pad: '/over' }];
+
+const feiten = [
+  { label: 'Naam', waarde: bedrijf.persoon },
+  { label: 'Werkt vanuit', waarde: bedrijf.adres.gemeente },
+  { label: 'Sinds', waarde: String(bedrijf.startjaar) },
+  { label: 'Vorm', waarde: 'Eenmanszaak in bijberoep' },
+  { label: 'Ondernemingsnummer', waarde: bedrijf.ondernemingsnummer },
+];
+---
+
+<Base
+  titel="Over Jente Ver Paelen | VPsites"
+  beschrijving="Ik maak websites in bijberoep, uit passie. Wie ik ben, hoe ik werk, en waar mijn grenzen liggen. Zonder verkooppraat."
+  og="over"
+  schema={[kruimelSchema(kruimels)]}
+>
+  <PaginaKop
+    comment="wie er opneemt als je belt"
+    titel="Dag, ik ben Jente."
+    intro="Ik maak websites in bijberoep. Dat is geen tussenstap naar iets groters, het is precies wat het is. Hier staat wat je van mij mag verwachten, en wat niet."
+    kruimels={kruimels}
+  />
+
+  <section class="sectie">
+    <div class="container-vp">
+      <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-5">
+          <PortretJente />
+
+          <dl class="mt-8 divide-y divide-line border-y border-line">
+            {
+              feiten.map((feit) => (
+                <div class="flex items-baseline justify-between gap-4 py-3">
+                  <dt class="label-mono">{feit.label}</dt>
+                  <dd class="text-right text-sm">{feit.waarde}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+
+        <div class="prose-vp lg:col-span-7">
+          <h2>Hoe ik hier terechtkwam</h2>
+          <p>
+            Ik ben altijd bezig geweest met websites bouwen. Eerst voor mezelf, daarna
+            voor vrienden die iets nodig hadden. Op een bepaald moment merkte ik dat
+            dezelfde vraag bleef terugkomen: iemand met een eigen zaak had een offerte
+            gekregen van een paar duizend euro voor vier pagina's, en die vroeg zich af
+            of dat normaal was.
+          </p>
+          <p>
+            Meestal was het antwoord: het is wat de markt vraagt, maar het is niet wat
+            het werk kost. Een bureau met twintig mensen heeft dat geld nodig. Ik niet.
+            Daarom ben ik VPsites begonnen.
+          </p>
+
+          <h2>Hoe ik werk</h2>
+          <p>
+            Ik neem een paar klanten per maand aan, niet meer. Je krijgt een vaste prijs
+            voor we beginnen en die verandert niet onderweg. Je ziet het ontwerp voor ik
+            iets bouw, en je betaalt de helft pas bij oplevering.
+          </p>
+          <p>
+            Ik bouw statische sites. Dat is een technische keuze met een heel praktisch
+            gevolg: je site laadt in minder dan een seconde, hij kan niet gehackt worden
+            via plugins, en je hebt geen maandelijks onderhoudscontract nodig. Ik verkoop
+            er dan ook geen.
+          </p>
+
+          <h2>Waar mijn grenzen liggen</h2>
+          <p>
+            Ik doe dit 's avonds en in het weekend. Bel je op dinsdagnamiddag, dan is de
+            kans groot dat ik pas 's avonds antwoord. Voor de meeste projecten is dat geen
+            probleem, maar je moet het wel weten.
+          </p>
+          <p>
+            Ik doe geen webshops met honderden producten, geen projecten die maanden
+            lopen, en niets waar een team voor nodig is. Vraag je me zoiets, dan zeg ik
+            dat eerlijk en verwijs ik je door. Liever dat dan halverwege vaststellen dat
+            het niet lukt.
+          </p>
+
+          <h2>Waarom je mij zou vertrouwen</h2>
+          <p>
+            Eerlijk? Ik ben net begonnen, dus ik kan je geen lijst met tevreden klanten
+            voorleggen. Wat ik wel kan: mijn echte naam, mijn adres, mijn
+            ondernemingsnummer en mijn gsm-nummer staan op deze site. Je domeinnaam komt
+            op jouw naam. De bestanden van je site krijg je mee. Je zit nergens aan vast.
+          </p>
+          <p>
+            En deze site is zelf het beste bewijs dat ik heb. Meet hem door op PageSpeed
+            Insights. Wat je daar ziet, is wat jij ook krijgt.
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-16 grid gap-4 rounded-vp border border-line bg-panel p-7 sm:grid-cols-3 md:p-8">
+        <div>
+          <span class="label-mono">Bellen</span>
+          <a href={telHref} class="mt-2 flex min-h-11 items-center text-lg hover:text-mint">
+            {bedrijf.telefoonWeergave}
+          </a>
+        </div>
+        <div>
+          <span class="label-mono">Mailen</span>
+          <a href={mailHref} class="mt-2 flex min-h-11 items-center text-lg break-all hover:text-mint">
+            {bedrijf.email}
+          </a>
+        </div>
+        <div>
+          <span class="label-mono">Adres</span>
+          <address class="mt-2 flex min-h-11 items-center text-lg not-italic">{adresRegel}</address>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ContactCta />
+</Base>

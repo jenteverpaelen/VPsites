@@ -1,0 +1,99 @@
+---
+/**
+ * De belangrijkste sectie van de site.
+ *
+ * €180 ligt zo ver onder de markt (€3.500 tot €8.000 voor vijf pagina's in
+ * België) dat het zonder uitleg als amateuristisch leest. Mét uitleg is het
+ * logisch. Het eerlijke blok over wat een bureau wél biedt staat er niet uit
+ * bescheidenheid: het maakt de rest geloofwaardig.
+ */
+
+const redenen = [
+  {
+    kop: 'Geen kantoor, geen team',
+    tekst:
+      'Ik werk van thuis uit. Er is geen bureauruimte die betaald moet worden, geen accountmanager die jouw dossier doorgeeft aan een projectleider die het doorgeeft aan een ontwerper. Je praat met de persoon die je site bouwt. Dat scheelt niet alleen geld, het scheelt ook drie weken heen en weer mailen.',
+  },
+  {
+    kop: 'Geen btw',
+    tekst:
+      'Ik val onder de vrijstellingsregeling voor kleine ondernemingen. Dat betekent dat er geen 21 procent bijkomt op mijn prijs. Bij een bureau wel. Alleen dat verschil maakt hun €995 al €1.204.',
+  },
+  {
+    kop: 'Ik bouw statisch, niet in WordPress',
+    tekst:
+      'Een site van vier pagina\'s in WordPress zetten betekent een thema kiezen, tien plugins installeren en die daarna blijven onderhouden. Ik schrijf de site rechtstreeks. Dat gaat sneller, het resultaat laadt in minder dan een seconde, en er is achteraf niets dat stukgaat. Minder werk voor mij, minder kosten voor jou, en een betere site.',
+  },
+  {
+    kop: 'Ik doe dit in bijberoep',
+    tekst:
+      'Dit is niet mijn brood. Ik maak websites omdat ik het graag doe, naast mijn werk. Daardoor moet ik geen twaalf klanten per maand door de molen jagen om rond te komen. Ik neem er een paar aan en die krijgen aandacht. Dat is meteen ook mijn grens: ik ben er niet elke werkdag van negen tot vijf.',
+  },
+];
+---
+
+<section class="sectie border-t border-line">
+  <div class="container-vp">
+    <p class="comment-mono op-scroll">
+      <span class="text-mint-dim">//</span> de vraag die je toch al aan het denken was
+    </p>
+
+    <h2 class="op-scroll mt-5 max-w-3xl text-3xl sm:text-4xl md:text-5xl">
+      Waarom ben ik zoveel goedkoper?
+    </h2>
+
+    <p class="op-scroll mt-6 max-w-2xl text-lg leading-relaxed text-muted">
+      Een website van vijf pagina's kost in België doorgaans tussen €3.500 en €8.000.
+      Ik vraag een fractie daarvan. Dat is een terechte vraag, dus hier is het
+      eerlijke antwoord.
+    </p>
+
+    <div class="mt-14 grid gap-12 lg:grid-cols-12 lg:gap-16">
+      <ol class="lg:col-span-7">
+        {
+          redenen.map((reden, i) => (
+            <li class="op-scroll border-t border-line py-7 first:border-t-0 first:pt-0">
+              <div class="flex gap-5">
+                <span class="mt-1 shrink-0 font-mono text-xs text-mint-dim">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <div>
+                  <h3 class="text-xl leading-snug">{reden.kop}</h3>
+                  <p class="mt-3 leading-relaxed text-muted">{reden.tekst}</p>
+                </div>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+
+      <aside class="op-scroll lg:col-span-5">
+        <div class="rounded-vp border border-line bg-panel p-7 lg:sticky lg:top-28">
+          <h3 class="label-mono">Even eerlijk</h3>
+          <p class="mt-4 text-xl leading-snug">Wat je bij een bureau wél krijgt</p>
+
+          <ul class="mt-5 space-y-3 text-[0.9375rem] leading-relaxed text-muted">
+            <li class="border-t border-line pt-3">
+              Iemand die opneemt op een dinsdagnamiddag. Ik antwoord meestal 's avonds.
+            </li>
+            <li class="border-t border-line pt-3">
+              Een team dat blijft draaien als er iemand ziek is of op reis gaat.
+            </li>
+            <li class="border-t border-line pt-3">
+              Een copywriter, een fotograaf en een SEO-specialist onder één dak.
+            </li>
+            <li class="border-t border-line pt-3">
+              Ervaring met grote projecten, webshops en koppelingen die ik niet doe.
+            </li>
+          </ul>
+
+          <p class="mt-6 border-t border-line pt-5 leading-relaxed text-fg">
+            Heb je dat nodig, ga dan naar een bureau. Dat meen ik. Maar als je een
+            zelfstandige bent die gewoon deftig online wil staan, dan betaal je daar
+            voor een hoop dat je nooit gebruikt.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>

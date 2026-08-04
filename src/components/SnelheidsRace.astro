@@ -1,0 +1,196 @@
+---
+/**
+ * Twee laadbalken naast elkaar. Maakt "sneller" concreet voor iemand die
+ * niet weet wat Core Web Vitals zijn.
+ *
+ * De cijfers komen uit gepubliceerd onderzoek, niet uit mijn duim. Ze staan
+ * met bron onderaan de sectie. Nooit een cijfer tonen dat je niet kan staven.
+ *
+ * De tellers zijn pure CSS via @property en counter(). Nul JavaScript voor
+ * de animatie zelf, alleen een IntersectionObserver om ze te starten.
+ */
+
+const deelnemers = [
+  {
+    id: 'wp',
+    naam: 'Typische WordPress-site',
+    detail: 'thema plus plugins, op mobiel',
+    ms: 3400,
+    mint: false,
+  },
+  {
+    id: 'vp',
+    naam: 'Statische site',
+    detail: 'wat ik bouw',
+    ms: 400,
+    mint: true,
+  },
+];
+
+const traagste = Math.max(...deelnemers.map((d) => d.ms));
+---
+
+<section class="sectie border-t border-line">
+  <div class="container-vp">
+    <p class="comment-mono op-scroll"><span class="text-mint-dim">//</span> hetzelfde bezoek, twee sites</p>
+
+    <div class="mt-5 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <h2 class="op-scroll max-w-2xl text-3xl sm:text-4xl md:text-5xl">
+        Drie seconden wachten<br class="hidden sm:block" />
+        <span class="text-muted">of niet.</span>
+      </h2>
+
+      <button
+        type="button"
+        data-race-opnieuw
+        class="inline-flex min-h-12 w-fit items-center gap-2 rounded-vp border border-line bg-panel px-4 text-sm text-muted transition-colors hover:border-line-soft hover:text-fg"
+      >
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path
+            d="M12 7a5 5 0 1 1-1.5-3.5M12 1.5V4.5H9"
+            stroke="currentColor"
+            stroke-width="1.4"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+        Speel opnieuw
+      </button>
+    </div>
+
+    <div class="race mt-14 space-y-8" data-race>
+      {
+        deelnemers.map((deelnemer) => (
+          <div>
+            <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+              <h3 class="text-lg">
+                {deelnemer.naam}
+                <span class="ml-2 font-mono text-xs text-faint">{deelnemer.detail}</span>
+              </h3>
+              <span
+                class:list={[
+                  'teller font-mono text-lg tabular-nums',
+                  deelnemer.mint ? 'text-mint' : 'text-muted',
+                ]}
+                style={`--eind: ${deelnemer.ms}; --duur: ${deelnemer.ms}ms`}
+                aria-hidden="true"
+              />
+              <span class="sr-only">{deelnemer.ms} milliseconden</span>
+            </div>
+
+            <div class="mt-3 h-2.5 overflow-hidden rounded-full bg-raise">
+              <div
+                class:list={['balk h-full rounded-full', deelnemer.mint ? 'bg-mint' : 'bg-faint']}
+                style={`--breedte: ${(deelnemer.ms / traagste) * 100}%; --duur: ${deelnemer.ms}ms`}
+              />
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="op-scroll mt-12 grid gap-8 md:grid-cols-2">
+      <p class="leading-relaxed text-muted">
+        Dat verschil zie je niet alleen. Google meet het ook. WordPress-sites halen in
+        43 procent van de gevallen een voldoende op Core Web Vitals. Statische sites
+        zitten doorgaans boven de 95.
+      </p>
+      <p class="leading-relaxed text-muted">
+        En sinds Google in maart 2026 bevestigde dat reactiesnelheid volwaardig meetelt,
+        zakken trage sites gemiddeld bijna een positie in de resultaten.
+        <span class="text-fg">Traag is duur geworden.</span>
+      </p>
+    </div>
+
+    <p class="op-scroll mt-8 font-mono text-[0.6875rem] leading-relaxed text-faint">
+      Bronnen: mediane laadtijden uit vergelijkend onderzoek naar WordPress tegenover
+      statische sites (2026), en Google Search Central over Core Web Vitals als
+      ranking-signaal (18 maart 2026). Jouw resultaat hangt af van je hosting, je
+      afbeeldingen en je bezoeker.
+    </p>
+  </div>
+</section>
+
+<style>
+  @property --tel {
+    syntax: '<integer>';
+    initial-value: 0;
+    inherits: false;
+  }
+
+  /* counter-reset leest de geanimeerde custom property elke frame opnieuw,
+     dus de teller loopt zonder JavaScript op. */
+  .teller {
+    counter-reset: tel var(--tel);
+  }
+
+  .teller::after {
+    content: counter(tel) ' ms';
+  }
+
+  .balk {
+    transform: scaleX(0);
+    transform-origin: left;
+    width: var(--breedte);
+  }
+
+  /* Alleen transform animeren, nooit width. Width herberekent de layout
+     en telt mee voor de Visual Stability Index. Zie CLAUDE.md deel 7. */
+  .race[data-loopt] .balk {
+    animation: balk-vullen var(--duur) linear forwards;
+  }
+
+  .race[data-loopt] .teller {
+    animation: tel-op var(--duur) linear forwards;
+  }
+
+  @keyframes balk-vullen {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes tel-op {
+    to {
+      --tel: var(--eind);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .balk {
+      transform: scaleX(1);
+      animation: none !important;
+    }
+    .teller {
+      --tel: var(--eind);
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  const race = document.querySelector<HTMLElement>('[data-race]');
+
+  if (race) {
+    const start = () => {
+      race.removeAttribute('data-loopt');
+      // Reflow forceren, anders herstart de animatie niet.
+      void race.offsetWidth;
+      race.setAttribute('data-loopt', '');
+    };
+
+    // Start zodra de balken echt in beeld komen.
+    new IntersectionObserver(
+      (waarnemingen, waarnemer) => {
+        for (const waarneming of waarnemingen) {
+          if (waarneming.isIntersecting) {
+            start();
+            waarnemer.disconnect();
+          }
+        }
+      },
+      { threshold: 0.45 }
+    ).observe(race);
+
+    document.querySelector('[data-race-opnieuw]')?.addEventListener('click', start);
+  }
+</script>

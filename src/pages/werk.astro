@@ -1,0 +1,45 @@
+---
+import Base from '~/layouts/Base.astro';
+import PaginaKop from '~/components/PaginaKop.astro';
+import WerkBlok from '~/components/WerkBlok.astro';
+import ContactCta from '~/components/ContactCta.astro';
+import { kruimelSchema } from '~/lib/schema';
+
+const kruimels = [{ naam: 'werk', pad: '/werk' }];
+---
+
+<Base
+  titel="Werk | VPsites"
+  beschrijving="Waar ik nu aan werk. Ik ben net gestart, dus geen twintig cases. Wel een eerlijke introductieprijs voor wie mee opbouwt."
+  og="werk"
+  schema={[kruimelSchema(kruimels)]}
+>
+  <PaginaKop
+    comment="klein, en dat mag geweten zijn"
+    titel="Werk"
+    intro="Elke webdesigner toont hier zijn beste twintig projecten. Ik heb er één lopen. Dat verstoppen achter voorbeelden die ik niet zelf gemaakt heb, ga ik niet doen."
+    kruimels={kruimels}
+  />
+
+  <WerkBlok volledig />
+
+  <section class="sectie border-t border-line">
+    <div class="container-vp">
+      <div class="max-w-2xl">
+        <p class="comment-mono op-scroll"><span class="text-mint-dim">//</span> wat er komt</p>
+        <h2 class="op-scroll mt-5 text-3xl sm:text-4xl">Wat hier binnenkort staat</h2>
+        <p class="op-scroll mt-6 text-lg leading-relaxed text-muted">
+          Ik bouw drie voorbeeldsites, elk voor een andere stiel: een schrijnwerker, een
+          kapsalon en een coach. Volledig afgewerkt en live, zodat je kan doorklikken en
+          zien wat je krijgt in plaats van een screenshot te moeten geloven.
+        </p>
+        <p class="op-scroll mt-4 text-lg leading-relaxed text-muted">
+          Ze staan er nog niet. Zodra ze klaar zijn, staan ze hier met de vermelding dat
+          het voorbeelden zijn en geen echte klanten. Dat lijkt me niet meer dan normaal.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <ContactCta />
+</Base>

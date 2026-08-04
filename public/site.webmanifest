@@ -1,0 +1,28 @@
+{
+  "name": "VPsites",
+  "short_name": "VPsites",
+  "description": "Snelle websites voor zelfstandigen en kleine bedrijven in Vlaanderen. Vaste prijs, geen btw, geen abonnement.",
+  "lang": "nl-BE",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#080908",
+  "theme_color": "#080908",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "type": "image/png",
+      "sizes": "180x180"
+    },
+    {
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

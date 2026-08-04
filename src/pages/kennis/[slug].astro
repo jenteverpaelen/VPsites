@@ -1,0 +1,150 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '~/layouts/Base.astro';
+import ContactCta from '~/components/ContactCta.astro';
+import { bedrijf } from '~/data/bedrijf';
+import { artikelSchema, kruimelSchema } from '~/lib/schema';
+
+export async function getStaticPaths() {
+  const artikels = await getCollection('kennis');
+  return artikels.map((artikel) => ({
+    params: { slug: artikel.id },
+    props: { artikel },
+  }));
+}
+
+const { artikel } = Astro.props;
+const { Content } = await render(artikel);
+
+const pad = `/kennis/${artikel.id}`;
+const kruimels = [
+  { naam: 'kennis', pad: '/kennis' },
+  { naam: artikel.id, pad },
+];
+
+const andere = (await getCollection('kennis'))
+  .filter((a) => a.id !== artikel.id)
+  .sort((a, b) => a.data.volgorde - b.data.volgorde);
+
+const datum = (d: Date) =>
+  d.toLocaleDateString('nl-BE', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<Base
+  titel={`${artikel.data.seoTitel ?? artikel.data.titel} | VPsites`}
+  beschrijving={artikel.data.beschrijving}
+  og="kennis"
+  schema={[
+    artikelSchema({
+      titel: artikel.data.titel,
+      beschrijving: artikel.data.beschrijving,
+      pad,
+      gepubliceerd: artikel.data.gepubliceerd,
+      gewijzigd: artikel.data.gewijzigd,
+    }),
+    kruimelSchema(kruimels),
+  ]}
+>
+  <article>
+    <header class="border-b border-line">
+      <div class="container-vp pt-12 pb-12 md:pt-16 md:pb-14">
+        <nav aria-label="Kruimelpad" class="mb-6">
+          <ol class="flex flex-wrap items-center gap-2 font-mono text-xs text-faint">
+            <li><a href="/" class="inline-flex min-h-11 items-center hover:text-muted">home</a></li>
+            <li aria-hidden="true" class="text-line-soft">/</li>
+            <li>
+              <a href="/kennis" class="inline-flex min-h-11 items-center hover:text-muted">kennis</a>
+            </li>
+            <li aria-hidden="true" class="text-line-soft">/</li>
+            <li><span class="text-muted" aria-current="page">{artikel.id}</span></li>
+          </ol>
+        </nav>
+
+        <h1 class="max-w-4xl text-4xl tracking-kop-groot sm:text-5xl">
+          {artikel.data.titel}
+        </h1>
+
+        <div class="mt-7 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-xs text-faint">
+          <span>{artikel.data.leestijd} min lezen</span>
+          <time datetime={artikel.data.gepubliceerd.toISOString()}>
+            {datum(artikel.data.gepubliceerd)}
+          </time>
+          {
+            artikel.data.gewijzigd && (
+              <span>
+                bijgewerkt op{' '}
+                <time datetime={artikel.data.gewijzigd.toISOString()}>
+                  {datum(artikel.data.gewijzigd)}
+                </time>
+              </span>
+            )
+          }
+        </div>
+      </div>
+    </header>
+
+    <div class="container-vp py-14 md:py-20">
+      <div class="grid gap-14 lg:grid-cols-12 lg:gap-16">
+        <div class="prose-vp lg:col-span-8">
+          <Content />
+        </div>
+
+        <aside class="lg:col-span-4">
+          <div class="lg:sticky lg:top-28">
+            <!-- Auteursblok. Voor E-E-A-T is een echte naam met een echt
+                 gezicht en echte contactgegevens het enige dat telt als je
+                 nog geen autoriteit hebt opgebouwd. -->
+            <div class="rounded-vp border border-line bg-panel p-6">
+              <span class="label-mono">Geschreven door</span>
+              <p class="mt-3 text-lg">{bedrijf.persoon}</p>
+              <p class="mt-2 text-sm leading-relaxed text-muted">
+                Ik bouw statische websites voor zelfstandigen in Vlaanderen, in bijberoep.
+                Vaste prijs, geen btw, geen abonnement.
+              </p>
+              <a
+                href="/over"
+                class="mt-4 inline-flex min-h-11 items-center text-sm text-mint underline decoration-mint/35 underline-offset-4 hover:decoration-mint"
+              >
+                Meer over mij
+              </a>
+            </div>
+
+            {
+              andere.length > 0 && (
+                <nav class="mt-6 rounded-vp border border-line p-6" aria-label="Andere artikels">
+                  <span class="label-mono">Ook interessant</span>
+                  <ul class="mt-3">
+                    {andere.map((a) => (
+                      <li>
+                        <a
+                          href={`/kennis/${a.id}`}
+                          class="flex min-h-12 items-center py-2 text-sm leading-snug text-muted transition-colors hover:text-mint"
+                        >
+                          {a.data.kop}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </nav>
+              )
+            }
+
+            <div class="mt-6 rounded-vp border border-mint/30 bg-mint-deep/20 p-6">
+              <p class="leading-relaxed">
+                Wil je gewoon weten wat het bij jou zou kosten? Alle prijzen staan online.
+              </p>
+              <a
+                href="/prijzen"
+                class="mt-4 flex min-h-12 items-center justify-center rounded-vp bg-mint px-5 font-semibold text-ink transition-colors hover:bg-mint-dim"
+              >
+                Bekijk de prijzen
+              </a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </article>
+
+  <ContactCta />
+</Base>

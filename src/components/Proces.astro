@@ -1,0 +1,158 @@
+---
+/**
+ * Het proces als build-pipeline. De mint lijn loopt mee op scroll via
+ * animation-timeline: scroll(). Nul JavaScript.
+ *
+ * De lijn schaalt met transform, niet met height, want height herberekent
+ * de layout. Zie CLAUDE.md deel 7 over de Visual Stability Index.
+ */
+
+const stappen = [
+  {
+    tag: 'intake',
+    kop: 'We bellen of ik kom langs',
+    duur: '30 min',
+    tekst:
+      'Je vertelt wat je doet en voor wie. Ik zeg je meteen welk pakket past en wat het kost. Geen offerte die drie dagen later per mail komt.',
+  },
+  {
+    tag: 'ontwerp',
+    kop: 'Je ziet het voor ik bouw',
+    duur: '2 tot 4 dagen',
+    tekst:
+      'Ik maak een ontwerp van de homepagina en stuur het door. Bevalt het niet, dan passen we aan. Je betaalt niets tot je hier ja op zegt.',
+  },
+  {
+    tag: 'bouw',
+    kop: 'Ik bouw, jij kijkt mee',
+    duur: '3 tot 8 dagen',
+    tekst:
+      'Je krijgt een link waarop je live ziet hoe het vordert. Twee rondes aanpassingen zitten erbij, ruim genoeg om het juist te krijgen.',
+  },
+  {
+    tag: 'live',
+    kop: 'Online, en dan ben je van mij af',
+    duur: '1 dag',
+    tekst:
+      'Domeinnaam gekoppeld, site online, Google op de hoogte. Ik zet je Google Bedrijfsprofiel mee in orde. Daarna heb je niets meer nodig, en dat is de bedoeling.',
+  },
+];
+---
+
+<section class="sectie border-t border-line">
+  <div class="container-vp">
+    <p class="comment-mono op-scroll"><span class="text-mint-dim">//</span> van bellen tot online</p>
+
+    <div class="mt-5 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+      <h2 class="op-scroll max-w-2xl text-3xl sm:text-4xl md:text-5xl">Hoe het loopt</h2>
+      <p class="op-scroll font-mono text-sm text-faint">totaal: 1 tot 2 weken</p>
+    </div>
+
+    <ol class="pijplijn relative mt-16">
+      <!-- Het spoor loopt achter de stappen door. -->
+      <span class="pijplijn-spoor" aria-hidden="true"></span>
+      <span class="pijplijn-lijn" aria-hidden="true"></span>
+
+      {
+        stappen.map((stap, i) => (
+          <li class="relative grid gap-x-8 gap-y-3 pb-12 pl-14 last:pb-0 md:grid-cols-12 md:pl-20">
+            <span class="pijplijn-punt" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+
+            <div class="md:col-span-4">
+              <span class="label-mono text-mint-dim">{stap.tag}</span>
+              <h3 class="mt-2 text-xl leading-snug">{stap.kop}</h3>
+              <p class="mt-1.5 font-mono text-xs text-faint">{stap.duur}</p>
+            </div>
+
+            <p class="leading-relaxed text-muted md:col-span-8 md:pt-7">{stap.tekst}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .pijplijn-spoor,
+  .pijplijn-lijn {
+    position: absolute;
+    left: 1.0625rem;
+    top: 0.25rem;
+    bottom: 1.5rem;
+    width: 2px;
+    border-radius: 1px;
+  }
+
+  @media (width >= 48rem) {
+    .pijplijn-spoor,
+    .pijplijn-lijn {
+      left: 1.4375rem;
+    }
+  }
+
+  .pijplijn-spoor {
+    background-color: var(--color-line);
+  }
+
+  .pijplijn-lijn {
+    background-color: var(--color-mint);
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+
+  /* Loopt mee terwijl je door de sectie scrollt. */
+  @supports (animation-timeline: view()) {
+    .pijplijn-lijn {
+      animation: lijn-groeien linear both;
+      animation-timeline: view();
+      animation-range: entry 55% cover 72%;
+    }
+  }
+
+  @supports not (animation-timeline: view()) {
+    .pijplijn-lijn {
+      transform: scaleY(1);
+      opacity: 0.35;
+    }
+  }
+
+  @keyframes lijn-groeien {
+    to {
+      transform: scaleY(1);
+    }
+  }
+
+  .pijplijn-punt {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-line);
+    background-color: var(--color-ink);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--color-faint);
+  }
+
+  @media (width >= 48rem) {
+    .pijplijn-punt {
+      width: 3rem;
+      height: 3rem;
+      font-size: 0.75rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pijplijn-lijn {
+      animation: none !important;
+      transform: scaleY(1);
+      opacity: 0.35;
+    }
+  }
+</style>

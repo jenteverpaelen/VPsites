@@ -1,0 +1,38 @@
+---
+import Base from '~/layouts/Base.astro';
+import Hero from '~/components/Hero.astro';
+import Probleem from '~/components/Probleem.astro';
+import PrijzenBlok from '~/components/PrijzenBlok.astro';
+import WaaromGoedkoper from '~/components/WaaromGoedkoper.astro';
+import SnelheidsRace from '~/components/SnelheidsRace.astro';
+import WatIkNietDoe from '~/components/WatIkNietDoe.astro';
+import Proces from '~/components/Proces.astro';
+import WerkBlok from '~/components/WerkBlok.astro';
+import OverKort from '~/components/OverKort.astro';
+import Faq from '~/components/Faq.astro';
+import ContactCta from '~/components/ContactCta.astro';
+
+import { faqVoor } from '~/data/faq';
+import { faqSchema, dienstenSchema } from '~/lib/schema';
+
+const vragen = faqVoor('home');
+---
+
+<Base
+  titel="Website laten maken vanaf €180 | VPsites"
+  beschrijving="Snelle websites voor zelfstandigen in Vlaanderen. Vaste prijs vanaf €180, geen btw, geen abonnement. Klaar in 1 tot 2 weken. Prijzen staan gewoon online."
+  og="home"
+  schema={[faqSchema(vragen), ...dienstenSchema()]}
+>
+  <Hero />
+  <Probleem />
+  <PrijzenBlok kop="Wat het kost" />
+  <WaaromGoedkoper />
+  <SnelheidsRace />
+  <WatIkNietDoe />
+  <Proces />
+  <WerkBlok />
+  <OverKort />
+  <Faq vragen={vragen} />
+  <ContactCta />
+</Base>

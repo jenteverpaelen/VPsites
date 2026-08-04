@@ -1,0 +1,96 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '~/layouts/Base.astro';
+import PaginaKop from '~/components/PaginaKop.astro';
+import ContactCta from '~/components/ContactCta.astro';
+import { kruimelSchema } from '~/lib/schema';
+
+const artikels = (await getCollection('kennis')).sort(
+  (a, b) => a.data.volgorde - b.data.volgorde
+);
+
+const kruimels = [{ naam: 'kennis', pad: '/kennis' }];
+
+const datum = (d: Date) =>
+  d.toLocaleDateString('nl-BE', { day: 'numeric', month: 'long', year: 'numeric' });
+
+// Meest recente wijziging over alle artikels heen. Undefined bij een lege
+// collectie, want dan hoort er ook geen datumregel te staan.
+const laatsteWijziging = artikels.length
+  ? new Date(
+      Math.max(
+        ...artikels.map((a) => (a.data.gewijzigd ?? a.data.gepubliceerd).getTime())
+      )
+    )
+  : undefined;
+---
+
+<Base
+  titel="Kennis: eerlijke uitleg over websites | VPsites"
+  beschrijving="Wat een website kost in België, waarom WordPress vaak overkill is, en wat er wettelijk op je site moet staan. Zonder verkooppraat."
+  og="kennis"
+  schema={[kruimelSchema(kruimels)]}
+>
+  <PaginaKop
+    comment="uitleg zonder dat je iets moet kopen"
+    titel="Kennis"
+    intro="Drie stukken die de vragen beantwoorden die ik het vaakst krijg. Je hebt mij niet nodig om ze te lezen, en je mag ze gerust gebruiken om een offerte van iemand anders te controleren."
+    kruimels={kruimels}
+  />
+
+  <section class="sectie">
+    <div class="container-vp">
+      <ul class="grid gap-5 md:grid-cols-3">
+        {
+          artikels.map((artikel) => (
+            <li class="op-scroll">
+              <a
+                href={`/kennis/${artikel.id}`}
+                class="group flex h-full flex-col rounded-vp border border-line bg-panel p-7 transition-colors hover:border-line-soft hover:bg-raise"
+              >
+                <span class="font-mono text-xs text-faint">
+                  {artikel.data.leestijd} min lezen
+                </span>
+                <h2 class="mt-4 text-xl leading-snug transition-colors group-hover:text-mint">
+                  {artikel.data.titel}
+                </h2>
+                <p class="mt-3 flex-1 text-[0.9375rem] leading-relaxed text-muted">
+                  {artikel.data.beschrijving}
+                </p>
+                <span class="mt-6 flex items-center gap-1.5 font-mono text-xs text-mint-dim">
+                  lezen
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    aria-hidden="true"
+                    class="transition-transform group-hover:translate-x-0.5"
+                  >
+                    <path
+                      d="M3 8h9m0 0L8.5 4.5M12 8l-3.5 3.5"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      {
+        laatsteWijziging && (
+          <p class="op-scroll mt-8 font-mono text-xs text-faint">
+            Laatst bijgewerkt op {datum(laatsteWijziging)}.
+          </p>
+        )
+      }
+    </div>
+  </section>
+
+  <ContactCta />
+</Base>

@@ -1,0 +1,273 @@
+---
+import { bedrijf, telHref, mailHref } from '~/data/bedrijf';
+import { pakketten } from '~/data/prijzen';
+
+/**
+ * Werkende command palette op Ctrl+K of Cmd+K.
+ *
+ * Een schrijnwerker gebruikt dit nooit en heeft er ook geen last van: het
+ * staat in een dialog die dicht is tot je hem opent. Wie wél iets van tech
+ * kent, ziet meteen wie de site gebouwd heeft. Dat is het punt.
+ *
+ * dialog.showModal() regelt de focus-trap, Escape en de inert-achtergrond.
+ * Dat scheelt het meeste werk en het is meteen correct voor screenreaders.
+ */
+
+const acties = [
+  { groep: 'Navigatie', label: 'Home', hint: 'de startpagina', href: '/' },
+  { groep: 'Navigatie', label: 'Werk', hint: 'waar ik aan bezig ben', href: '/werk' },
+  { groep: 'Navigatie', label: 'Prijzen', hint: 'alle bedragen', href: '/prijzen' },
+  { groep: 'Navigatie', label: 'Over Jente', hint: 'wie ik ben', href: '/over' },
+  { groep: 'Navigatie', label: 'Contact', hint: 'stuur een bericht', href: '/contact' },
+  { groep: 'Navigatie', label: 'Kennis', hint: 'drie artikels', href: '/kennis' },
+
+  ...pakketten.map((pakket) => ({
+    groep: 'Prijzen',
+    label: `${pakket.naam}: €${pakket.prijs}`,
+    hint: pakket.regel,
+    href: `/prijzen#${pakket.id}`,
+  })),
+
+  { groep: 'Direct', label: `Bel ${bedrijf.telefoonWeergave}`, hint: 'je krijgt mij', href: telHref },
+  { groep: 'Direct', label: 'Stuur een mail', hint: bedrijf.email, href: mailHref },
+  {
+    groep: 'Direct',
+    label: 'Kopieer mijn e-mailadres',
+    hint: bedrijf.email,
+    kopieer: bedrijf.email,
+  },
+  {
+    groep: 'Direct',
+    label: 'Meet deze site door',
+    hint: 'PageSpeed Insights, in een nieuw tabblad',
+    href: 'https://pagespeed.web.dev/',
+    extern: true,
+  },
+];
+
+const groepen = [...new Set(acties.map((a) => a.groep))];
+---
+
+<dialog id="palet" class="palet" aria-label="Zoeken en navigeren">
+  <div class="flex items-center gap-3 border-b border-line px-5">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" class="shrink-0 text-faint">
+      <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"></circle>
+      <path d="m10.5 10.5 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+    </svg>
+    <input
+      type="text"
+      id="palet-zoek"
+      class="min-h-14 w-full bg-transparent text-base outline-none placeholder:text-faint"
+      placeholder="Zoek een pagina, een prijs, of bel me"
+      autocomplete="off"
+      spellcheck="false"
+      aria-controls="palet-lijst"
+      aria-expanded="true"
+    />
+    <kbd class="hidden shrink-0 rounded border border-line bg-raise px-1.5 py-0.5 font-mono text-[0.625rem] text-faint sm:block">
+      esc
+    </kbd>
+  </div>
+
+  <div id="palet-lijst" class="max-h-[min(26rem,60dvh)] overflow-y-auto overscroll-contain p-2">
+    {
+      groepen.map((groep) => (
+        <div data-groep={groep}>
+          <p class="label-mono px-3 pt-3 pb-1.5">{groep}</p>
+          <ul>
+            {acties
+              .filter((actie) => actie.groep === groep)
+              .map((actie) => (
+                <li>
+                  <button
+                    type="button"
+                    class="palet-item flex w-full items-center gap-3 rounded-vp px-3 py-2.5 text-left"
+                    data-href={'href' in actie ? actie.href : undefined}
+                    data-extern={'extern' in actie && actie.extern ? '' : undefined}
+                    data-kopieer={'kopieer' in actie ? actie.kopieer : undefined}
+                    data-zoek={`${actie.groep} ${actie.label} ${actie.hint}`.toLowerCase()}
+                  >
+                    <span class="flex-1 truncate text-sm">{actie.label}</span>
+                    <span class="hidden shrink-0 truncate font-mono text-xs text-faint sm:block">
+                      {actie.hint}
+                    </span>
+                  </button>
+                </li>
+              ))}
+          </ul>
+        </div>
+      ))
+    }
+
+    <p data-palet-leeg class="hidden px-3 py-8 text-center text-sm text-faint">
+      Niets gevonden. Bel gerust: {bedrijf.telefoonWeergave}
+    </p>
+  </div>
+
+  <div class="flex items-center gap-4 border-t border-line px-5 py-2.5 font-mono text-[0.625rem] text-faint">
+    <span><kbd>&uarr;</kbd> <kbd>&darr;</kbd> kiezen</span>
+    <span><kbd>enter</kbd> openen</span>
+    <span class="ml-auto">VPsites</span>
+  </div>
+</dialog>
+
+<style>
+  .palet {
+    width: min(38rem, calc(100vw - 2rem));
+    max-width: none;
+    padding: 0;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-vp);
+    background-color: var(--color-panel);
+    color: var(--color-fg);
+    /* Iets boven het midden: daar kijk je van nature naar. */
+    margin: 12dvh auto auto;
+    box-shadow: 0 1.5rem 4rem rgb(0 0 0 / 0.55);
+  }
+
+  .palet::backdrop {
+    background-color: rgb(0 0 0 / 0.55);
+    backdrop-filter: blur(3px);
+  }
+
+  .palet-item:hover,
+  .palet-item[data-actief] {
+    background-color: var(--color-raise);
+  }
+
+  .palet-item[data-actief] {
+    box-shadow: inset 2px 0 0 var(--color-mint);
+  }
+
+  .palet kbd {
+    border: 1px solid var(--color-line);
+    border-radius: 0.1875rem;
+    padding: 0.0625rem 0.25rem;
+    background-color: var(--color-raise);
+  }
+</style>
+
+<script>
+  const palet = document.querySelector<HTMLDialogElement>('#palet');
+
+  if (palet) {
+    const zoekveld = palet.querySelector<HTMLInputElement>('#palet-zoek')!;
+    const leeg = palet.querySelector<HTMLElement>('[data-palet-leeg]')!;
+    const items = [...palet.querySelectorAll<HTMLButtonElement>('.palet-item')];
+    const groepen = [...palet.querySelectorAll<HTMLElement>('[data-groep]')];
+
+    let zichtbaar = items;
+    let index = 0;
+
+    const markeer = () => {
+      items.forEach((item) => item.removeAttribute('data-actief'));
+      const huidig = zichtbaar[index];
+      if (huidig) {
+        huidig.setAttribute('data-actief', '');
+        huidig.scrollIntoView({ block: 'nearest' });
+      }
+    };
+
+    const filter = () => {
+      const term = zoekveld.value.trim().toLowerCase();
+
+      items.forEach((item) => {
+        const past = !term || (item.dataset.zoek ?? '').includes(term);
+        item.parentElement!.hidden = !past;
+      });
+
+      // Een groepskop zonder zichtbare items hoort weg.
+      groepen.forEach((groep) => {
+        const heeftItems = [...groep.querySelectorAll('li')].some((li) => !li.hidden);
+        groep.hidden = !heeftItems;
+      });
+
+      zichtbaar = items.filter((item) => !item.parentElement!.hidden);
+      leeg.classList.toggle('hidden', zichtbaar.length > 0);
+      index = 0;
+      markeer();
+    };
+
+    const kies = (item: HTMLButtonElement | undefined) => {
+      if (!item) return;
+
+      if (item.dataset.kopieer) {
+        navigator.clipboard?.writeText(item.dataset.kopieer).then(() => {
+          const origineel = item.firstElementChild!.textContent;
+          item.firstElementChild!.textContent = 'Gekopieerd';
+          setTimeout(() => {
+            item.firstElementChild!.textContent = origineel;
+          }, 1400);
+        });
+        return;
+      }
+
+      const href = item.dataset.href;
+      if (!href) return;
+
+      palet.close();
+      if (item.dataset.extern !== undefined) {
+        window.open(href, '_blank', 'noopener');
+      } else {
+        window.location.href = href;
+      }
+    };
+
+    const open = () => {
+      if (palet.open) return;
+      zoekveld.value = '';
+      filter();
+      palet.showModal();
+      zoekveld.focus();
+    };
+
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        palet.open ? palet.close() : open();
+      }
+    });
+
+    document.querySelectorAll('[data-palet-open]').forEach((knop) => {
+      knop.addEventListener('click', open);
+    });
+
+    zoekveld.addEventListener('input', filter);
+
+    palet.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        index = (index + 1) % Math.max(zichtbaar.length, 1);
+        markeer();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        index = (index - 1 + zichtbaar.length) % Math.max(zichtbaar.length, 1);
+        markeer();
+      } else if (e.key === 'Enter' && document.activeElement === zoekveld) {
+        e.preventDefault();
+        kies(zichtbaar[index]);
+      }
+    });
+
+    items.forEach((item) => item.addEventListener('click', () => kies(item)));
+
+    // Klikken op de achtergrond sluit. Een dialog vult zijn eigen vak,
+    // dus we kijken of de klik buiten dat vak viel.
+    palet.addEventListener('click', (e) => {
+      const vak = palet.getBoundingClientRect();
+      const buiten =
+        e.clientX < vak.left ||
+        e.clientX > vak.right ||
+        e.clientY < vak.top ||
+        e.clientY > vak.bottom;
+      if (buiten) palet.close();
+    });
+
+    // Toon het juiste symbool: Cmd op een Mac, Ctrl elders.
+    if (navigator.platform?.toLowerCase().includes('mac')) {
+      document.querySelectorAll('[data-palet-toets]').forEach((el) => {
+        el.textContent = '⌘';
+      });
+    }
+  }
+</script>

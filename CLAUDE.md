@@ -1,0 +1,340 @@
+# CLAUDE.md — VPsites
+
+**Lees dit volledig voor je iets doet. Ook bij een kleine wijziging.**
+Dit bestand is de bron van waarheid voor merk, stem, design, techniek en SEO.
+Wijkt code hiervan af, dan is de code fout, niet dit bestand.
+
+---
+
+## 1. Het merk
+
+| | |
+|---|---|
+| Naam | **VPsites** (één woord, hoofdletter V en P, kleine s). Nooit VPdesign, dat was bezet |
+| Persoon | **Jente Ver Paelen**. Drie woorden, "Ver Paelen" is de familienaam |
+| Vorm | Eenmanszaak in bijberoep, Vlaanderen |
+| Product | Statische websites voor eenmanszaken en heel kleine bedrijven |
+| Belofte | Vaste prijs, geen btw, geen abonnement, klaar in 1 tot 2 weken |
+| Toon | Eerlijk, direct, nuchter. Een vakman die met een vakman praat |
+
+**Altijd "ik", nooit "wij".** Er is geen team. "Wij" is de leugen die elke concurrent vertelt en het is meteen te doorzien. "Ik" is het hele verkoopargument.
+
+Entiteitsnaam consistent houden, ook om AI-zoekmachines te helpen koppelen: altijd letterlijk "VPsites" en "Jente Ver Paelen", nooit "ons bureau", "het team" of "wij bij VPsites".
+
+---
+
+## 2. Stemregels
+
+De site mag onder geen beding als AI-output lezen. Dit is een expliciete opdracht van de klant.
+
+### Verboden
+
+**Leestekens**
+
+- **Geen gedachtestreepjes.** Geen `—`, geen `–`, geen ` -- `. Splits de zin of gebruik een komma of punt. Dit is de meest herkenbare AI-tell in het Nederlands
+- Geen `;` in lopende copy. Klinkt geschreven, niet gesproken
+- Geen uitroeptekens in bodycopy. Hooguit één op de hele site, en waarschijnlijk nul
+
+**Emoji en iconen**
+
+- Geen 🚀 💡 ✨ ⚡ 🎯 ✅ 🔒 of welke emoji dan ook in de copy
+- Geen generieke icoontjesrij bij features
+
+**Woorden en wendingen die nergens mogen staan**
+
+```
+in het huidige digitale landschap      naadloos
+ontgrendel / unlock                    moeiteloos
+til je bedrijf naar een hoger niveau   op maat gemaakte oplossingen
+in een wereld waar                     het is belangrijk op te merken dat
+duik in                                laten we eens kijken naar
+game changer                           next level
+krachtig / robuust / geavanceerd       state of the art
+wij geloven dat                        jouw succes is ons succes
+transformeer                           revolutionair
+"niet alleen ..., maar ook ..."        "of het nu ... is of ..."
+```
+
+**Structuurpatronen die AI verraden**
+
+- Drie kaarten naast elkaar met "Snel / Veilig / Responsive" en een icoontje boven elke titel
+- Elke sectie exact even lang
+- Elke lijst exact drie items
+- Een conclusieparagraaf die de sectie samenvat die je net gelezen hebt
+
+### Verplicht
+
+- **Korte zinnen.** Gemiddeld onder 14 woorden. Wissel af met een zin van drie woorden
+- **Concrete cijfers.** "€300" en "2 weken", niet "betaalbaar" en "snel". Een getal is bewijs, een bijvoeglijk naamwoord is ruis. Werkt ook voor AEO: modellen citeren cijfers, geen adjectieven
+- **Vlaams register.** zelfstandige, stiel, bijberoep, gsm, factuur, btw-nummer, gemeente. Niet: ZZP, mobiel, MKB, ondernemer met een missie
+- **Bezwaren benoemen voor de bezoeker ze denkt.** "Je doet dit in bijberoep, wat als je stopt?" staat letterlijk op de site, met een eerlijk antwoord
+- **Zeggen wat je níet doet.** AI schrijft nooit op wat het weigert. Dat maakt het een sterk menselijk signaal én het kwalificeert leads
+
+### Toets voor je copy schrijft
+
+Zou Jente dit zo tegen een schrijnwerker zeggen aan de toog? Nee? Herschrijven.
+
+---
+
+## 3. Design tokens
+
+Gedefinieerd in `src/styles/global.css` onder `@theme`. Nooit hardcoded hex in componenten.
+
+```css
+--color-mint:      #79E4AC   /* uit het logo */
+--color-mint-dim:  #4FBF89
+
+--color-ink:       #080908   /* pagina-achtergrond */
+--color-panel:     #0E100F   /* kaarten */
+--color-raise:     #151816   /* hover, verhoogde vlakken */
+--color-line:      #1E2320   /* randen */
+
+--color-fg:        #F2F5F3   /* primaire tekst */
+--color-muted:     #9BA4A0   /* secundaire tekst */
+--color-faint:     #6B7370   /* labels, metadata */
+```
+
+### De één-accent-regel
+
+**Mint is de enige accentkleur.** Geen tweede accent, geen gradient tussen twee kleuren, geen paars, geen blauw. AI-output gebruikt bijna altijd twee of drie accenten plus een gradient. Eén accent is de goedkoopste manier om er niet als AI uit te zien.
+
+Mint alleen voor: interactie (links, knoppen, focus), nadruk (één woord in een kop), de logo-brackets, en de lijn in de proces-pipeline. Nooit als groot gevuld vlak. Nooit als achtergrond van een sectie.
+
+### Typografie
+
+| Rol | Font | Gebruik |
+|---|---|---|
+| Display en UI | **Archivo Variable** | koppen, knoppen, bodytekst |
+| Mono | **JetBrains Mono Variable** | labels, cijfers, metadata, codeframes, `//` comments |
+
+Beide zelf-gehost in `public/fonts/`, enkel het latin-subset, samen 76 KB. **Nooit Google Fonts via CDN**, dat is een extra request, een privacylek en tegen het verhaal van de site.
+
+Archivo heeft ook een breedte-as, maar die versie weegt 88 KB tegenover 35 KB voor gewicht alleen. Niet waard. **Het typografische handschrift is contrast, niet breedte:**
+
+- Koppen groot, gewicht 600 tot 700, `letter-spacing: -0.03em`. Strak en zwaar
+- Mono-labels klein, hoofdletters, `letter-spacing: 0.15em`. Wijd en rustig
+
+Die spanning tussen samengeperste koppen en uitgerekte labels is het handschrift. Grote koppen nooit uitrekken met `transform: scaleX()`, dat vervormt de stokken.
+
+**Nooit Inter.** Inter is het standaardfont van elke AI-designtool en de snelste manier om generiek te lijken.
+
+### Spacing
+
+Tailwind-schaal. Sectie-ritme: `py-20` mobiel, `py-32` desktop. Container `max-w-6xl`, gutters `px-5` mobiel en `px-8` vanaf md.
+
+---
+
+## 4. Harde grenzen
+
+Niet onderhandelbaar. Wordt er één gebroken, dan klopt de belofte van de site niet meer.
+
+| Grens | Waarde |
+|---|---|
+| JS op de homepage | **onder 20 KB** ongecomprimeerd, na build gemeten |
+| LCP | onder 1,2s (Google-drempel is 2,5s) |
+| INP | onder 100ms (drempel 200ms) |
+| CLS | 0,00 (drempel 0,1) |
+| Lighthouse | 100 / 100 / 100 / 100, mobiel én desktop |
+| Toegankelijkheid | WCAG 2.1 AA |
+| Contrast | minimaal 4.5:1 voor tekst, 3:1 voor UI-componenten |
+| Raakvlakken | minimaal 48×48 CSS-px, 8px tussenruimte |
+| Cookies | **nul**. Geen enkele. Daarom ook geen cookiebanner |
+| Trackers van derden | nul, behalve cookieloze Cloudflare Web Analytics |
+
+De site verkoopt snelheid. Haalt de site die cijfers zelf niet, dan is de site een leugen. Dit is de reden dat er geen React in zit.
+
+---
+
+## 5. Stack
+
+### Gebruiken
+
+```
+Astro 7                 static output
+Tailwind CSS 4          via @tailwindcss/vite
+TypeScript              strict
+Content Collections     zod-schema's
+@fontsource-variable    zelf-gehoste fonts
+@astrojs/sitemap
+sharp                   AVIF + WebP tijdens build
+@astrojs/cloudflare     adapter, enkel voor het formulier-endpoint
+```
+
+Deploy: Cloudflare Pages.
+
+### Niet gebruiken
+
+| Niet | Waarom |
+|---|---|
+| `@astrojs/tailwind` | deprecated voor Tailwind v4. Gebruik `@tailwindcss/vite` |
+| `tailwind.config.js` | bestaat niet meer in v4. Tokens in CSS onder `@theme` |
+| React, Vue, Svelte | een component-framework kost meer KB dan de hele site mag wegen |
+| Google Fonts CDN | extra request, privacylek, tegen het verhaal |
+| Cookies, localStorage voor tracking | nul cookies is een verkoopargument |
+| Een CSS-animatiebibliotheek | CSS `animation-timeline: view()` kost 0 KB |
+| Icoonbibliotheken | de weinige iconen worden inline SVG, handgeschreven |
+
+Interactiviteit is vanilla TypeScript in kleine islands onder `src/components/islands/`. Elke island moet zichzelf rechtvaardigen in KB.
+
+---
+
+## 6. Mobiel
+
+**Mobile-first is hier letterlijk.** Bouw op 375px, schaal daarna op. Google indexeert sinds juli 2024 uitsluitend de mobiele versie, dus de mobiele versie *is* de site.
+
+- Sticky actiebalk onderaan op mobiel: Bellen en Mailen, altijd in de duimzone
+- Primaire CTA's in de onderste schermhelft
+- Body en inputs minimaal `16px`, anders zoomt iOS in bij focus
+- `dvh` in plaats van `vh`
+- `viewport-fit=cover` plus `env(safe-area-inset-*)`
+- Geen interactie enkel achter `:hover`. Elke hover heeft een `:focus-visible`-equivalent
+- `overflow-x: clip` op body
+- Nav is een volledig scherm overlay, sluitbaar met Escape
+- Tabellen worden gestapelde kaarten onder `sm`. Nooit horizontaal scrollen
+- Cursor-glow en de `⌘K`-hint alleen achter `@media (pointer: fine)`
+
+Testbreedtes: **320 · 375 · 390 · 430 · 768 · 1024 · 1280 · 1536**.
+
+---
+
+## 7. SEO-checklist per pagina
+
+Een pagina is pas af als dit allemaal klopt.
+
+- [ ] Eén `<h1>`, daaronder een logische `h2`/`h3`-hiërarchie. Geen kop gebruikt voor styling
+- [ ] `title` onder 60 tekens, zoekwoord vooraan, met de hand geschreven
+- [ ] `description` onder 155 tekens, met een reden om te klikken
+- [ ] Zelfverwijzende absolute `canonical`
+- [ ] OG- en Twitter-tags, `og:locale` is `nl_BE`, OG-beeld gegenereerd tijdens de build
+- [ ] Passende JSON-LD uit `src/lib/schema.ts`, geen los geschreven schema
+- [ ] `BreadcrumbList` op elke pagina behalve de home
+- [ ] Nederlandse URL met zoekwoord: `/website-laten-maken-prijs`, niet `/page-2`
+- [ ] Minimaal twee interne links, waarvan één omhoog naar `/prijzen` of `/contact`
+- [ ] Elke `h2` is een echte vraag, en de eerste 40 tot 60 woorden eronder beantwoorden ze direct en citeerbaar (AEO)
+- [ ] Alle beelden hebben `width`, `height` en een zinvolle `alt`. LCP-beeld krijgt `fetchpriority="high"` en géén `loading="lazy"`
+- [ ] Semantische HTML: `<article>`, `<section>`, `<dl>` voor FAQ, echte `<table>` voor prijzen
+
+### Schema, wat waar hoort
+
+| Type | Waar |
+|---|---|
+| `ProfessionalService` | in de layout, op elke pagina, met vast `@id` |
+| `Person` (Jente) | in de layout, gekoppeld als `founder` |
+| `Service` + `Offer` + `priceSpecification` | `/prijzen`, met de échte bedragen |
+| `FAQPage` | home en `/prijzen` |
+| `BreadcrumbList` | elke subpagina |
+| `Article` | elk kennisartikel, met `author`, `datePublished`, `dateModified` |
+
+**Nooit `aggregateRating` op de eigen organisatie.** Dat is tegen het beleid van Google en er zijn nog geen reviews. Niets verzinnen.
+
+**FAQPage geeft géén rich results meer.** Google heeft het op 7 mei 2026 volledig gedeprecieerd, ook voor overheids- en gezondheidssites die het na de beperking van augustus 2023 nog hadden. Het schema blijft geldig en Bingbot, PerplexityBot en de RAG-crawlers lezen het nog. We houden het dus, maar exact onder de voorwaarde die Google zelf stelt: alleen wanneer het echte, zichtbare FAQ-inhoud beschrijft. Dat is hier zo. **Nooit aan een klant verkopen als "dan kom je met sterretjes in Google".**
+
+### AEO
+
+Dit is voor een nieuwe site zonder autoriteit belangrijker dan klassieke SEO. Uit de cijfers:
+
+- Slechts **38%** van de citaties in AI Overviews komt van pagina's die in de Google-top-10 staan (Ahrefs, maart 2026). Je hoeft dus niet te ranken om geciteerd te worden
+- De tien grootste domeinen nemen samen maar **12%** van alle citaties (Profound, 730k gesprekken). Specifieke, feitelijke pagina's van kleine domeinen worden constant geciteerd
+- Slechts 11% van de domeinen wordt door zowel ChatGPT als Perplexity geciteerd
+
+Dat is precies de opening voor VPsites: tegen Digimi opranken op "website laten maken prijs" duurt jaren, maar geciteerd worden met een concrete, feitelijke pagina kan meteen.
+
+Wat dat concreet betekent voor elke pagina:
+
+- Antwoord-eerst schrijven. Elke `h2` een echte vraag, eronder 40 tot 60 woorden die ze volledig beantwoorden
+- Cijfers boven adjectieven. "€300, klaar in 2 weken" wordt geciteerd, "betaalbaar en snel" niet
+- Entiteitsnaam altijd letterlijk "VPsites" en "Jente Ver Paelen"
+- Genummerde lijsten en vergelijkingstabellen. Dat is het meest geciteerde formaat
+- `public/robots.txt` laat GPTBot, ClaudeBot, PerplexityBot en Google-Extended expliciet toe
+
+**Over `llms.txt`, eerlijk:** het staat erin omdat het twintig regels kost, niet omdat het werkt. Google heeft in juli 2025 bevestigd het niet te ondersteunen en dat ook niet van plan te zijn. Van 500 miljoen gemeten AI-bot-bezoeken vroegen er 408 het bestand op. Geen enkele grote AI-aanbieder heeft toegezegd het te lezen. Coding-agents en MCP-servers halen het wel op. **Nooit aan een klant verkopen als SEO-voordeel.**
+
+### Visual Stability Index
+
+Google introduceerde begin 2026 de VSI, die visuele stabiliteit over de hele sessie meet, inclusief tijdens het scrollen. Nog geen ranking-factor, maar dat wordt het waarschijnlijk binnen 12 tot 18 maanden. Praktisch gevolg, nu al toepassen: **scroll-animaties mogen alleen `transform` en `opacity` animeren.** Nooit `height`, `margin`, `top` of iets anders dat de layout herberekent.
+
+Ter info voor de motivatie: sinds Google op 18 maart 2026 bevestigde dat INP een volwaardig ranking-signaal is, verloren sites met een INP boven 200ms gemiddeld 0,8 posities.
+
+---
+
+## 8. Juridisch, verplicht op de site
+
+Belgische wetgeving. Ontbreekt er iets, dan is de site niet conform.
+
+- Handelsnaam **VPsites** en de naam **Jente Ver Paelen**
+- Maatschappelijk adres zoals geregistreerd in de KBO
+- **Ondernemingsnummer** (KBO)
+- E-mailadres of contactformulier
+- `/privacy` en `/cookies`
+- `/algemene-voorwaarden`
+
+### Btw-formulering, letterlijk overnemen
+
+```
+Kleine onderneming onderworpen aan de vrijstellingsregeling van belasting.
+BTW niet toepasselijk, artikel 56bis van het BTW-Wetboek.
+```
+
+Dit is wettelijk verplicht op de facturen. Op de site is het meteen het sterkste verkoopargument dat er staat: een concurrent die "€995 excl. btw" vraagt, rekent in werkelijkheid €1.204 aan. Bij VPsites is €300 gewoon €300.
+
+Drempel van de regeling is €25.000 omzet per jaar. Wordt die overschreden, dan moet alle prijscommunicatie herzien worden.
+
+**Alle echte bedrijfsgegevens staan in `src/data/bedrijf.ts`.** Nergens anders hardcoden. Wat nog niet ingevuld is, staat daar als `TODO:` en mag niet verzonnen worden.
+
+---
+
+## 9. Waar staat wat
+
+```
+CLAUDE.md                     dit bestand
+public/
+  robots.txt  llms.txt  favicon.svg  apple-touch-icon.png  site.webmanifest
+src/
+  components/
+    islands/                  vanilla TS, kost KB, moet zich verantwoorden
+  content/
+    werk/  kennis/  config.ts zod-schema's
+  data/
+    bedrijf.ts                KBO, adres, gsm, mail, gemeenten. Enige bron
+    prijzen.ts                alle bedragen. Enige bron
+    faq.ts
+  layouts/  pages/
+  lib/
+    schema.ts                 alle JSON-LD
+    seo.ts                    title, description, canonical, OG
+    mail.ts                   verzendlogica, swapbaar
+  styles/global.css           @theme tokens
+```
+
+Regel: **prijzen, bedrijfsgegevens en FAQ staan in `src/data/`, nooit in een component.** Een prijs wijzigen mag maar op één plaats hoeven.
+
+---
+
+## 10. Commando's
+
+```bash
+npm run dev        # dev server
+npm run build      # productiebuild
+npm run preview    # build lokaal bekijken
+npm run check      # astro check, TypeScript
+```
+
+---
+
+## 11. Checklist voor je begint
+
+1. Dit bestand gelezen
+2. Gaat het over een prijs, een bedrijfsgegeven of een FAQ? Dan wijzig je `src/data/`, niet een component
+3. Nieuwe pagina? Neem de SEO-checklist uit deel 7 erbij voor je begint, niet achteraf
+4. Nieuwe copy? Lees de verboden lijst uit deel 2 opnieuw. Zeker de regel over gedachtestreepjes
+5. Nieuwe interactiviteit? Vraag eerst of het zonder JS kan. Meestal wel
+
+## Checklist voor je "klaar" zegt
+
+1. `npm run build` draait zonder fouten of waarschuwingen
+2. Bekeken op 320px en op 1536px. Geen horizontale scroll, geen afgesneden tekst
+3. Alleen met het toetsenbord doorlopen. Focus altijd zichtbaar, nergens vast blijven zitten
+4. `prefers-reduced-motion: reduce` aan. Alles staat stil en blijft leesbaar
+5. JS-payload gemeten. Home onder 20 KB
+6. Geen gedachtestreepje, geen emoji, geen woord uit de verboden lijst in nieuwe copy
+7. Niets verzonnen. Geen fictieve klant, geen fictieve review, geen fictief cijfer

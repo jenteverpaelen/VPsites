@@ -1,0 +1,78 @@
+---
+import Base from '~/layouts/Base.astro';
+import PaginaKop from '~/components/PaginaKop.astro';
+import PrijzenBlok from '~/components/PrijzenBlok.astro';
+import Faq from '~/components/Faq.astro';
+import ContactCta from '~/components/ContactCta.astro';
+import Proces from '~/components/Proces.astro';
+
+import { opties } from '~/data/prijzen';
+import { faqVoor } from '~/data/faq';
+import { faqSchema, dienstenSchema, kruimelSchema } from '~/lib/schema';
+
+const vragen = faqVoor('prijzen');
+const kruimels = [{ naam: 'prijzen', pad: '/prijzen' }];
+---
+
+<Base
+  titel="Prijzen: website vanaf €180, geen btw | VPsites"
+  beschrijving="Alle prijzen staan hier gewoon. Onepager €180, volledige site €300. Geen btw, geen abonnement, geen offerte nodig. Wat erbij zit en wat het daarna kost."
+  og="prijzen"
+  schema={[faqSchema(vragen), ...dienstenSchema(), kruimelSchema(kruimels)]}
+>
+  <PaginaKop
+    comment="geen offerte, geen gesprek eerst, gewoon de bedragen"
+    titel="Wat het kost"
+    intro="Bijna geen enkele webdesigner in Vlaanderen zet zijn prijzen online. Ik snap waarom: zo kunnen ze de prijs aanpassen aan wie er belt. Ik doe dat niet. Hieronder staat wat je betaalt."
+    kruimels={kruimels}
+  />
+
+  <PrijzenBlok volledig kop="De drie pakketten" />
+
+  <section class="sectie border-t border-line">
+    <div class="container-vp">
+      <p class="comment-mono op-scroll"><span class="text-mint-dim">//</span> als je iets extra nodig hebt</p>
+      <h2 class="op-scroll mt-5 text-3xl sm:text-4xl md:text-5xl">Losse opties</h2>
+      <p class="op-scroll mt-6 max-w-2xl text-lg leading-relaxed text-muted">
+        Alles hieronder kan je bijnemen bij eender welk pakket. Ook hier geldt: dit is de
+        prijs, er komt niets bij.
+      </p>
+
+      <div class="mt-12 overflow-hidden rounded-vp border border-line">
+        <table class="w-full text-left">
+          <caption class="sr-only">Losse opties met hun prijs</caption>
+          <thead class="bg-panel">
+            <tr>
+              <th scope="col" class="label-mono px-5 py-3.5 md:px-7">Optie</th>
+              <th scope="col" class="label-mono px-5 py-3.5 text-right md:px-7">Prijs</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-line">
+            {
+              opties.map((optie) => (
+                <tr class="bg-panel/40">
+                  <th scope="row" class="px-5 py-4 font-normal md:px-7">
+                    <span class="block">{optie.naam}</span>
+                    <span class="mt-0.5 block font-mono text-xs text-faint">{optie.eenheid}</span>
+                  </th>
+                  <td class="px-5 py-4 text-right font-mono tabular-nums whitespace-nowrap md:px-7">
+                    €{optie.prijs}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <p class="op-scroll mt-6 text-sm leading-relaxed text-muted">
+        Staat wat je zoekt er niet bij? Vraag het gewoon. Als ik het niet kan, zeg ik
+        dat, en dan verwijs ik je door naar iemand die het wel kan.
+      </p>
+    </div>
+  </section>
+
+  <Proces />
+  <Faq vragen={vragen} kop="Wat mensen meestal nog willen weten" />
+  <ContactCta />
+</Base>

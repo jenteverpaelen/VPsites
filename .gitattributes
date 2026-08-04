@@ -1,0 +1,15 @@
+# Regeleindes normaliseren naar LF in de repo. Zonder dit ziet elke wijziging
+# er op Windows uit als een volledig herschreven bestand.
+* text=auto eol=lf
+
+# Binaire bestanden nooit aanpassen.
+*.woff2 binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.ico binary
+
+# Uit de diff houden, want ze zijn gegenereerd.
+package-lock.json linguist-generated=true -diff

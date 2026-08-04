@@ -1,0 +1,74 @@
+---
+import Base from '~/layouts/Base.astro';
+import { bedrijf, telHref } from '~/data/bedrijf';
+
+const wegen = [
+  { naam: 'Wat het kost', href: '/prijzen', uitleg: 'Alle prijzen, gewoon zichtbaar' },
+  { naam: 'Mijn werk', href: '/werk', uitleg: 'Waar ik nu aan bezig ben' },
+  { naam: 'Over Jente', href: '/over', uitleg: 'Wie er opneemt als je belt' },
+  { naam: 'Contact', href: '/contact', uitleg: 'Eén zin volstaat' },
+];
+---
+
+<Base
+  titel="Pagina niet gevonden | VPsites"
+  beschrijving="Deze pagina bestaat niet. Hier vind je de weg terug."
+  og="home"
+  noindex
+>
+  <section class="flex min-h-[70dvh] items-center py-20">
+    <div class="container-vp">
+      <p class="comment-mono"><span class="text-mint-dim">//</span> foutcode 404</p>
+
+      <h1 class="mt-5 max-w-3xl text-4xl tracking-kop-groot sm:text-5xl md:text-6xl">
+        Deze pagina bestaat niet.
+      </h1>
+
+      <p class="mt-7 max-w-xl text-lg leading-relaxed text-muted">
+        Een verkeerde link, een typfout, of iets dat ik verplaatst heb. Snel geladen
+        is het in elk geval.
+      </p>
+
+      <ul class="mt-12 grid max-w-3xl gap-px overflow-hidden rounded-vp border border-line bg-line sm:grid-cols-2">
+        {
+          wegen.map((weg) => (
+            <li>
+              <a
+                href={weg.href}
+                class="group flex min-h-20 flex-col justify-center bg-panel px-6 py-5 transition-colors hover:bg-raise"
+              >
+                <span class="flex items-center gap-2 transition-colors group-hover:text-mint">
+                  {weg.naam}
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    aria-hidden="true"
+                    class="transition-transform group-hover:translate-x-0.5"
+                  >
+                    <path
+                      d="M3 8h9m0 0L8.5 4.5M12 8l-3.5 3.5"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+                <span class="mt-1 text-sm text-faint">{weg.uitleg}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="mt-8 text-sm text-muted">
+        Of bel gewoon:
+        <a href={telHref} class="text-mint underline decoration-mint/35 underline-offset-4 hover:decoration-mint">
+          {bedrijf.telefoonWeergave}
+        </a>
+      </p>
+    </div>
+  </section>
+</Base>

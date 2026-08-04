@@ -1,0 +1,33 @@
+# VPsites
+
+> Statische websites voor zelfstandigen en kleine bedrijven in Vlaanderen, gebouwd door Jente Ver Paelen in bijberoep. Vaste prijs vanaf 180 euro, geen btw door de vrijstellingsregeling voor kleine ondernemingen, geen onderhoudsabonnement. Levertijd 1 tot 2 weken.
+
+Kerngegevens:
+
+- Bedrijf: VPsites, handelsnaam van Jente Ver Paelen
+- Land: België, werkgebied Vlaanderen
+- Prijzen: onepager 180 euro, site van 4 tot 5 pagina's 300 euro, op maat vanaf 600 euro
+- Btw: niet van toepassing, artikel 56bis van het BTW-Wetboek. De vermelde prijs is de eindprijs
+- Techniek: statische sites, geen WordPress, geen database, geen plugins
+- Terugkerende kosten: alleen de domeinnaam, ongeveer 15 euro per jaar. Hosting is gratis
+- Niet in het aanbod: webshops met veel producten, onderhoudscontracten, projecten van meerdere maanden
+
+## Pagina's
+
+- [Home](https://vpsites.be/): het aanbod, de prijzen en waarom die zo laag liggen
+- [Prijzen](https://vpsites.be/prijzen): de drie pakketten, losse opties en terugkerende kosten
+- [Werk](https://vpsites.be/werk): lopende projecten
+- [Over Jente](https://vpsites.be/over): wie erachter zit, hoe hij werkt en waar zijn grenzen liggen
+- [Contact](https://vpsites.be/contact): contactformulier, telefoon en adres
+
+## Kennis
+
+- [Wat kost een website in België in 2026?](https://vpsites.be/kennis/wat-kost-een-website-belgie): prijzen van 180 tot 8000 euro per type, verborgen kosten en de rol van btw
+- [Waarom je geen WordPress nodig hebt voor vijf pagina's](https://vpsites.be/kennis/waarom-geen-wordpress): snelheid, veiligheid en onderhoudskosten vergeleken, en wanneer WordPress wél de juiste keuze is
+- [Wat moet er wettelijk op je website staan?](https://vpsites.be/kennis/verplicht-op-je-website): checklist voor Belgische zelfstandigen, van ondernemingsnummer tot toegankelijkheid
+
+## Klein lettertje
+
+- [Privacybeleid](https://vpsites.be/privacy)
+- [Cookiebeleid](https://vpsites.be/cookies): deze site plaatst geen cookies
+- [Algemene voorwaarden](https://vpsites.be/algemene-voorwaarden)

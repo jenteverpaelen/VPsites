@@ -1,0 +1,172 @@
+---
+import Base from '~/layouts/Base.astro';
+import PaginaKop from '~/components/PaginaKop.astro';
+import { bedrijf, adresRegel, mailHref } from '~/data/bedrijf';
+import { kruimelSchema } from '~/lib/schema';
+
+/**
+ * TODO(jente): dit dekt de manier van werken die op deze site beschreven
+ * staat en is een degelijk vertrekpunt voor een eenmanszaak in bijberoep.
+ * Laat het nakijken door je boekhouder of een jurist voor je eerste factuur,
+ * zeker de artikelen over betaling en aansprakelijkheid.
+ */
+
+const kruimels = [{ naam: 'algemene-voorwaarden', pad: '/algemene-voorwaarden' }];
+const bijgewerkt = '4 augustus 2026';
+---
+
+<Base
+  titel="Algemene voorwaarden | VPsites"
+  beschrijving="De afspraken tussen VPsites en de klant: offertes, betaling, aanpassingen, eigendom en aansprakelijkheid."
+  og="home"
+  schema={[kruimelSchema(kruimels)]}
+  noindex
+>
+  <PaginaKop
+    comment="in gewone taal, zonder juridisch jargon waar het niet moet"
+    titel="Algemene voorwaarden"
+    kruimels={kruimels}
+  />
+
+  <section class="sectie">
+    <div class="container-vp">
+      <div class="prose-vp max-w-3xl">
+        <p class="font-mono text-xs text-faint">Laatst bijgewerkt op {bijgewerkt}.</p>
+
+        <h2>1. Wie ben ik</h2>
+        <p>
+          {bedrijf.naam} is de handelsnaam van {bedrijf.persoon}, {adresRegel},
+          ondernemingsnummer {bedrijf.ondernemingsnummer}. Hierna "ik". De opdrachtgever
+          wordt hierna "de klant" genoemd.
+        </p>
+
+        <h2>2. Wanneer gelden deze voorwaarden</h2>
+        <p>
+          Ze gelden voor elke offerte en elke opdracht, tenzij we schriftelijk iets anders
+          afspreken. Aanvaardt de klant een offerte, dan aanvaardt hij ook deze
+          voorwaarden. Eigen aankoopvoorwaarden van de klant gelden niet, tenzij ik ze
+          uitdrukkelijk schriftelijk aanvaard.
+        </p>
+
+        <h2>3. Offertes en prijzen</h2>
+        <ul>
+          <li>Een offerte blijft dertig dagen geldig.</li>
+          <li>De afgesproken prijs is vast. Ik reken niets extra aan voor werk dat in de offerte staat.</li>
+          <li>
+            Vraagt de klant onderweg iets dat niet in de offerte staat, dan bespreken we
+            eerst wat het kost. Ik voer geen meerwerk uit zonder akkoord.
+          </li>
+          <li>
+            Ik val onder de vrijstellingsregeling voor kleine ondernemingen. Alle vermelde
+            bedragen zijn eindprijzen. {bedrijf.btwVermelding}
+          </li>
+        </ul>
+
+        <h2>4. Betaling</h2>
+        <ul>
+          <li>Vijftig procent bij de start, vijftig procent bij oplevering.</li>
+          <li>Facturen zijn betaalbaar binnen veertien dagen.</li>
+          <li>
+            Bij laattijdige betaling geldt van rechtswege en zonder ingebrekestelling de
+            wettelijke interest, plus een forfaitaire schadevergoeding van tien procent met
+            een minimum van vijftig euro.
+          </li>
+          <li>
+            Bij een aanhoudende wanbetaling kan ik de site offline halen tot de factuur
+            betaald is. Ik verwittig de klant minstens zeven dagen op voorhand.
+          </li>
+        </ul>
+
+        <h2>5. Wat de klant aanlevert</h2>
+        <p>
+          De klant bezorgt teksten, foto's, logo en toegang tot de domeinnaam. Ik ga ervan
+          uit dat de klant het recht heeft om dat materiaal te gebruiken. Blijkt achteraf
+          dat een foto of tekst van iemand anders was, dan ligt dat bij de klant.
+        </p>
+        <p>
+          Levert de klant het materiaal niet binnen dertig dagen na de start aan, dan mag
+          ik het project pauzeren en de reeds geleverde uren factureren.
+        </p>
+
+        <h2>6. Aanpassingen</h2>
+        <p>
+          Bij elk pakket zitten twee rondes aanpassingen na het eerste ontwerp. Een ronde
+          is één keer gebundelde feedback. Extra rondes reken ik aan tegen het tarief dat
+          op de site staat.
+        </p>
+
+        <h2>7. Oplevering en goedkeuring</h2>
+        <p>
+          De klant krijgt de site te zien voor ze online gaat. Reageert de klant niet
+          binnen veertien dagen, dan geldt de site als goedgekeurd. Na oplevering meld de
+          klant technische fouten binnen dertig dagen, dan herstel ik ze kosteloos.
+        </p>
+
+        <h2>8. Eigendom</h2>
+        <ul>
+          <li>De domeinnaam staat op naam van de klant.</li>
+          <li>
+            Na volledige betaling is de klant eigenaar van het ontwerp, de teksten en de
+            bestanden van zijn site. Hij krijgt die op vraag mee.
+          </li>
+          <li>
+            De algemene componenten en de onderliggende code die ik voor meerdere klanten
+            gebruik, blijven van mij. De klant mag zijn site vrij gebruiken en laten
+            aanpassen door iemand anders.
+          </li>
+          <li>
+            Ik mag het werk tonen in mijn portfolio, tenzij de klant daar schriftelijk
+            bezwaar tegen maakt.
+          </li>
+        </ul>
+
+        <h2>9. Hosting en onderhoud</h2>
+        <p>
+          Ik verkoop geen onderhoudsabonnement. De hosting draait op Cloudflare Pages en
+          is voor een gewone website gratis. Ik geef geen garantie op de beschikbaarheid
+          van diensten van derden en ben niet aansprakelijk voor een storing bij de
+          hostingpartij of de domeinnaamregistrator.
+        </p>
+
+        <h2>10. Aansprakelijkheid</h2>
+        <p>
+          Ik lever mijn werk naar best vermogen. Mijn aansprakelijkheid is beperkt tot het
+          bedrag van de opdracht. Ik ben niet aansprakelijk voor indirecte schade zoals
+          gederfde winst, verlies van klanten of reputatieschade.
+        </p>
+        <p>
+          Ik geef geen garantie op een bepaalde positie in Google of op een bepaald aantal
+          bezoekers. Wie dat wel belooft, verkoopt iets dat niemand kan waarmaken.
+        </p>
+
+        <h2>11. Annulering</h2>
+        <p>
+          Annuleert de klant na de start, dan blijft het voorschot verschuldigd voor het
+          werk dat al geleverd is. Annuleer ik, dan betaal ik het voorschot terug, verminderd
+          met de reeds geleverde uren.
+        </p>
+
+        <h2>12. Bijberoep</h2>
+        <p>
+          Ik voer deze activiteit uit in bijberoep. Ik antwoord doorgaans dezelfde dag,
+          maar meestal buiten de kantooruren. Er is geen permanentie en geen
+          gegarandeerde reactietijd, tenzij we dat uitdrukkelijk afspreken.
+        </p>
+
+        <h2>13. Geschillen</h2>
+        <p>
+          Op deze overeenkomst is het Belgische recht van toepassing. Geraken we er samen
+          niet uit, dan zijn de rechtbanken van het gerechtelijk arrondissement van mijn
+          maatschappelijke zetel bevoegd. Ik bel liever eerst.
+        </p>
+
+        <h2>Vragen</h2>
+        <p>
+          Is iets hierboven niet duidelijk, mail dan naar
+          <a href={mailHref}>{bedrijf.email}</a>. Liever een vraag vooraf dan een
+          discussie achteraf.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>

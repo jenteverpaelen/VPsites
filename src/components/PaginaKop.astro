@@ -1,0 +1,69 @@
+---
+interface Props {
+  comment: string;
+  titel: string;
+  intro?: string;
+  kruimels?: Array<{ naam: string; pad: string }>;
+}
+
+const { comment, titel, intro, kruimels = [] } = Astro.props;
+---
+
+<section class="relative overflow-hidden border-b border-line">
+  <div class="kop-raster" aria-hidden="true"></div>
+
+  <div class="container-vp relative pt-12 pb-14 md:pt-20 md:pb-20">
+    {
+      kruimels.length > 0 && (
+        <nav aria-label="Kruimelpad" class="mb-6">
+          <ol class="flex flex-wrap items-center gap-2 font-mono text-xs text-faint">
+            <li>
+              <a href="/" class="inline-flex min-h-11 items-center hover:text-muted">
+                home
+              </a>
+            </li>
+            {kruimels.map((kruimel, i) => (
+              <>
+                <li aria-hidden="true" class="text-line-soft">
+                  /
+                </li>
+                <li>
+                  {i === kruimels.length - 1 ? (
+                    <span class="text-muted" aria-current="page">
+                      {kruimel.naam}
+                    </span>
+                  ) : (
+                    <a href={kruimel.pad} class="inline-flex min-h-11 items-center hover:text-muted">
+                      {kruimel.naam}
+                    </a>
+                  )}
+                </li>
+              </>
+            ))}
+          </ol>
+        </nav>
+      )
+    }
+
+    <p class="comment-mono"><span class="text-mint-dim">//</span> {comment}</p>
+
+    <h1 class="mt-5 max-w-4xl text-4xl tracking-kop-groot sm:text-5xl md:text-6xl">
+      {titel}
+    </h1>
+
+    {intro && <p class="mt-7 max-w-2xl text-lg leading-relaxed text-muted md:text-xl">{intro}</p>}
+
+    <slot />
+  </div>
+</section>
+
+<style>
+  .kop-raster {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at center, var(--color-line) 1px, transparent 1px);
+    background-size: 2.25rem 2.25rem;
+    mask-image: radial-gradient(42rem 22rem at 20% 0%, #000 0%, transparent 76%);
+    opacity: 0.6;
+  }
+</style>

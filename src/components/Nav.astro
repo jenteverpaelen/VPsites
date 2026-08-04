@@ -1,0 +1,177 @@
+---
+import Logo from '~/components/Logo.astro';
+import { bedrijf, telHref } from '~/data/bedrijf';
+
+/**
+ * Het mobiele menu gebruikt de Popover API. Escape sluiten, klikken buiten
+ * sluiten, focus die mee verhuist en de top layer krijg je gratis van de
+ * browser. Nul JavaScript. Zie CLAUDE.md deel 5.
+ */
+
+const pad = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+const links = [
+  { naam: 'Werk', href: '/werk' },
+  { naam: 'Prijzen', href: '/prijzen' },
+  { naam: 'Kennis', href: '/kennis' },
+  { naam: 'Over', href: '/over' },
+];
+
+const actief = (href: string) => pad === href || pad.startsWith(`${href}/`);
+---
+
+<header
+  class="sticky top-0 z-50 border-b border-line/70 bg-ink/85 backdrop-blur-md supports-[backdrop-filter]:bg-ink/70"
+>
+  <div class="container-vp flex h-16 items-center justify-between gap-4 md:h-18">
+    <a
+      href="/"
+      class="-ml-1 flex min-h-12 items-center rounded-vp px-1 transition-opacity hover:opacity-80"
+      aria-label="VPsites, naar de homepagina"
+    >
+      <Logo maat="sm" />
+    </a>
+
+    <nav class="hidden items-center gap-1 md:flex" aria-label="Hoofdmenu">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            aria-current={actief(link.href) ? 'page' : undefined}
+            class:list={[
+              'flex min-h-11 items-center rounded-vp px-3 text-sm transition-colors',
+              actief(link.href) ? 'text-fg' : 'text-muted hover:text-fg',
+            ]}
+          >
+            {link.naam}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <!-- Alleen bij een muis. Op touch heeft een toetsencombinatie geen zin. -->
+      <button
+        type="button"
+        data-palet-open
+        class="hidden min-h-11 items-center gap-2 rounded-vp border border-line bg-panel px-3 text-xs text-faint transition-colors hover:border-line-soft hover:text-muted [@media(pointer:fine)]:inline-flex"
+        aria-label="Zoeken en navigeren, sneltoets Control of Command plus K"
+      >
+        <span class="font-mono">Zoek</span>
+        <kbd class="rounded border border-line bg-raise px-1.5 py-0.5 font-mono text-[0.625rem] text-faint">
+          <span data-palet-toets>Ctrl</span> K
+        </kbd>
+      </button>
+
+      <a
+        href="/contact"
+        class="hidden min-h-11 items-center rounded-vp bg-mint px-4 text-sm font-semibold text-ink transition-colors hover:bg-mint-dim sm:inline-flex"
+      >
+        Vraag een prijs
+      </a>
+
+      <button
+        type="button"
+        popovertarget="menu-mobiel"
+        class="-mr-2 inline-flex h-12 w-12 items-center justify-center rounded-vp text-fg md:hidden"
+        aria-label="Menu openen"
+      >
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+          <path d="M3 6.5h16M3 15.5h16" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div id="menu-mobiel" popover="auto" class="menu-mobiel">
+  <div class="flex h-full flex-col">
+    <div class="container-vp flex h-16 shrink-0 items-center justify-between">
+      <Logo maat="sm" />
+      <span class="label-mono">Menu</span>
+    </div>
+
+    <nav class="container-vp flex-1 overflow-y-auto pt-6" aria-label="Mobiel menu">
+      <ul class="flex flex-col">
+        {
+          links.map((link, i) => (
+            <li class="border-b border-line">
+              <a
+                href={link.href}
+                aria-current={actief(link.href) ? 'page' : undefined}
+                class="flex items-baseline gap-4 py-5 text-3xl font-semibold tracking-kop"
+              >
+                <span class="font-mono text-xs font-normal text-faint">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span class={actief(link.href) ? 'text-mint' : 'text-fg'}>{link.naam}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="mt-8 space-y-3">
+        <a
+          href="/contact"
+          class="flex min-h-14 items-center justify-center rounded-vp bg-mint px-5 font-semibold text-ink"
+        >
+          Vraag een prijs
+        </a>
+        <a
+          href={telHref}
+          class="flex min-h-14 items-center justify-center rounded-vp border border-line bg-panel px-5 font-medium text-fg"
+        >
+          Bel {bedrijf.telefoonWeergave}
+        </a>
+      </div>
+    </nav>
+
+    <!-- Sluitknop onderaan, want daar komt de duim. -->
+    <div
+      class="container-vp shrink-0 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-4"
+    >
+      <button
+        type="button"
+        popovertarget="menu-mobiel"
+        popovertargetaction="hide"
+        class="flex min-h-14 w-full items-center justify-center gap-2 rounded-vp border border-line text-muted"
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"></path>
+        </svg>
+        Sluiten
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .menu-mobiel {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background-color: var(--color-ink);
+    color: var(--color-fg);
+    padding-top: env(safe-area-inset-top);
+    overflow: hidden;
+  }
+
+  .menu-mobiel::backdrop {
+    background-color: rgb(0 0 0 / 0.6);
+  }
+
+  /* Boven md bestaat het menu niet, ook niet als het openstond bij het
+     draaien van het toestel. */
+  @media (width >= 48rem) {
+    .menu-mobiel {
+      display: none;
+    }
+  }
+</style>

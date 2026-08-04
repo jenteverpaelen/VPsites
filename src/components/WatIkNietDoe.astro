@@ -1,0 +1,74 @@
+---
+/**
+ * Zeggen wat je weigert is het sterkste menselijke signaal dat er is.
+ * Een AI schrijft nooit op wat ze niet doet. En het kwalificeert leads:
+ * wie hier afhaakt, was toch geen klant.
+ */
+
+const nietDoen = [
+  {
+    kop: 'Webshops met honderden producten',
+    tekst: 'Voorraad, betalingen, verzendingen en retours zijn een ander vak. Daar verwijs ik je voor door.',
+  },
+  {
+    kop: 'Onderhoudscontracten van €75 per maand',
+    tekst: 'Een statische site heeft geen maandelijks onderhoud nodig. Ik ga je daar niet voor laten betalen.',
+  },
+  {
+    kop: 'Projecten van zes maanden',
+    tekst: 'Alles wat langer duurt dan een paar weken hoort bij iemand met een team. Ik werk hier \'s avonds aan.',
+  },
+  {
+    kop: 'Je overtuigen dat je een website nodig hebt',
+    tekst: 'Als je goed zit met mond-tot-mondreclame, hou dat vooral zo. Ik bel je niet achterna.',
+  },
+  {
+    kop: 'Prijzen die pas na een gesprek duidelijk worden',
+    tekst: 'Ze staan op deze site. Je weet wat het kost voor je mij ooit gesproken hebt.',
+  },
+  {
+    kop: 'Je domeinnaam op mijn naam zetten',
+    tekst: 'Die staat op jouw naam. Je kan op elk moment met iemand anders verder, zonder mij iets te vragen.',
+  },
+];
+---
+
+<section class="sectie border-t border-line">
+  <div class="container-vp">
+    <p class="comment-mono op-scroll"><span class="text-mint-dim">//</span> zodat je niet voor niets belt</p>
+
+    <h2 class="op-scroll mt-5 max-w-3xl text-3xl sm:text-4xl md:text-5xl">
+      Wat ik <span class="text-mint">niet</span> doe
+    </h2>
+
+    <ul class="mt-14 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        nietDoen.map((item) => (
+          <li class="op-scroll border-t border-line pt-5">
+            <div class="flex gap-3">
+              <svg
+                width="17"
+                height="17"
+                viewBox="0 0 17 17"
+                fill="none"
+                aria-hidden="true"
+                class="mt-1 shrink-0 text-faint"
+              >
+                <path
+                  d="M4.5 4.5l8 8M12.5 4.5l-8 8"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+              </svg>
+              <div>
+                <h3 class="leading-snug font-medium">{item.kop}</h3>
+                <p class="mt-2 text-[0.9375rem] leading-relaxed text-muted">{item.tekst}</p>
+              </div>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

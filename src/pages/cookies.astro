@@ -1,0 +1,79 @@
+---
+import Base from '~/layouts/Base.astro';
+import PaginaKop from '~/components/PaginaKop.astro';
+import { bedrijf, mailHref } from '~/data/bedrijf';
+import { kruimelSchema } from '~/lib/schema';
+
+const kruimels = [{ naam: 'cookies', pad: '/cookies' }];
+const bijgewerkt = '4 augustus 2026';
+---
+
+<Base
+  titel="Cookiebeleid | VPsites"
+  beschrijving="Deze site plaatst geen cookies. Daarom is er ook geen cookiebanner. Hier staat wat dat precies betekent."
+  og="home"
+  schema={[kruimelSchema(kruimels)]}
+  noindex
+>
+  <PaginaKop
+    comment="de kortste van de drie"
+    titel="Cookiebeleid"
+    kruimels={kruimels}
+  />
+
+  <section class="sectie">
+    <div class="container-vp">
+      <div class="max-w-3xl">
+        <p
+          class="rounded-vp border border-mint/30 bg-mint-deep/20 px-6 py-5 text-xl leading-snug"
+        >
+          Deze site plaatst geen cookies. Daarom staat er ook geen cookiebanner.
+        </p>
+
+        <div class="prose-vp mt-10">
+          <p class="font-mono text-xs text-faint">Laatst bijgewerkt op {bijgewerkt}.</p>
+
+          <h2>Waarom staat hier geen banner?</h2>
+          <p>
+            Een cookiebanner is wettelijk verplicht zodra een site niet-noodzakelijke
+            cookies plaatst, bijvoorbeeld voor statistieken of advertenties. Deze site doet
+            dat niet, dus is er geen toestemming nodig en dus ook geen banner.
+          </p>
+          <p>
+            Dat is een keuze, geen toeval. Een banner die je moet wegklikken voor je de
+            site kan lezen, is vervelend. Als het zonder kan, dan doe ik het zonder.
+          </p>
+
+          <h2>Hoe tel je dan je bezoekers?</h2>
+          <p>
+            Met Cloudflare Web Analytics. Die dienst telt paginabezoeken zonder cookies te
+            plaatsen en zonder een profiel van je op te bouwen. Ik zie hoeveel mensen een
+            pagina bekeken, van welk land ze ongeveer kwamen en op welk type toestel. Ik
+            zie niet wie je bent en ik kan je niet volgen naar andere sites.
+          </p>
+
+          <h2>Wat slaat de site dan wel op?</h2>
+          <p>
+            Niets in je browser. Geen cookies, geen localStorage, geen sessionStorage,
+            geen fingerprinting. Je kan dat zelf nakijken in het tabblad Applicatie van de
+            ontwikkelaarstools van je browser. Dat vind ik een betere garantie dan mijn
+            woord.
+          </p>
+
+          <h2>En als dat verandert?</h2>
+          <p>
+            Voeg ik ooit iets toe dat wél cookies nodig heeft, bijvoorbeeld een ingesloten
+            video of een reservatiemodule, dan komt er een correcte toestemmingsvraag en
+            pas ik deze pagina aan. Weigeren zal dan even eenvoudig zijn als aanvaarden.
+          </p>
+
+          <h2>Vragen?</h2>
+          <p>
+            Mail naar <a href={mailHref}>{bedrijf.email}</a>. Meer over gegevens vind je in
+            het <a href="/privacy">privacybeleid</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

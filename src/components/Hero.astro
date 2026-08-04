@@ -1,0 +1,153 @@
+---
+import PerfStrip from '~/components/PerfStrip.astro';
+import { pakketten } from '~/data/prijzen';
+
+const goedkoopste = Math.min(...pakketten.map((p) => p.prijs));
+---
+
+<section class="hero relative overflow-hidden">
+  <!-- Puntenraster met een mint gloed die de muis volgt. Enkel bij een
+       muis, want op touch is er geen cursor en kost het alleen batterij. -->
+  <div class="hero-raster" aria-hidden="true"></div>
+  <div class="hero-gloed" aria-hidden="true"></div>
+
+  <div class="container-vp relative pt-16 pb-14 md:pt-28 md:pb-20">
+    <p class="comment-mono">
+      <span class="text-mint-dim">//</span> vaste prijs
+      <span class="text-line-soft">·</span> 2 weken
+      <span class="text-line-soft">·</span> geen abonnement
+    </p>
+
+    <h1 class="mt-5 max-w-4xl text-[2.75rem] leading-[0.98] tracking-kop-groot sm:text-6xl md:text-7xl">
+      Een site die laadt<br />
+      <span class="relative inline-block">
+        vóór je ademt.
+        <span class="hero-streep" aria-hidden="true"></span>
+      </span>
+    </h1>
+
+    <p class="mt-8 max-w-xl text-lg leading-relaxed text-muted md:text-xl">
+      Voor zelfstandigen die geen 4.000 euro willen betalen voor vier pagina's.
+      Vanaf <span class="font-semibold text-fg">€{goedkoopste}</span>, en dat is
+      meteen de eindprijs. <span class="text-fg">Geen btw.</span>
+    </p>
+
+    <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+      <a
+        href="/prijzen"
+        class="group inline-flex min-h-13 items-center justify-center gap-2 rounded-vp bg-mint px-6 font-semibold text-ink transition-colors hover:bg-mint-dim"
+      >
+        Bekijk wat het kost
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"
+          class="transition-transform group-hover:translate-x-0.5">
+          <path d="M3 8h9m0 0L8.5 4.5M12 8l-3.5 3.5" stroke="currentColor" stroke-width="1.5"
+            stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </a>
+      <a
+        href="/werk"
+        class="inline-flex min-h-13 items-center justify-center rounded-vp border border-line bg-panel px-6 font-medium text-fg transition-colors hover:border-line-soft hover:bg-raise"
+      >
+        Bekijk mijn werk
+      </a>
+    </div>
+
+    <PerfStrip />
+  </div>
+</section>
+
+<style>
+  .hero {
+    /* Geen 100vh: op mobiel springt vh mee met de browserbalk. En een hero
+       die precies het scherm vult verbergt dat er nog iets onder staat. */
+    background:
+      radial-gradient(
+        60rem 40rem at 15% -10%,
+        color-mix(in srgb, var(--color-mint) 6%, transparent),
+        transparent 70%
+      );
+  }
+
+  .hero-raster {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle at center, var(--color-line) 1px, transparent 1px);
+    background-size: 2.25rem 2.25rem;
+    /* Naar de randen toe uitfaden, anders wordt het een tafelkleed. */
+    mask-image: radial-gradient(50rem 32rem at 25% 0%, #000 0%, transparent 78%);
+    opacity: 0.7;
+  }
+
+  .hero-gloed {
+    display: none;
+  }
+
+  @media (pointer: fine) {
+    .hero-gloed {
+      display: block;
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        14rem 14rem at var(--muis-x, -100%) var(--muis-y, -100%),
+        color-mix(in srgb, var(--color-mint) 13%, transparent),
+        transparent 65%
+      );
+      opacity: 0;
+      transition: opacity 400ms var(--ease-uit);
+    }
+
+    .hero:hover .hero-gloed {
+      opacity: 1;
+    }
+  }
+
+  .hero-streep {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.14em;
+    height: 3px;
+    border-radius: 2px;
+    background-color: var(--color-mint);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: streep-in 900ms 250ms var(--ease-uit) forwards;
+  }
+
+  @keyframes streep-in {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-streep {
+      animation: none;
+      transform: scaleX(1);
+    }
+    .hero-gloed {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // 12 regels, alleen bij een muis, en gethrottled op de frame rate.
+  // Zet twee CSS-variabelen, verder doet CSS het werk.
+  if (window.matchMedia('(pointer: fine)').matches) {
+    const hero = document.querySelector<HTMLElement>('.hero');
+    if (hero) {
+      let wacht = false;
+      hero.addEventListener('pointermove', (e) => {
+        if (wacht) return;
+        wacht = true;
+        requestAnimationFrame(() => {
+          const vak = hero.getBoundingClientRect();
+          hero.style.setProperty('--muis-x', `${e.clientX - vak.left}px`);
+          hero.style.setProperty('--muis-y', `${e.clientY - vak.top}px`);
+          wacht = false;
+        });
+      });
+    }
+  }
+</script>

@@ -1,0 +1,106 @@
+---
+import Base from '~/layouts/Base.astro';
+import PaginaKop from '~/components/PaginaKop.astro';
+import { bedrijf, adresRegel, mailHref, telHref } from '~/data/bedrijf';
+import { kruimelSchema } from '~/lib/schema';
+
+/**
+ * TODO(jente): dit is een correct vertrekpunt dat klopt met wat deze site
+ * effectief doet, namelijk bijna niets. Laat het nakijken zodra je diensten
+ * toevoegt die wél gegevens verzamelen, bijvoorbeeld een nieuwsbrief.
+ */
+
+const kruimels = [{ naam: 'privacy', pad: '/privacy' }];
+const bijgewerkt = '4 augustus 2026';
+---
+
+<Base
+  titel="Privacybeleid | VPsites"
+  beschrijving="Welke gegevens VPsites verzamelt, waarom, en hoelang. Kort samengevat: alleen wat je zelf in het contactformulier zet."
+  og="home"
+  schema={[kruimelSchema(kruimels)]}
+  noindex
+>
+  <PaginaKop comment="kort, want er valt weinig te vertellen" titel="Privacybeleid" kruimels={kruimels} />
+
+  <section class="sectie">
+    <div class="container-vp">
+      <div class="prose-vp max-w-3xl">
+        <p class="font-mono text-xs text-faint">Laatst bijgewerkt op {bijgewerkt}.</p>
+
+        <h2>Wie is verantwoordelijk?</h2>
+        <p>
+          {bedrijf.naam}, handelsnaam van {bedrijf.persoon}, gevestigd te {adresRegel},
+          ondernemingsnummer {bedrijf.ondernemingsnummer}. Bereikbaar via
+          <a href={mailHref}>{bedrijf.email}</a> en <a href={telHref}>{bedrijf.telefoonWeergave}</a>.
+        </p>
+
+        <h2>Welke gegevens verzamel ik?</h2>
+        <p>
+          Alleen wat je zelf invult in het contactformulier: je naam, je e-mailadres,
+          eventueel je telefoonnummer, en je bericht. Meer niet.
+        </p>
+        <p>
+          Ik gebruik geen cookies, geen advertentienetwerken en geen diensten die je over
+          websites heen volgen. Er is dan ook geen cookiebanner op deze site.
+        </p>
+        <p>
+          Voor bezoekersstatistieken gebruik ik Cloudflare Web Analytics. Die dienst werkt
+          zonder cookies en zonder je te identificeren. Ze telt paginabezoeken, meer niet.
+        </p>
+
+        <h2>Waarom verzamel ik ze?</h2>
+        <p>
+          Om je vraag te kunnen beantwoorden en om, als je klant wordt, het project te
+          kunnen uitvoeren. De rechtsgrond is jouw toestemming wanneer je het formulier
+          verstuurt, en daarna de uitvoering van de overeenkomst.
+        </p>
+
+        <h2>Hoelang hou ik ze bij?</h2>
+        <ul>
+          <li>Word je geen klant, dan verwijder ik je bericht na twaalf maanden.</li>
+          <li>
+            Word je wel klant, dan hou ik de gegevens bij zolang de samenwerking loopt,
+            plus de zeven jaar die de boekhoudwetgeving voorschrijft voor facturen.
+          </li>
+        </ul>
+
+        <h2>Met wie deel ik ze?</h2>
+        <p>
+          Met niemand, behalve met de diensten die technisch nodig zijn om te werken:
+        </p>
+        <ul>
+          <li><strong>Cloudflare</strong> voor de hosting van deze site en de afhandeling van het formulier.</li>
+          <li><strong>Resend</strong> om het bericht uit het formulier naar mijn mailbox te sturen.</li>
+          <li><strong>Mijn e-mailprovider</strong>, waar je bericht daarna toekomt.</li>
+        </ul>
+        <p>Ik verkoop je gegevens niet en geef ze niet door voor marketingdoeleinden.</p>
+
+        <h2>Welke rechten heb je?</h2>
+        <p>
+          Je hebt recht op inzage, verbetering, verwijdering en beperking van je gegevens,
+          en je kan bezwaar maken tegen de verwerking. Stuur een mail naar
+          <a href={mailHref}>{bedrijf.email}</a> en ik regel het. Daar heb je geen formeel
+          verzoek voor nodig.
+        </p>
+        <p>
+          Ben je niet tevreden over hoe ik het aanpak, dan kan je klacht indienen bij de
+          Gegevensbeschermingsautoriteit, Drukpersstraat 35, 1000 Brussel.
+        </p>
+
+        <h2>Beveiliging</h2>
+        <p>
+          Deze site draait volledig over https. Het contactformulier is beveiligd tegen
+          geautomatiseerd misbruik. Je gegevens staan in mijn mailbox, die met
+          tweestapsverificatie beveiligd is.
+        </p>
+
+        <h2>Wijzigingen</h2>
+        <p>
+          Verandert er iets aan hoe ik met gegevens omga, dan pas ik deze pagina aan en
+          wijzig ik de datum bovenaan.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>

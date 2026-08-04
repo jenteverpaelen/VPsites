@@ -1,0 +1,62 @@
+---
+import { bedrijf } from '~/data/bedrijf';
+
+/**
+ * TODO(jente): zet je foto in public/jente.jpg en verwijder de `heeftFoto`
+ * schakelaar hieronder, of zet hem op true. Vul dan ook width en height in
+ * met de echte pixelafmetingen, anders krijg je layout shift.
+ *
+ * Tot dan valt dit terug op een typografisch portret. Bewust géén doos met
+ * "TODO" erin: als de site online gaat voor de foto er is, mag het er niet
+ * stuk uitzien. Dit oogt als een keuze in plaats van als een gat.
+ */
+
+interface Props {
+  class?: string;
+}
+
+const { class: klasse = '' } = Astro.props;
+
+const heeftFoto = false;
+const initialen = 'JVP';
+---
+
+<div class:list={['relative aspect-4/5 overflow-hidden rounded-vp', klasse]}>
+  {
+    heeftFoto ? (
+      <img
+        src="/jente.jpg"
+        alt={`${bedrijf.persoon}, de webdesigner achter ${bedrijf.naam}`}
+        width="800"
+        height="1000"
+        fetchpriority="high"
+        class="h-full w-full object-cover"
+      />
+    ) : (
+      <div class="portret flex h-full w-full flex-col justify-between border border-line bg-panel p-7">
+        <span class="label-mono">{bedrijf.naam}</span>
+
+        <span
+          class="font-display text-[clamp(3.5rem,14vw,6rem)] leading-none font-bold tracking-kop-groot"
+          aria-hidden="true"
+        >
+          {initialen}
+        </span>
+
+        <span class="font-mono text-xs leading-relaxed text-faint">
+          {bedrijf.persoon}
+          <br />
+          {bedrijf.functie.toLowerCase()}
+        </span>
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .portret {
+    background-image: radial-gradient(circle at center, var(--color-line) 1px, transparent 1px);
+    background-size: 1.75rem 1.75rem;
+    background-position: center;
+  }
+</style>

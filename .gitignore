@@ -1,0 +1,32 @@
+# Afhankelijkheden
+node_modules/
+
+# Buildresultaat
+dist/
+.astro/
+.tmp/
+
+# Gegenereerd tijdens de build (npm run build maakt ze opnieuw)
+public/og/
+
+# Omgevingsvariabelen. Deze horen in de Cloudflare Pages-instellingen,
+# nooit in de repo. Zie README.md.
+.env
+.env.*
+!.env.example
+
+# Cloudflare
+.wrangler/
+.dev.vars
+
+# Editors en besturingssystemen
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
