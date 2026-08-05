@@ -1,13 +1,13 @@
 ---
 titel: 'Wat kost een website in België in 2026?'
 kop: 'Wat kost een website in België?'
-beschrijving: 'Echte prijzen voor 2026, van €180 tot €8.000. Wat je bij elk budget krijgt, welke kosten men vergeet te vermelden, en waar btw het verschil maakt.'
+beschrijving: 'Echte prijzen voor 2026, van €150 tot €8.000. Wat je bij elk budget krijgt, welke kosten men vergeet te vermelden, en waar btw het verschil maakt.'
 gepubliceerd: 2026-08-04
 leestijd: 7
 volgorde: 10
 ---
 
-Een website laten maken in België kost in 2026 tussen **€180 en €8.000**, afhankelijk van wie hem bouwt. Een freelancer in bijberoep zit onderaan, een bureau in Antwerpen of Brussel bovenaan. Voor een zelfstandige met vier of vijf pagina's ligt de gangbare marktprijs tussen **€3.500 en €8.000**, maar dat is lang niet de enige optie.
+Een website laten maken in België kost in 2026 tussen **€150 en €8.000**, afhankelijk van wie hem bouwt. Een freelancer in bijberoep zit onderaan, een bureau in Antwerpen of Brussel bovenaan. Voor een zelfstandige met vier of vijf pagina's ligt de gangbare marktprijs tussen **€3.500 en €8.000**, maar dat is lang niet de enige optie.
 
 Hieronder staat wat je in elke prijsklasse effectief krijgt, en welke kosten er meestal pas achteraf bijkomen.
 
@@ -16,8 +16,8 @@ Hieronder staat wat je in elke prijsklasse effectief krijgt, en welke kosten er 
 | Type | Prijs | Wie bouwt dat | Klaar in |
 |---|---|---|---|
 | Zelf in een bouwer | €0 tot €300 per jaar | jijzelf | een paar avonden, of nooit |
-| Onepager bij een freelancer | €180 tot €900 | freelancer, vaak in bijberoep | 1 week |
-| Site van 4 tot 5 pagina's, freelancer | €300 tot €1.500 | zelfstandige freelancer | 1 tot 3 weken |
+| Onepager bij een freelancer | €150 tot €900 | freelancer, vaak in bijberoep | 1 week |
+| Site van 4 tot 5 pagina's, freelancer | €250 tot €1.500 | zelfstandige freelancer | 1 tot 3 weken |
 | Site van 5 pagina's, klein bureau | €1.500 tot €3.500 | bureau van 2 tot 5 man | 4 tot 8 weken |
 | Site van 5 pagina's, groot bureau | €3.500 tot €8.000 | bureau met een team | 6 tot 12 weken |
 | Webshop | €1.500 tot €15.000 | hangt af van de omvang | 4 weken tot 6 maanden |
@@ -66,6 +66,6 @@ Zijn die vijf antwoorden goed, dan is een goedkope site gewoon een goedkope site
 
 ## Wat is een realistisch budget?
 
-Voor een zelfstandige of een eenmanszaak die vooral gevonden wil worden en professioneel wil overkomen, volstaat in de praktijk een site van vier tot vijf pagina's. Reken op **€300 tot €1.500 bij een freelancer**, of **€1.500 tot €3.500 bij een klein bureau**.
+Voor een zelfstandige of een eenmanszaak die vooral gevonden wil worden en professioneel wil overkomen, volstaat in de praktijk een site van vier tot vijf pagina's. Reken op **€250 tot €1.500 bij een freelancer**, of **€1.500 tot €3.500 bij een klein bureau**.
 
 Ga je boven de €3.500, dan betaal je voor zaken die je waarschijnlijk niet gebruikt: uitgebreide strategie, meerdere overlegrondes en een team dat elkaar op de hoogte moet houden. Dat heeft zijn waarde bij een groter bedrijf. Bij een schrijnwerker met vier pagina's meestal niet.

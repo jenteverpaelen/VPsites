@@ -25,7 +25,6 @@ export type Pakket = {
   paginas: string;
   voor: string;
   bevat: string[];
-  uitgelicht: boolean;
 };
 
 export const pakketten: Pakket[] = [
@@ -33,10 +32,10 @@ export const pakketten: Pakket[] = [
     id: 'onepager',
     naam: 'Onepager',
     regel: 'Eén pagina die alles vertelt',
-    prijs: 180,
-    prijsNormaal: 390,
+    prijs: 150,
+    prijsNormaal: 199,
     vanaf: false,
-    levertijd: '1 week',
+    levertijd: '3 tot 4 dagen',
     paginas: '1 lange pagina',
     voor: 'Je hebt nog niets online en je wil vooral gevonden worden en gebeld worden.',
     bevat: [
@@ -48,16 +47,15 @@ export const pakketten: Pakket[] = [
       'Je logo verwerkt, of een tekstlogo als je er geen hebt',
       'Ik zet je domeinnaam en hosting op',
     ],
-    uitgelicht: false,
   },
   {
     id: 'starter',
     naam: 'Starter',
     regel: 'Een volwaardige site van vier tot vijf pagina\'s',
-    prijs: 300,
-    prijsNormaal: 650,
+    prijs: 250,
+    prijsNormaal: 399,
     vanaf: false,
-    levertijd: '2 weken',
+    levertijd: '1 week',
     paginas: '4 tot 5 pagina\'s',
     voor: 'Je wil je diensten apart uitleggen, je werk tonen, en professioneel overkomen.',
     bevat: [
@@ -69,7 +67,6 @@ export const pakketten: Pakket[] = [
       'Je Google Bedrijfsprofiel mee in orde gezet',
       'Privacy- en cookiebeleid, wettelijk in orde',
     ],
-    uitgelicht: true,
   },
   {
     id: 'op-maat',
@@ -89,13 +86,12 @@ export const pakketten: Pakket[] = [
       'Koppeling met wat je al gebruikt',
       'We spreken de prijs op voorhand af, en die verandert niet',
     ],
-    uitgelicht: false,
   },
 ];
 
 /** Losse opties, prijs per stuk. */
 export const opties = [
-  { naam: 'Extra pagina', prijs: 40, eenheid: 'per pagina' },
+  { naam: 'Extra pagina', prijs: 20, eenheid: 'per pagina' },
   { naam: 'Tweede taal', prijs: 120, eenheid: 'voor de hele site' },
   { naam: 'Ik schrijf je teksten', prijs: 90, eenheid: 'voor de hele site' },
   { naam: 'Google Bedrijfsprofiel opzetten', prijs: 45, eenheid: 'eenmalig' },
@@ -117,3 +113,13 @@ export const geenAbonnement =
   'Ik verkoop geen onderhoudsabonnement. Je betaalt één keer voor je site, en daarna alleen je domeinnaam.';
 
 export const prijsBereik = `€${Math.min(...pakketten.map((p) => p.prijs))} tot €${Math.max(...pakketten.map((p) => p.prijs))}+`;
+
+export const goedkoopstePrijs = Math.min(...pakketten.map((p) => p.prijs));
+
+/** Het pakket dat de meeste zelfstandigen nemen. Geen badge op de kaart, want
+ *  dat is sturend, maar de copy en de JSON-LD hebben wel een anker nodig. */
+export const starter = pakketten.find((p) => p.id === 'starter')!;
+
+/** Voor copy als "klaar in ...". Staat hier, zodat het nergens los van de
+ *  levertijden in dit bestand kan gaan leven. */
+export const levertijdKort = '3 dagen tot een week';

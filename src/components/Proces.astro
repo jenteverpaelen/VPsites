@@ -7,6 +7,8 @@
  * de layout. Zie CLAUDE.md deel 7 over de Visual Stability Index.
  */
 
+import { levertijdKort } from '~/data/prijzen';
+
 const stappen = [
   {
     tag: 'intake',
@@ -18,14 +20,14 @@ const stappen = [
   {
     tag: 'ontwerp',
     kop: 'Je ziet het voor ik bouw',
-    duur: '2 tot 4 dagen',
+    duur: '1 tot 2 dagen',
     tekst:
       'Ik maak een ontwerp van de homepagina en stuur het door. Bevalt het niet, dan passen we aan. Je betaalt niets tot je hier ja op zegt.',
   },
   {
     tag: 'bouw',
     kop: 'Ik bouw, jij kijkt mee',
-    duur: '3 tot 8 dagen',
+    duur: '2 tot 5 dagen',
     tekst:
       'Je krijgt een link waarop je live ziet hoe het vordert. Twee rondes aanpassingen zitten erbij, ruim genoeg om het juist te krijgen.',
   },
@@ -44,8 +46,8 @@ const stappen = [
     <p class="comment-mono op-scroll"><span class="text-mint-dim">//</span> van bellen tot online</p>
 
     <div class="mt-5 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-      <h2 class="op-scroll max-w-2xl text-3xl sm:text-4xl md:text-5xl">Hoe het loopt</h2>
-      <p class="op-scroll font-mono text-sm text-faint">totaal: 1 tot 2 weken</p>
+      <h2 class="op-scroll max-w-2xl kop-sectie">Hoe het loopt</h2>
+      <p class="op-scroll font-mono text-sm text-faint">totaal: {levertijdKort}</p>
     </div>
 
     <ol class="pijplijn relative mt-16">

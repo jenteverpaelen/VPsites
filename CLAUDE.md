@@ -14,7 +14,7 @@ Wijkt code hiervan af, dan is de code fout, niet dit bestand.
 | Persoon | **Jente Ver Paelen**. Drie woorden, "Ver Paelen" is de familienaam |
 | Vorm | Eenmanszaak in bijberoep, Vlaanderen |
 | Product | Statische websites voor eenmanszaken en heel kleine bedrijven |
-| Belofte | Vaste prijs, geen btw, geen abonnement, klaar in 1 tot 2 weken |
+| Belofte | Vaste prijs, geen btw, geen abonnement, klaar in 3 dagen tot een week |
 | Toon | Eerlijk, direct, nuchter. Een vakman die met een vakman praat |
 
 **Altijd "ik", nooit "wij".** Er is geen team. "Wij" is de leugen die elke concurrent vertelt en het is meteen te doorzien. "Ik" is het hele verkoopargument.
@@ -84,15 +84,40 @@ Gedefinieerd in `src/styles/global.css` onder `@theme`. Nooit hardcoded hex in c
 --color-mint:      #79E4AC   /* uit het logo */
 --color-mint-dim:  #4FBF89
 
---color-ink:       #080908   /* pagina-achtergrond */
---color-panel:     #0E100F   /* kaarten */
---color-raise:     #151816   /* hover, verhoogde vlakken */
---color-line:      #1E2320   /* randen */
+--color-ink:       #0A0C0B   /* pagina-achtergrond */
+--color-panel:     #121514   /* kaarten */
+--color-raise:     #1A1E1C   /* hover, verhoogde vlakken */
+--color-line:      #262C29   /* randen */
 
 --color-fg:        #F2F5F3   /* primaire tekst */
 --color-muted:     #9BA4A0   /* secundaire tekst */
---color-faint:     #6B7370   /* labels, metadata */
+--color-faint:     #848C88   /* labels, metadata */
 ```
+
+### Twee weergaven
+
+Donker is de site. Licht is een keuze achter de knop in de nav, en de standaard
+blijft donker, ook als het toestel op licht staat. Alleen een klik verandert het.
+
+De lichte set staat onder `:root[data-thema='licht']` in `global.css` en
+overschrijft alleen wat anders moet. **Mint kan daar niet blijven zoals het is:**
+`#79E4AC` haalt op wit 1,6:1. In het licht gaat het accent naar `#0A6B3D`, een
+donkere groen uit dezelfde familie. Nog altijd één accent.
+
+Let op bij `bg-mint-deep/25` en dergelijke: dat mengt de token met de
+achtergrond, en die achtergrond verschilt per weergave. Elke nieuwe combinatie
+van mint-op-mint-deep opnieuw nameten. `#D8F1E4` is het donkerste mengsel dat
+voorkomt.
+
+Het attribuut wordt blokkerend gezet door het enige inline script op de site, in
+`Base.astro`. Zonder dat script zie je bij elke paginawissel een donkere flits.
+
+### Textuur
+
+Over de hele site ligt filmkorrel: een SVG met `feTurbulence` als data-URI op
+`body::after`, opacity 0,05. Nul verzoeken, nul KB extra. Dit is het enige dat
+een groot effen vlak van plat naar tastbaar brengt, en het ontbreken ervan is
+precies wat een site die verder klopt toch gedateerd doet aanvoelen.
 
 ### De één-accent-regel
 
@@ -139,6 +164,7 @@ Niet onderhandelbaar. Wordt er één gebroken, dan klopt de belofte van de site 
 | Contrast | minimaal 4.5:1 voor tekst, 3:1 voor UI-componenten |
 | Raakvlakken | minimaal 48×48 CSS-px, 8px tussenruimte |
 | Cookies | **nul**. Geen enkele. Daarom ook geen cookiebanner |
+| localStorage | één sleutel, `vp-thema`, de gekozen weergave. Verlaat het toestel nooit en is niet te volgen. Verder niets |
 | Trackers van derden | nul, behalve cookieloze Cloudflare Web Analytics |
 
 De site verkoopt snelheid. Haalt de site die cijfers zelf niet, dan is de site een leugen. Dit is de reden dat er geen React in zit.
@@ -275,7 +301,7 @@ Kleine onderneming onderworpen aan de vrijstellingsregeling van belasting.
 BTW niet toepasselijk, artikel 56bis van het BTW-Wetboek.
 ```
 
-Dit is wettelijk verplicht op de facturen. Op de site is het meteen het sterkste verkoopargument dat er staat: een concurrent die "€995 excl. btw" vraagt, rekent in werkelijkheid €1.204 aan. Bij VPsites is €300 gewoon €300.
+Dit is wettelijk verplicht op de facturen. Op de site is het meteen het sterkste verkoopargument dat er staat: een concurrent die "€995 excl. btw" vraagt, rekent in werkelijkheid €1.204 aan. Bij VPsites is €250 gewoon €250.
 
 Drempel van de regeling is €25.000 omzet per jaar. Wordt die overschreden, dan moet alle prijscommunicatie herzien worden.
 
@@ -307,6 +333,19 @@ src/
 ```
 
 Regel: **prijzen, bedrijfsgegevens en FAQ staan in `src/data/`, nooit in een component.** Een prijs wijzigen mag maar op één plaats hoeven.
+
+Drie uitzonderingen, want die kunnen geen TypeScript importeren. Wijzig je een
+prijs of een levertijd, loop deze drie na:
+
+- `scripts/og.mjs`, de tekstregel onder de titel op de OG-kaarten
+- `public/llms.txt`
+- de `title` en `description` van `src/pages/index.astro` en `src/pages/prijzen.astro`
+
+### Geen sturende elementen
+
+Er staat geen "meest gekozen" op een prijskaart en geen pakket is uitgelicht.
+Alle drie de kaarten zien er identiek uit. Dat is een expliciete keuze van
+Jente: hij wil mensen niet in een richting duwen. Zet dat er niet terug in.
 
 ---
 

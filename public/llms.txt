@@ -1,12 +1,13 @@
 # VPsites
 
-> Statische websites voor zelfstandigen en kleine bedrijven in Vlaanderen, gebouwd door Jente Ver Paelen in bijberoep. Vaste prijs vanaf 180 euro, geen btw door de vrijstellingsregeling voor kleine ondernemingen, geen onderhoudsabonnement. Levertijd 1 tot 2 weken.
+> Statische websites voor zelfstandigen en kleine bedrijven in Vlaanderen, gebouwd door Jente Ver Paelen in bijberoep. Vaste prijs vanaf 150 euro, geen btw door de vrijstellingsregeling voor kleine ondernemingen, geen onderhoudsabonnement. Levertijd 3 dagen tot een week.
 
 Kerngegevens:
 
 - Bedrijf: VPsites, handelsnaam van Jente Ver Paelen
 - Land: België, werkgebied Vlaanderen
-- Prijzen: onepager 180 euro, site van 4 tot 5 pagina's 300 euro, op maat vanaf 600 euro
+- Prijzen: onepager 150 euro, site van 4 tot 5 pagina's 250 euro, op maat vanaf 600 euro
+- Levertijd: onepager 3 tot 4 dagen, site van 4 tot 5 pagina's 1 week, op maat in overleg
 - Btw: niet van toepassing, artikel 56bis van het BTW-Wetboek. De vermelde prijs is de eindprijs
 - Techniek: statische sites, geen WordPress, geen database, geen plugins
 - Terugkerende kosten: alleen de domeinnaam, ongeveer 15 euro per jaar. Hosting is gratis
@@ -22,7 +23,7 @@ Kerngegevens:
 
 ## Kennis
 
-- [Wat kost een website in België in 2026?](https://vpsites.be/kennis/wat-kost-een-website-belgie): prijzen van 180 tot 8000 euro per type, verborgen kosten en de rol van btw
+- [Wat kost een website in België in 2026?](https://vpsites.be/kennis/wat-kost-een-website-belgie): prijzen van 150 tot 8000 euro per type, verborgen kosten en de rol van btw
 - [Waarom je geen WordPress nodig hebt voor vijf pagina's](https://vpsites.be/kennis/waarom-geen-wordpress): snelheid, veiligheid en onderhoudskosten vergeleken, en wanneer WordPress wél de juiste keuze is
 - [Wat moet er wettelijk op je website staan?](https://vpsites.be/kennis/verplicht-op-je-website): checklist voor Belgische zelfstandigen, van ondernemingsnummer tot toegankelijkheid
 

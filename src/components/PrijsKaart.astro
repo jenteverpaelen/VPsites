@@ -4,7 +4,7 @@ import { introductie } from '~/data/prijzen';
 
 interface Props {
   pakket: Pakket;
-  /** Op de prijzenpagina staat alles, op de home een kortere versie. */
+  /** Alleen op /prijzen staat er ook voor wie het pakket bedoeld is. */
   volledig?: boolean;
   /** Trap in de scroll-reveal, 0 tot 2, zodat de rij zich opbouwt in plaats
    *  van er in één keer te staan. */
@@ -14,25 +14,20 @@ interface Props {
 const { pakket, volledig = false, stap = 0 } = Astro.props;
 
 const toonIntro = introductie.actief && pakket.prijsNormaal !== null;
-const punten = volledig ? pakket.bevat : pakket.bevat.slice(0, 4);
-const restant = pakket.bevat.length - punten.length;
+
+/* Altijd de volledige lijst. Er stond eerst "en nog 3 andere dingen" onder een
+   afgekapte lijst, en dat is precies het soort halve informatie waar deze site
+   tegen bedoeld is. Wie wil weten wat hij krijgt, moet het gewoon zien staan. */
+const punten = pakket.bevat;
 ---
 
+<!-- Geen uitgelicht pakket, geen "meest gekozen"-badge. Alle drie de kaarten
+     zien er identiek uit. Wie welk pakket neemt, hangt af van wat hij nodig
+     heeft, en niet van welke kaart ik een mint rand geef. -->
 <article
   data-stap={String(stap)}
-  class:list={[
-    'op-scroll hover-lift relative flex flex-col rounded-vp border bg-panel p-6 md:p-7',
-    pakket.uitgelicht ? 'border-mint/45' : 'border-line',
-  ]}
+  class="op-scroll hover-lift relative flex flex-col rounded-vp border border-line bg-panel p-6 md:p-7"
 >
-  {
-    pakket.uitgelicht && (
-      <span class="absolute -top-2.5 left-6 rounded-full bg-mint px-2.5 py-0.5 font-mono text-[0.625rem] font-semibold tracking-wider text-ink uppercase">
-        Meest gekozen
-      </span>
-    )
-  }
-
   <header>
     <h3 class="text-xl font-semibold">{pakket.naam}</h3>
     <p class="mt-1.5 text-sm leading-snug text-muted">{pakket.regel}</p>
@@ -93,17 +88,11 @@ const restant = pakket.bevat.length - punten.length;
         </li>
       ))
     }
-    {restant > 0 && <li class="pl-[1.5625rem] text-faint">en nog {restant} andere dingen</li>}
   </ul>
 
   <a
     href="/contact"
-    class:list={[
-      'mt-7 flex min-h-13 items-center justify-center rounded-vp px-5 font-semibold transition-colors',
-      pakket.uitgelicht
-        ? 'bg-mint text-ink hover:bg-mint-dim'
-        : 'border border-line bg-raise text-fg hover:border-line-soft',
-    ]}
+    class="mt-7 flex min-h-13 items-center justify-center rounded-vp border border-line bg-raise px-5 font-semibold text-fg transition-colors hover:border-mint/45 hover:bg-mint hover:text-ink"
   >
     Dit wil ik
     <span class="sr-only"> ({pakket.naam}, €{pakket.prijs})</span>

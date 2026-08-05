@@ -43,6 +43,15 @@ const acties = [
     href: 'https://pagespeed.web.dev/',
     extern: true,
   },
+
+  // Klikt de knop in de nav aan in plaats van de logica te herhalen. Eén plek
+  // waar de weergave wisselt, twee plekken waar je het kan vragen.
+  {
+    groep: 'Weergave',
+    label: 'Wissel donker en licht',
+    hint: 'ook via de knop in de balk',
+    klik: '[data-thema-knop]',
+  },
 ];
 
 const groepen = [...new Set(acties.map((a) => a.groep))];
@@ -85,6 +94,7 @@ const groepen = [...new Set(acties.map((a) => a.groep))];
                     data-href={'href' in actie ? actie.href : undefined}
                     data-extern={'extern' in actie && actie.extern ? '' : undefined}
                     data-kopieer={'kopieer' in actie ? actie.kopieer : undefined}
+                    data-klik={'klik' in actie ? actie.klik : undefined}
                     data-zoek={`${actie.groep} ${actie.label} ${actie.hint}`.toLowerCase()}
                   >
                     <span class="flex-1 truncate text-sm">{actie.label}</span>
@@ -199,6 +209,14 @@ const groepen = [...new Set(acties.map((a) => a.groep))];
             item.firstElementChild!.textContent = origineel;
           }, 1400);
         });
+        return;
+      }
+
+      // Doorgeven aan een knop die elders al bestaat, bijvoorbeeld de
+      // weergaveknop in de nav.
+      if (item.dataset.klik) {
+        document.querySelector<HTMLElement>(item.dataset.klik)?.click();
+        palet.close();
         return;
       }
 

@@ -54,6 +54,33 @@ const actief = (href: string) => pad === href || pad.startsWith(`${href}/`);
     </nav>
 
     <div class="flex items-center gap-2">
+      <!-- Weergave wisselen. Beide iconen staan in de HTML, CSS toont het
+           juiste. Zo hoeft JavaScript alleen het attribuut op <html> te zetten
+           en is er geen icoon dat pas na de hydratatie klopt. -->
+      <button
+        type="button"
+        data-thema-knop
+        class="inline-flex h-11 w-11 items-center justify-center rounded-vp border border-line bg-panel text-muted transition-colors hover:border-line-soft hover:text-fg"
+      >
+        <span class="sr-only" data-thema-label>Overschakelen naar de lichte weergave</span>
+        <svg class="thema-maan" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path
+            d="M13.5 9.6A5.8 5.8 0 0 1 6.4 2.5 5.8 5.8 0 1 0 13.5 9.6Z"
+            stroke="currentColor"
+            stroke-width="1.4"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+        <svg class="thema-zon" width="17" height="17" viewBox="0 0 17 17" fill="none" aria-hidden="true">
+          <circle cx="8.5" cy="8.5" r="3.2" stroke="currentColor" stroke-width="1.4"></circle>
+          <path
+            d="M8.5 1.4v1.6M8.5 14v1.6M1.4 8.5h1.6M14 8.5h1.6M3.5 3.5l1.1 1.1M12.4 12.4l1.1 1.1M13.5 3.5l-1.1 1.1M4.6 12.4l-1.1 1.1"
+            stroke="currentColor"
+            stroke-width="1.4"
+            stroke-linecap="round"></path>
+        </svg>
+      </button>
+
       <!-- Alleen bij een muis. Op touch heeft een toetsencombinatie geen zin. -->
       <button
         type="button"
@@ -188,6 +215,19 @@ const actief = (href: string) => pad === href || pad.startsWith(`${href}/`);
     }
   }
 
+  /* In het donker zie je de maan en klik je naar licht. In het licht andersom. */
+  .thema-zon {
+    display: none;
+  }
+
+  :global(:root[data-thema='licht']) .thema-maan {
+    display: none;
+  }
+
+  :global(:root[data-thema='licht']) .thema-zon {
+    display: block;
+  }
+
   .menu-mobiel {
     position: fixed;
     inset: 0;
@@ -216,3 +256,46 @@ const actief = (href: string) => pad === href || pad.startsWith(`${href}/`);
     }
   }
 </style>
+
+<script>
+  /**
+   * Weergave wisselen. Ongeveer 400 bytes.
+   *
+   * Het zetten van het attribuut gebeurt al blokkerend in de head, zie
+   * Base.astro. Dit script doet alleen de klik, het onthouden, en het bijwerken
+   * van de toegankelijke naam en de theme-color. De iconen wisselt CSS.
+   */
+  const knop = document.querySelector<HTMLButtonElement>('[data-thema-knop]');
+
+  if (knop) {
+    const label = document.querySelector('[data-thema-label]');
+    const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+
+    const bij = (licht: boolean) => {
+      if (label) {
+        label.textContent = licht
+          ? 'Overschakelen naar de donkere weergave'
+          : 'Overschakelen naar de lichte weergave';
+      }
+      // Zelfde waarden als --color-ink in global.css.
+      if (meta) meta.content = licht ? '#fafbfa' : '#0a0c0b';
+    };
+
+    bij(document.documentElement.dataset.thema === 'licht');
+
+    knop.addEventListener('click', () => {
+      const licht = document.documentElement.dataset.thema !== 'licht';
+
+      if (licht) document.documentElement.dataset.thema = 'licht';
+      else delete document.documentElement.dataset.thema;
+
+      try {
+        localStorage.setItem('vp-thema', licht ? 'licht' : 'donker');
+      } catch {
+        // Private mode. De keuze geldt dan alleen voor deze pagina.
+      }
+
+      bij(licht);
+    });
+  }
+</script>

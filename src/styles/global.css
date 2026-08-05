@@ -60,18 +60,23 @@
   --color-mint-dim: #4fbf89;
   --color-mint-deep: #1f3a2c;
 
-  --color-ink: #080908;
-  --color-panel: #0e100f;
-  --color-raise: #151816;
-  --color-line: #1e2320;
-  --color-line-soft: #171b19;
+  /* De donkere set is één trap lichter dan de eerste versie. Die zat te dicht
+     op elkaar: een kaart van #0E100F op een pagina van #080908 is een verschil
+     van zes eenheden en dat leest als één plat zwart vlak. Nu komen de kaarten
+     los van de achtergrond zonder dat het een grijze site wordt. */
+  --color-ink: #0a0c0b;
+  --color-panel: #121514;
+  --color-raise: #1a1e1c;
+  --color-line: #262c29;
+  --color-line-soft: #1e2320;
 
   /* Alle drie nagemeten tegen ink, panel én raise. Ondergrens is 4.5:1,
      want de mono-labels zijn 11px en tellen dus als kleine tekst.
-     faint zat op #6B7370 en haalde maar 3,92 op panel. Zie CLAUDE.md deel 4. */
-  --color-fg: #f2f5f3; /* 18,2 op ink */
-  --color-muted: #9ba4a0; /* 7,8 op ink · 7,0 op raise */
-  --color-faint: #7c8480; /* 5,2 op ink · 5,0 op panel · 4,7 op raise */
+     faint zat op #7C8480 en haalde na het optrekken van raise maar 4,38.
+     Zie CLAUDE.md deel 4. */
+  --color-fg: #f2f5f3; /* 17,9 op ink */
+  --color-muted: #9ba4a0; /* 7,7 op ink · 6,6 op raise */
+  --color-faint: #848c88; /* 5,7 op ink · 5,3 op panel · 4,9 op raise */
 
   --font-display: 'Archivo', 'Archivo Fallback', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Mono Fallback', ui-monospace, monospace;
@@ -85,6 +90,46 @@
   --radius-vp: 0.625rem;
 
   --ease-uit: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ============================================================
+   LICHTE WEERGAVE
+   Donker is de site. Licht is een keuze achter de knop in de nav.
+   Daarom staat de donkere set in @theme en overschrijft deze blok
+   alleen wat anders moet.
+
+   Mint kan niet blijven zoals het is. #79E4AC is een licht pastel en
+   haalt op wit 1,6:1. In de lichte weergave gaat het accent dus naar
+   een donkere groen van dezelfde familie. Nog altijd één accent.
+
+   Alles hieronder is nagemeten, want een lichte weergave die niet
+   leesbaar is, is geen weergave. Ondergrens blijft 4.5:1.
+   ============================================================ */
+
+:root[data-thema='licht'] {
+  color-scheme: light;
+
+  /* Iets donkerder dan strikt nodig voor 4.5:1 op wit. Dat is met opzet: mint
+     ligt op een paar plaatsen als bg-mint-deep/25 of /40 achter tekst, en dan
+     is het vlak niet meer wit maar een lichte munttint. Op #D8F1E4, de
+     donkerste van die mengsels, haalt dit accent nog 5,5. */
+  --color-mint: #0a6b3d; /* 6,6 op panel · 6,4 op ink · 5,5 op mint-deep/40 */
+  --color-mint-dim: #075129; /* 9,1 op ink */
+  --color-mint-deep: #a6e3c3; /* alleen als vlak, nooit als tekst */
+
+  --color-ink: #fafbfa;
+  --color-panel: #ffffff;
+  --color-raise: #f1f4f2;
+  --color-line: #dde3df;
+  --color-line-soft: #e8edea;
+
+  --color-fg: #0c0f0d; /* 18,6 op ink */
+  --color-muted: #4a5350; /* 7,7 op ink */
+  --color-faint: #5f6864; /* 5,5 op ink · 5,8 op panel · 5,2 op raise */
+}
+
+:root {
+  color-scheme: dark;
 }
 
 /* ============================================================
@@ -123,6 +168,34 @@
     -webkit-font-smoothing: antialiased;
     /* clip, niet hidden: hidden op body breekt position: sticky. */
     overflow-x: clip;
+  }
+
+  /* Filmkorrel over de hele site.
+
+     Dit is het enige dat een groot effen vlak van plat naar tastbaar brengt, en
+     het is precies wat een site die verder klopt toch gedateerd doet aanvoelen
+     als het er niet is. Een SVG met feTurbulence, dus nul verzoeken en nul KB
+     extra: de data-URI zit in deze CSS.
+
+     pointer-events: none, want het ligt over alles. z-index 1 zet het boven de
+     inhoud maar onder de nav (z-50), zodat de balk bovenaan scherp blijft.
+     Popover en dialog staan in de top layer en zitten er dus ook boven. */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
+  }
+
+  /* Op wit valt korrel harder op, want grijze ruis is daar donkerder dan de
+     achtergrond in plaats van lichter. Dus minder. Geen mix-blend-mode:
+     dat maakt van deze laag een stacking context over het hele venster en dat
+     is duurder dan wat het oplevert. */
+  :root[data-thema='licht'] body::after {
+    opacity: 0.03;
   }
 
   h1,
@@ -229,6 +302,24 @@
   @media (width >= 48rem) {
     padding-block: 8rem;
   }
+}
+
+/* Doorlopend schalende koppen.
+
+   Hiervoor stond er `text-3xl sm:text-4xl md:text-5xl`: drie sprongen, dus op
+   elke tussenbreedte staat de kop net te klein of net te groot. Met clamp()
+   schaalt hij mee met het scherm en dat is wat een kop nu strak doet lezen.
+   De ondergrens is dezelfde als de oude text-3xl, de bovengrens dezelfde als
+   de oude text-5xl, dus niets wordt ineens groter dan het was. */
+@utility kop-hero {
+  font-size: clamp(2.75rem, 1.6rem + 5.2vw, 4.5rem);
+  line-height: 0.97;
+  letter-spacing: var(--tracking-kop-groot);
+}
+
+@utility kop-sectie {
+  font-size: clamp(1.875rem, 1.35rem + 2.4vw, 3rem);
+  letter-spacing: var(--tracking-kop-groot);
 }
 
 /* Lopende tekst: artikels, over-pagina, juridische pagina's.

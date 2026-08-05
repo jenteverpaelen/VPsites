@@ -46,6 +46,28 @@ const analyticsToken = '';
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
+    <!-- Moet blokkerend en bovenaan staan, voor de CSS. Zet de bezoeker de
+         lichte weergave aan en dit script draait later, dan zie je bij elke
+         paginawissel eerst een donkere flits. Daarom is dit het enige inline
+         script op de site.
+
+         Donker is de standaard: staat er niets opgeslagen, dan blijft het
+         donker, ook als het toestel op licht staat. Dat is een merkkeuze, geen
+         vergetelheid. Alleen een expliciete klik op de knop verandert het.
+
+         localStorage en geen cookie. Het is een voorkeur van de bezoeker zelf,
+         hij verlaat het toestel nooit, en er valt niemand mee te volgen.
+         Zie CLAUDE.md deel 4. -->
+    <script is:inline>
+      try {
+        if (localStorage.getItem('vp-thema') === 'licht') {
+          document.documentElement.dataset.thema = 'licht';
+        }
+      } catch (e) {
+        /* Private mode kan localStorage blokkeren. Dan gewoon donker. */
+      }
+    </script>
+
     <title>{titel}</title>
     <meta name="description" content={beschrijving} />
     <link rel="canonical" href={canonical} />
@@ -87,7 +109,9 @@ const analyticsToken = '';
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#080908" />
+    <!-- De knop in de nav werkt dit bij, zodat de browserbalk op mobiel
+         meekleurt met de gekozen weergave. -->
+    <meta name="theme-color" content="#0a0c0b" />
 
     <meta name="author" content={bedrijf.persoon} />
     <meta name="geo.region" content="BE-VLI" />

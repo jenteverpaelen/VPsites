@@ -58,10 +58,29 @@ Verder:
 ## Prijzen aanpassen
 
 Alleen in [`src/data/prijzen.ts`](src/data/prijzen.ts). Dat bestand voedt de
-prijskaarten, de command palette, de JSON-LD en de OG-kaarten.
+prijskaarten, de command palette en de JSON-LD.
 
 Stopt de introductieactie? Zet `introductie.actief` op `false`. De doorstreepte
-bedragen en het badge verdwijnen dan overal tegelijk.
+bedragen verdwijnen dan overal tegelijk.
+
+Drie plekken kunnen die file niet importeren, dus die moet je meenemen als je
+een prijs of een levertijd wijzigt:
+
+- [`scripts/og.mjs`](scripts/og.mjs), de regel onder de titel op de OG-kaarten
+- [`public/llms.txt`](public/llms.txt)
+- de `title` en `description` van `src/pages/index.astro` en
+  `src/pages/prijzen.astro`
+
+## Donker en licht
+
+Donker is de site. De knop in de balk zet het op licht, en die keuze blijft in
+`localStorage` staan onder `vp-thema`. Geen cookie, dus de belofte onderaan de
+site blijft kloppen.
+
+De lichte set staat in [`global.css`](src/styles/global.css) onder
+`:root[data-thema='licht']`. Wijzig je daar een kleur, meet het contrast dan na.
+Mint is in het licht een donkere groen, want de mint uit het logo haalt op wit
+1,6:1 en dat is onleesbaar.
 
 ## Werken via GitHub
 

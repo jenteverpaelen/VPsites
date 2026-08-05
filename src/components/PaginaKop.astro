@@ -66,4 +66,15 @@ const { comment, titel, intro, kruimels = [] } = Astro.props;
     mask-image: radial-gradient(42rem 22rem at 20% 0%, #000 0%, transparent 76%);
     opacity: 0.6;
   }
+
+  /* line op bijna wit is nauwelijks te zien, dus in de lichte weergave komt het
+     raster van fg met een lage menging. Zelfde aanpak als in Hero.astro. */
+  :global(:root[data-thema='licht']) .kop-raster {
+    opacity: 1;
+    background-image: radial-gradient(
+      circle at center,
+      color-mix(in srgb, var(--color-fg) 14%, transparent) 1px,
+      transparent 1px
+    );
+  }
 </style>

@@ -17,22 +17,29 @@ import { dirname, join } from 'node:path';
 const hier = dirname(fileURLToPath(import.meta.url));
 const uit = join(hier, '..', 'public', 'og');
 
+/* Dezelfde tokens als in global.css, maar dan de donkere set. Een OG-kaart
+   volgt de weergavekeuze van de bezoeker niet, dus die is altijd donker.
+   Wijzigen de tokens, wijzig ze hier mee. */
 const MINT = '#79E4AC';
-const INK = '#080908';
+const INK = '#0A0C0B';
 const FG = '#F2F5F3';
 const MUTED = '#9BA4A0';
-const LINE = '#1E2320';
+const LINE = '#262C29';
 
+/* De bedragen hieronder staan ook in src/data/prijzen.ts. Dit is een .mjs die
+   tijdens de prebuild draait en geen TypeScript kan importeren, dus dit is de
+   enige plek buiten src/data/ waar een prijs mag staan. Pas je een prijs aan,
+   pas dan ook deze twee regels aan. */
 const kaarten = {
   home: {
     label: 'VPSITES',
     regels: ['Een site die laadt', 'vóór je ademt.'],
-    onder: 'Vanaf €180 · geen btw · geen abonnement',
+    onder: 'Vanaf €150 · geen btw · geen abonnement',
   },
   prijzen: {
     label: 'VPSITES / PRIJZEN',
     regels: ['Alle prijzen', 'staan gewoon online.'],
-    onder: 'Onepager €180 · Starter €300 · geen btw',
+    onder: 'Onepager €150 · Starter €250 · geen btw',
   },
   werk: {
     label: 'VPSITES / WERK',

@@ -47,7 +47,7 @@ export const faq: FaqItem[] = [
   {
     vraag: 'Hoelang duurt het echt?',
     antwoord:
-      'Een onepager één week, een Starter twee weken, gerekend vanaf het moment dat ik je teksten en foto\'s heb. Die laatste zin is belangrijk. In de praktijk duurt het langer bij mensen die hun foto\'s pas na drie weken doorsturen. Ik hou je op de hoogte en je krijgt een link waarop je live kan volgen hoe het vordert.',
+      'Een onepager drie tot vier dagen, een Starter één week, gerekend vanaf het moment dat ik je teksten en foto\'s heb. Die laatste zin is belangrijk. In de praktijk duurt het langer bij mensen die hun foto\'s pas na drie weken doorsturen. Ik hou je op de hoogte en je krijgt een link waarop je live kan volgen hoe het vordert.',
     toon: ['prijzen'],
   },
   {

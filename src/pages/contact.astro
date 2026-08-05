@@ -206,6 +206,13 @@ const kruimels = [{ naam: 'contact', pad: '/contact' }];
       background-color 150ms;
   }
 
+  /* In het licht is het veld wit op bijna wit, en dan moet de rand het werk
+     doen. line haalt daar 1,1 tegen de pagina en dat is te weinig: de grens van
+     een invulveld moet 3:1 halen (WCAG 1.4.11). fg op 48 procent geeft 3,2. */
+  :global(:root[data-thema='licht']) .veld {
+    border-color: color-mix(in srgb, var(--color-fg) 48%, transparent);
+  }
+
   .veld::placeholder {
     color: var(--color-faint);
   }
@@ -219,8 +226,18 @@ const kruimels = [{ naam: 'contact', pad: '/contact' }];
     background-color: var(--color-raise);
   }
 
+  /* De enige kleur op de site die geen mint is, en de enige zonder token. Een
+     foutrand mag niet mint zijn, want mint betekent hier "in orde". Twee
+     waarden, want een rand moet 3:1 halen tegen het vlak waarop hij ligt en dat
+     vlak verschilt per weergave: 7,2 op het donkere paneel, 6,0 op het lichte.
+     De rand staat nooit alleen, er hoort altijd een tekstmelding bij, want
+     kleur alleen mag geen informatie dragen. */
   .veld[aria-invalid='true'] {
-    border-color: #e0796b;
+    border-color: #e8897a;
+  }
+
+  :global(:root[data-thema='licht']) .veld[aria-invalid='true'] {
+    border-color: #b23a26;
   }
 
   select.veld {
