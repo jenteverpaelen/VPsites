@@ -1,92 +1,108 @@
 ---
-import { existsSync, readFileSync } from 'node:fs';
-import { bedrijf } from '~/data/bedrijf';
+import { bedrijf, telHref, mailHref } from '~/data/bedrijf';
 
 /**
- * Portret van Jente.
+ * Geen foto, maar een gezet kaartje.
  *
- * Zodra public/jente.jpg bestaat, gebruikt dit component de varianten die
- * scripts/foto.mjs tijdens de build maakt. Geen bestand, geen probleem: dan
- * valt het terug op een typografisch portret. Bewust géén doos met "TODO"
- * erin, want als de site online gaat voor de foto er is, mag het er niet
- * stuk uitzien.
+ * Hier stond eerst een portretfoto. Jente wil zichzelf liever niet op de site,
+ * en dan is een lege plek of een silhouet de slechtste oplossing van al. Dit is
+ * de bewuste vervanging: een naamkaartje zoals een drukker het zou zetten.
  *
- * Er is dus niets aan te passen in de code. Foto erin zetten volstaat.
+ * Waarom dit werkt op de plek van een portret: een foto doet één ding op deze
+ * site, namelijk aantonen dat er een echt mens achter zit. Dat kan ook met een
+ * echte naam, een echte gemeente en een echt nummer, en die staan hier alle drie.
+ * Voor een lokale Vlaamse koper weegt een telefoonnummer dat je kan bellen even
+ * zwaar als een gezicht.
  *
- * De breedtes staan hier niet hardgecodeerd. Het script schaalt nooit op, dus
- * welke varianten er zijn hangt af van hoe groot jouw foto is. Het schrijft ze
- * in meta.json en dit component leest dat. Zo bied ik nooit een srcset aan met
- * een bestand dat er niet is.
+ * De verhouding blijft 4:5, dezelfde als de foto had, zodat de layouts eromheen
+ * niet hoeven te wijzigen.
  */
-
-type FotoMeta = {
-  breedtes: number[];
-  breedte: number;
-  hoogte: number;
-};
 
 interface Props {
   class?: string;
-  /** Alleen het eerste portret op een pagina is een LCP-kandidaat. */
+  /** Blijft bestaan zodat de aanroepen niet hoeven te wijzigen. Een kaartje
+   *  hoeft niet vroeg geladen te worden, dus het doet hier verder niets. */
   prioriteit?: boolean;
 }
 
-const { class: klasse = '', prioriteit = false } = Astro.props;
+const { class: klasse = '' } = Astro.props;
 
-const metaPad = 'public/portret/meta.json';
-const foto: FotoMeta | null = existsSync(metaPad)
-  ? (JSON.parse(readFileSync(metaPad, 'utf8')) as FotoMeta)
-  : null;
-
-const sizes = '(min-width: 1024px) 28rem, (min-width: 640px) 24rem, 100vw';
-const srcset = (extensie: string) =>
-  (foto?.breedtes ?? []).map((b) => `/portret/jente-${b}.${extensie} ${b}w`).join(', ');
-
-const initialen = 'JVP';
+const initialen = bedrijf.persoon
+  .split(' ')
+  .map((deel) => deel[0])
+  .join('');
 ---
 
-<div class:list={['relative aspect-4/5 overflow-hidden rounded-vp', klasse]}>
-  {
-    foto ? (
-      <picture>
-        <source type="image/avif" srcset={srcset('avif')} sizes={sizes} />
-        <source type="image/webp" srcset={srcset('webp')} sizes={sizes} />
-        <img
-          src={`/portret/jente-${foto.breedte}.jpg`}
-          alt={`${bedrijf.persoon}, de webdesigner achter ${bedrijf.naam}`}
-          width={foto.breedte}
-          height={foto.hoogte}
-          loading={prioriteit ? 'eager' : 'lazy'}
-          fetchpriority={prioriteit ? 'high' : 'auto'}
-          decoding="async"
-          class="h-full w-full object-cover"
-        />
-      </picture>
-    ) : (
-      <div class="portret flex h-full w-full flex-col justify-between border border-line bg-panel p-7">
-        <span class="label-mono">{bedrijf.naam}</span>
+<div
+  class:list={[
+    'kaartje relative flex aspect-4/5 flex-col justify-between overflow-hidden rounded-vp border border-line bg-panel p-7 md:p-8',
+    klasse,
+  ]}
+>
+  <!-- De initialen als watermerk. Groot, maar zo licht dat het textuur wordt in
+       plaats van tekst. aria-hidden, want het is de naam die eronder al staat. -->
+  <span class="kaartje-merk" aria-hidden="true">{initialen}</span>
 
-        <span
-          class="font-display text-[clamp(3.5rem,14vw,6rem)] leading-none font-bold tracking-kop-groot"
-          aria-hidden="true"
+  <div class="relative">
+    <span class="block h-px w-10 bg-mint" aria-hidden="true"></span>
+    <p class="mt-5 text-sm text-muted">{bedrijf.functie}</p>
+  </div>
+
+  <div class="relative">
+    <p class="font-display text-[clamp(1.75rem,7cqw,2.5rem)] leading-tight">
+      {bedrijf.persoon}
+    </p>
+    <p class="mt-2 text-sm text-muted">
+      {bedrijf.adres.gemeente}, {bedrijf.regio}
+    </p>
+  </div>
+
+  <dl class="relative space-y-1 text-sm">
+    <div>
+      <dt class="sr-only">Telefoon</dt>
+      <dd>
+        <a href={telHref} class="flex min-h-11 items-center transition-colors hover:text-mint">
+          {bedrijf.telefoonWeergave}
+        </a>
+      </dd>
+    </div>
+    <div>
+      <dt class="sr-only">E-mail</dt>
+      <dd>
+        <a
+          href={mailHref}
+          class="flex min-h-11 items-center break-all text-muted transition-colors hover:text-mint"
         >
-          {initialen}
-        </span>
-
-        <span class="font-mono text-xs leading-relaxed text-faint">
-          {bedrijf.persoon}
-          <br />
-          {bedrijf.functie.toLowerCase()}
-        </span>
-      </div>
-    )
-  }
+          {bedrijf.email}
+        </a>
+      </dd>
+    </div>
+  </dl>
 </div>
 
 <style>
-  .portret {
-    background-image: radial-gradient(circle at center, var(--color-line) 1px, transparent 1px);
-    background-size: 1.75rem 1.75rem;
-    background-position: center;
+  .kaartje {
+    /* container-type zodat de naam meeschaalt met de breedte van het kaartje en
+       niet met die van het venster. Dit ding staat op /over in een kolom van
+       28rem en op de home in een van 24rem. */
+    container-type: inline-size;
+  }
+
+  /* cqw en geen rem: dit kaartje staat op /over in een kolom van 28rem en op de
+     home in een van 24rem. Met een vaste maat liep het watermerk in de smalle
+     versie middenin een letter tegen de rand, en dat leest als een fout in plaats
+     van als een bewuste bleed. */
+  .kaartje-merk {
+    position: absolute;
+    right: -0.04em;
+    bottom: -0.16em;
+    font-family: var(--font-display);
+    font-size: 42cqw;
+    font-weight: 400;
+    line-height: 0.78;
+    letter-spacing: -0.05em;
+    color: var(--color-mint);
+    opacity: 0.1;
+    user-select: none;
   }
 </style>

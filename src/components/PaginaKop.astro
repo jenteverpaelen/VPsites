@@ -16,7 +16,7 @@ const { comment, titel, intro, kruimels = [] } = Astro.props;
     {
       kruimels.length > 0 && (
         <nav aria-label="Kruimelpad" class="mb-6">
-          <ol class="flex flex-wrap items-center gap-2 font-mono text-xs text-faint">
+          <ol class="flex flex-wrap items-center gap-2 text-sm text-faint">
             <li>
               <a href="/" class="inline-flex min-h-11 items-center hover:text-muted">
                 home
@@ -45,9 +45,15 @@ const { comment, titel, intro, kruimels = [] } = Astro.props;
       )
     }
 
-    <p class="comment-mono"><span class="text-mint-dim">//</span> {comment}</p>
+    <!-- Was een `// commentaar` in mono. Zelfde reden als in de hero: mono maakt
+         van een zin een terminalregel, en dat is de vibe die eraf moest. Nu een
+         streepje met een woord ernaast, net als bij elk blok op de home. -->
+    <p class="flex items-center gap-3 text-sm text-mint">
+      <span class="h-px w-8 bg-mint/40" aria-hidden="true"></span>
+      {comment}
+    </p>
 
-    <h1 class="mt-5 max-w-4xl text-4xl tracking-kop-groot sm:text-5xl md:text-6xl">
+    <h1 class="kop-kaart mt-6 max-w-4xl">
       {titel}
     </h1>
 

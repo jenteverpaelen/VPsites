@@ -8,7 +8,6 @@ dist/
 
 # Gegenereerd tijdens de build (npm run build maakt ze opnieuw)
 public/og/
-public/portret/
 
 # Omgevingsvariabelen. Deze horen in de Cloudflare Pages-instellingen,
 # nooit in de repo. Zie README.md.
