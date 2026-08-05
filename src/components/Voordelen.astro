@@ -1,69 +1,179 @@
 ---
 /**
- * Wat een goede site je oplevert, in drie voordelen die elkaar afwisselen.
+ * De visual in de hero: een gestileerd browservenster waarin staat wat een site
+ * je opbrengt.
  *
- * Stond hier eerst: een paneel met de live gemeten laadtijd van deze pagina.
- * Technisch mooi, maar het antwoordde op een vraag die de bezoeker niet stelt.
- * Een schrijnwerker wil niet weten hoeveel milliseconden de pagina nodig had, hij
- * wil weten wat het hem opbrengt. Dat meetpaneel staat nu bij de sectie over
- * snelheid, waar het wel hoort.
+ * Waarom dit en geen video. De site die als voorbeeld diende heeft hier een
+ * gerenderde MP4 van 15 seconden. Prachtig, maar nagemeten 1048 KB, op een pagina
+ * die in totaal 1280 KB weegt. Deze pagina weegt 36 KB. Die video alleen zou 29
+ * keer de hele site zijn, en de kop belooft letterlijk een site die laadt voor je
+ * ademt, met een meetpaneel eronder dat het aantoont. Dan spreekt de site zichzelf
+ * tegen op de plek waar hij het hardst moet kloppen.
  *
- * Geen verzonnen cijfers. Er bestaat geen betrouwbaar percentage voor "een
- * website levert x procent meer klanten op", dus staat er hier geen. Wat er staat
- * is wat er echt gebeurt als iemand je opzoekt.
+ * Dus alles met CSS en tekst: nul verzoeken, nul KB. Wat de diepte doet is niet
+ * een render maar drie oude truken: een lichte perspectiefdraai, een schaduw die
+ * eronder valt, en een haarlijn licht op de bovenrand. Samen leest dat als een
+ * voorwerp in plaats van een vlak.
  *
- * De wisseling is pure CSS met drie keyframes en een vertraging per item. Nul
- * JavaScript. Onder prefers-reduced-motion staan alle drie stil onder elkaar, dus
- * niemand mist inhoud.
+ * En het toont iets dat je verkoopt. Een abstracte gloed is decoratie; een
+ * browservenster met jouw voordelen erin is het product.
+ *
+ * Geen verzonnen cijfers in de voordelen. Er bestaat geen betrouwbaar percentage
+ * voor "een website levert x procent meer klanten op", dus staat er hier geen.
  */
 
 const voordelen = [
   {
     kop: 'Meer klanten',
-    tekst:
-      'Mensen zoeken je op voor ze bellen. Wie niets vindt, belt gewoon de volgende in de lijst.',
+    tekst: 'Mensen zoeken je op voor ze bellen. Wie niets vindt, belt de volgende.',
   },
   {
     kop: 'Meer bereik',
-    tekst:
-      'Gevonden worden op je stiel én je gemeente, ook door mensen die je naam nog nooit gehoord hebben.',
+    tekst: 'Gevonden op je stiel én je gemeente, ook door wie je naam nog niet kent.',
   },
   {
     kop: 'Meer vertrouwen',
-    tekst:
-      'Een site die er deftig uitziet doet de helft van het verkopen al voor je, nog voor je opneemt.',
+    tekst: 'Een site die er deftig uitziet verkoopt al de helft voor je.',
   },
 ];
 ---
 
-<div class="voordelen rounded-vp border border-line bg-panel p-7 md:p-8">
-  <p class="flex items-center gap-3 text-sm text-mint">
-    <span class="h-px w-8 bg-mint/40" aria-hidden="true"></span>
-    Wat het je opbrengt
-  </p>
+<div class="venster-vak">
+  <!-- De gloed valt buiten het venster en geeft het zijn plaats in de ruimte. -->
+  <div class="venster-gloed" aria-hidden="true"></div>
 
-  <!-- Vaste hoogte, want de drie items liggen over elkaar. Zonder die hoogte
-       klapt het vak dicht en dat is layout shift. -->
-  <div class="voordelen-vak mt-6">
-    {
-      voordelen.map((voordeel, i) => (
-        <div class="voordeel" style={`--i: ${i}`}>
-          <p class="text-2xl leading-tight md:text-3xl">{voordeel.kop}</p>
-          <p class="mt-3 leading-relaxed text-muted">{voordeel.tekst}</p>
-        </div>
-      ))
-    }
+  <div class="venster">
+    <!-- Balkje bovenaan. Drie stippen en een adres, genoeg om het als browser te
+         laten lezen zonder een echte adresbalk na te bouwen. -->
+    <div class="venster-balk" aria-hidden="true">
+      <span class="stip"></span>
+      <span class="stip"></span>
+      <span class="stip"></span>
+      <span class="venster-adres">jouwzaak.be</span>
+    </div>
+
+    <div class="venster-inhoud">
+      <!-- Vaste hoogte, want de drie liggen over elkaar. Zonder die hoogte klapt
+           het vak dicht en dat is layout shift. -->
+      <div class="voordelen-vak">
+        {
+          voordelen.map((voordeel, i) => (
+            <div class="voordeel" style={`--i: ${i}`}>
+              <p class="voordeel-label">Wat het je opbrengt</p>
+              <p class="voordeel-kop">{voordeel.kop}</p>
+              <p class="voordeel-tekst">{voordeel.tekst}</p>
+            </div>
+          ))
+        }
+      </div>
+
+      <!-- Twee knopvormen zonder tekst. Ze horen bij het venster, niet bij de
+           pagina, dus ze zijn geen echte knoppen en niet aanklikbaar. -->
+      <div class="venster-knoppen" aria-hidden="true">
+        <span class="knop-vol"></span>
+        <span class="knop-leeg"></span>
+      </div>
+    </div>
+
+    <!-- Voetregel van het venster: de twee cijfers die deze site zelf waarmaakt. -->
+    <div class="venster-voet" aria-hidden="true">
+      <span>onder 1 seconde</span>
+      <span class="venster-voet-punt">·</span>
+      <span>0 cookies</span>
+      <span class="venster-voet-punt">·</span>
+      <span>geen abonnement</span>
+    </div>
   </div>
-
-  <ul class="voordelen-stippen mt-6 flex gap-2" aria-hidden="true">
-    {voordelen.map((_, i) => <li class="stip" style={`--i: ${i}`} />)}
-  </ul>
 </div>
 
 <style>
+  .venster-vak {
+    position: relative;
+    /* perspective op de wikkel en de draai op het kind: dat is de enige manier
+       waarop een rotateY echt diepte geeft in plaats van een scheve platte vorm. */
+    perspective: 1400px;
+  }
+
+  .venster-gloed {
+    position: absolute;
+    inset: 12% -14% -18% -8%;
+    border-radius: 999px;
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--color-mint) 22%, transparent),
+      transparent 72%
+    );
+    filter: blur(28px);
+  }
+
+  .venster {
+    position: relative;
+    border: 1px solid var(--color-line);
+    border-radius: 0.75rem;
+    background-color: var(--color-panel);
+    overflow: hidden;
+    /* De drie dingen die het als voorwerp laten lezen. */
+    transform: rotateY(-7deg) rotateX(2.5deg);
+    box-shadow:
+      0 1.5rem 3rem -1rem color-mix(in srgb, var(--color-ink) 70%, transparent),
+      0 0 0 1px color-mix(in srgb, var(--color-fg) 4%, transparent);
+    transition: transform 700ms var(--ease-uit);
+  }
+
+  /* Haarlijn licht op de bovenrand. Dit detail doet meer voor de diepte dan de
+     schaduw, en bijna niemand ziet waarom. */
+  .venster::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      color-mix(in srgb, var(--color-fg) 22%, transparent) 30%,
+      color-mix(in srgb, var(--color-fg) 22%, transparent) 70%,
+      transparent
+    );
+  }
+
+  /* Recht bij hover: het voelt alsof je het naar je toe draait. */
+  .venster-vak:hover .venster {
+    transform: rotateY(0deg) rotateX(0deg);
+  }
+
+  .venster-balk {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.7rem 0.9rem;
+    border-bottom: 1px solid var(--color-line);
+    background-color: color-mix(in srgb, var(--color-raise) 70%, transparent);
+  }
+
+  .stip {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 999px;
+    background-color: var(--color-line);
+  }
+
+  .stip:first-child {
+    background-color: color-mix(in srgb, var(--color-mint) 70%, transparent);
+  }
+
+  .venster-adres {
+    margin-left: 0.6rem;
+    font-size: 0.6875rem;
+    color: var(--color-faint);
+  }
+
+  .venster-inhoud {
+    padding: 1.6rem 1.4rem 1.4rem;
+  }
+
   .voordelen-vak {
     position: relative;
-    min-height: 8.5rem;
+    min-height: 8.75rem;
   }
 
   .voordeel {
@@ -75,12 +185,30 @@ const voordelen = [
     animation-delay: calc(var(--i) * 4.5s);
   }
 
-  /* De drie fasen overlappen elkaar met opzet.
+  .voordeel-label {
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-mint);
+  }
 
-     Eerst stond hier zichtbaar van 6 tot 28 procent, en dat gaf een gat: drie
-     items op een derde van de ronde betekent dat er 1,5 seconde per wisseling
-     helemaal niets stond. Nu loopt elk item van 2 tot 35 procent, dus net iets
-     meer dan een derde, en vangt de volgende de vorige op voor die weg is. */
+  .voordeel-kop {
+    margin-top: 0.7rem;
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    line-height: 1.15;
+  }
+
+  .voordeel-tekst {
+    margin-top: 0.6rem;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+
+  /* De fasen overlappen. Drie items op precies een derde van de ronde laten een
+     gat van 1,5 seconde waarin er niets staat; nu vangt de volgende de vorige op
+     voor die weg is. */
   @keyframes voordeel-wissel {
     0% {
       opacity: 0;
@@ -98,45 +226,56 @@ const voordelen = [
     }
   }
 
-  .stip {
-    width: 1.5rem;
-    height: 2px;
-    background-color: var(--color-line);
-    position: relative;
-    overflow: hidden;
+  .venster-knoppen {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1.6rem;
   }
 
-  .stip::after {
-    content: '';
-    position: absolute;
-    inset: 0;
+  .knop-vol,
+  .knop-leeg {
+    height: 1.85rem;
+    border-radius: 0.3rem;
+  }
+
+  .knop-vol {
+    width: 6.5rem;
     background-color: var(--color-mint);
-    transform: scaleX(0);
-    transform-origin: left;
-    animation: stip-vullen 13.5s linear infinite;
-    animation-delay: calc(var(--i) * 4.5s);
   }
 
-  @keyframes stip-vullen {
-    0% {
-      transform: scaleX(0);
-    }
-    33% {
-      transform: scaleX(1);
-    }
-    34%,
-    100% {
-      transform: scaleX(0);
-    }
+  .knop-leeg {
+    width: 4.75rem;
+    border: 1px solid var(--color-line);
+  }
+
+  .venster-voet {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.65rem 1.4rem;
+    border-top: 1px solid var(--color-line);
+    font-size: 0.625rem;
+    letter-spacing: 0.06em;
+    color: var(--color-faint);
+  }
+
+  .venster-voet-punt {
+    color: color-mix(in srgb, var(--color-faint) 45%, transparent);
   }
 
   /* Alles stil, en dan moeten de drie wél alle drie leesbaar zijn. Dus uit de
-     stapel halen en onder elkaar zetten. */
+     stapel halen en onder elkaar zetten. De draai gaat er ook af: een scheef
+     venster zonder beweging leest als een fout. */
   @media (prefers-reduced-motion: reduce) {
+    .venster {
+      transform: none;
+      transition: none;
+    }
+
     .voordelen-vak {
       min-height: 0;
       display: grid;
-      gap: 1.75rem;
+      gap: 1.5rem;
     }
 
     .voordeel {
@@ -147,7 +286,7 @@ const voordelen = [
       animation: none;
     }
 
-    .voordelen-stippen {
+    .voordeel-label {
       display: none;
     }
   }
