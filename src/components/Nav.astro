@@ -217,16 +217,16 @@ const actief = (href: string) => pad === href || pad.startsWith(`${href}/`);
     }
   }
 
-  /* Op papier zie je de maan en klik je naar donker. In het donker andersom. */
-  .thema-zon {
+  /* In het donker zie je de zon en klik je naar papier. Op papier andersom. */
+  .thema-maan {
     display: none;
   }
 
-  :global(:root[data-thema='donker']) .thema-maan {
+  :global(:root[data-thema='licht']) .thema-zon {
     display: none;
   }
 
-  :global(:root[data-thema='donker']) .thema-zon {
+  :global(:root[data-thema='licht']) .thema-maan {
     display: block;
   }
 
@@ -273,31 +273,31 @@ const actief = (href: string) => pad === href || pad.startsWith(`${href}/`);
     const label = document.querySelector('[data-thema-label]');
     const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
 
-    const bij = (donker: boolean) => {
+    const bij = (licht: boolean) => {
       if (label) {
-        label.textContent = donker
-          ? 'Overschakelen naar de lichte weergave'
-          : 'Overschakelen naar de donkere weergave';
+        label.textContent = licht
+          ? 'Overschakelen naar de donkere weergave'
+          : 'Overschakelen naar de lichte weergave';
       }
       // Zelfde waarden als --color-ink in global.css.
-      if (meta) meta.content = donker ? '#16130f' : '#faf7f2';
+      if (meta) meta.content = licht ? '#faf7f2' : '#16130f';
     };
 
-    bij(document.documentElement.dataset.thema === 'donker');
+    bij(document.documentElement.dataset.thema === 'licht');
 
     knop.addEventListener('click', () => {
-      const donker = document.documentElement.dataset.thema !== 'donker';
+      const licht = document.documentElement.dataset.thema !== 'licht';
 
-      if (donker) document.documentElement.dataset.thema = 'donker';
+      if (licht) document.documentElement.dataset.thema = 'licht';
       else delete document.documentElement.dataset.thema;
 
       try {
-        localStorage.setItem('vp-thema', donker ? 'donker' : 'licht');
+        localStorage.setItem('vp-thema', licht ? 'licht' : 'donker');
       } catch {
         // Private mode. De keuze geldt dan alleen voor deze pagina.
       }
 
-      bij(donker);
+      bij(licht);
     });
   }
 </script>

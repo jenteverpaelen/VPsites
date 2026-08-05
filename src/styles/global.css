@@ -72,7 +72,7 @@
 
 @theme {
   /* ------------------------------------------------------------
-     PALET: warm papier, licht als standaard.
+     PALET: warm houtskool, donker als standaard.
 
      Hiervoor was dit bijna zwart met mint. Dat is de dark-tech-look, en het
      onderzoek naar 2026 is daar hard over: stark wit wordt vervangen door warme
@@ -90,23 +90,25 @@
      De namen liegen, de kleuren niet. Omdopen doe ik pas als de richting
      blijft staan, want dat raakt honderd klassen in dertig bestanden. */
 
-  /* Het accent: gebrande klei. Warm en zeker van zichzelf. */
-  --color-mint: #b4472b; /* 5,1 op papier · papier erop 5,1 */
-  --color-mint-dim: #8e3520; /* 7,3 met papier erop */
-  --color-mint-deep: #f9ede7; /* alleen als vlak, klei erop haalt 4,7 */
+  /* Donker is de standaard. Geen blauwzwart: dat is de dark-tech-look waar deze
+     richting van weg gaat. Dit is warm houtskool, dezelfde familie als het
+     papier van de lichte weergave maar gedoofd. */
 
-  /* Papier in drie diepten. Geen wit: wit is koud en leest als een leeg
-     tekstverwerkersdocument. */
-  --color-ink: #faf7f2;
-  --color-panel: #f2ebe0;
-  --color-raise: #ede5da;
-  --color-line: #dfd5c5;
-  --color-line-soft: #eae1d4;
+  /* Het accent: gebrande klei, opgelicht zodat het op houtskool leesbaar blijft.
+     De donkere klei van de lichte weergave haalt hier maar 2,8. */
+  --color-mint: #e8734f; /* 6,9 op ink */
+  --color-mint-dim: #d45f3c;
+  --color-mint-deep: #33201a; /* alleen als vlak */
 
-  /* Inkt in drie sterktes. Espresso, geen zwart. */
-  --color-fg: #221c16; /* 15,8 op papier */
-  --color-muted: #5c5348; /* 7,1 op papier */
-  --color-faint: #6e6458; /* 5,4 papier · 4,9 panel · 4,6 raise */
+  --color-ink: #16130f;
+  --color-panel: #1f1b16;
+  --color-raise: #29241d;
+  --color-line: #383026;
+  --color-line-soft: #2b2620;
+
+  --color-fg: #f5f0e8; /* 16,3 op ink */
+  --color-muted: #aba294; /* 7,4 op ink */
+  --color-faint: #99907f; /* 5,9 op ink · 4,9 op raise */
 
   /* ------------------------------------------------------------
      TYPOGRAFIE
@@ -134,41 +136,41 @@
 }
 
 /* ============================================================
-   DONKERE WEERGAVE
+   LICHTE WEERGAVE: warm papier
 
-   Omgedraaid. Papier is nu de site en donker is de keuze achter de knop, want
-   het hele punt van deze richting is dat de site níet meer als een developer-
-   dashboard leest. De standaard is dus licht, ook als het toestel op donker
-   staat: alleen een klik verandert het.
+   Donker is de site, papier is de keuze achter de knop in de balk. De standaard
+   blijft donker, ook als het toestel op licht staat: alleen een klik verandert
+   het.
 
-   Geen blauwzwart. Dat is de dark-tech-look waar we van weg gaan. Dit is warm
-   houtskool, dezelfde familie als het papier maar dan gedoofd, met een klei-
-   accent dat opgelicht is zodat het op donker leesbaar blijft.
+   Geen wit. Wit is koud en leest als een leeg tekstverwerkersdocument. Dit is
+   papier, met espresso in plaats van zwart, en dat is de richting die het
+   onderzoek naar 2026 aangeeft.
 
-   Alles nagemeten, ondergrens 4.5:1.
+   Alles nagemeten, ondergrens 4.5:1 voor tekst en 3:1 voor de rand van een
+   bedieningselement.
    ============================================================ */
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 }
 
-:root[data-thema='donker'] {
-  color-scheme: dark;
+:root[data-thema='licht'] {
+  color-scheme: light;
 
-  /* Klei moet lichter worden op donker: #B4472B haalt op houtskool maar 2,8. */
-  --color-mint: #e8734f; /* 6,9 op papier-donker */
-  --color-mint-dim: #d45f3c;
-  --color-mint-deep: #33201a; /* alleen als vlak */
+  /* Klei moet donkerder op papier: de opgelichte klei haalt op wit maar 2,4. */
+  --color-mint: #b4472b; /* 5,1 op papier · papier erop 5,1 */
+  --color-mint-dim: #8e3520; /* 7,3 met papier erop */
+  --color-mint-deep: #f9ede7; /* alleen als vlak, klei erop haalt 4,7 */
 
-  --color-ink: #16130f;
-  --color-panel: #1f1b16;
-  --color-raise: #29241d;
-  --color-line: #383026;
-  --color-line-soft: #2b2620;
+  --color-ink: #faf7f2;
+  --color-panel: #f2ebe0;
+  --color-raise: #ede5da;
+  --color-line: #dfd5c5;
+  --color-line-soft: #eae1d4;
 
-  --color-fg: #f5f0e8; /* 16,3 op ink */
-  --color-muted: #aba294; /* 7,4 op ink */
-  --color-faint: #99907f; /* 5,9 op ink · 4,9 op raise */
+  --color-fg: #221c16; /* 15,8 op papier */
+  --color-muted: #5c5348; /* 7,1 op papier */
+  --color-faint: #6e6458; /* 5,4 papier · 4,9 panel · 4,6 raise */
 }
 
 /* ============================================================
@@ -227,15 +229,15 @@
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    opacity: 0.03;
+    opacity: 0.05;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
   }
 
-  /* Op donker mag er meer korrel op: grijze ruis is daar lichter dan de
-     achtergrond en valt dus minder op. Geen mix-blend-mode, dat maakt van deze
+  /* Op papier valt korrel harder op: grijze ruis is daar donkerder dan de
+     achtergrond in plaats van lichter. Geen mix-blend-mode, dat maakt van deze
      laag een stacking context over het hele venster. */
-  :root[data-thema='donker'] body::after {
-    opacity: 0.05;
+  :root[data-thema='licht'] body::after {
+    opacity: 0.03;
   }
 
   h1,

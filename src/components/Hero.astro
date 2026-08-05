@@ -15,6 +15,7 @@ const vrij = introductie.actief && introductie.plaatsenOver > 0;
        want een animatie die eeuwig doorloopt kost batterij op een gsm. -->
   <div class="hero-raster" aria-hidden="true"></div>
   <div class="hero-aura" aria-hidden="true"></div>
+  <div class="hero-aura-2" aria-hidden="true"></div>
   <div class="hero-gloed" aria-hidden="true"></div>
 
   <div class="container-vp relative pt-16 pb-20 md:pt-24 md:pb-28">
@@ -118,6 +119,7 @@ const vrij = introductie.actief && introductie.plaatsenOver > 0;
   }
 
   .hero-aura,
+  .hero-aura-2,
   .hero-gloed {
     display: none;
   }
@@ -129,20 +131,49 @@ const vrij = introductie.actief && introductie.plaatsenOver > 0;
       animation: raster-drift 34s linear infinite;
     }
 
-    .hero-aura {
+    /* Twee zwervende gloedvlekken in plaats van één die alleen ademde.
+
+       De trucs die het organisch maken: de twee zijn verschillend groot en
+       verschillend sterk, ze zwerven over een ander traject, en hun rondes duren
+       34 en 47 seconden. Omdat die twee getallen niet in elkaar passen, staan ze
+       pas na een kwartier weer in dezelfde stand. Je herkent dus nooit een lus.
+
+       Alleen transform, dus dit loopt op de compositor en kost geen herberekening
+       van de layout. will-change houdt de twee lagen op de GPU, wat bij een
+       animatie die altijd doorloopt precies is wat je wil. */
+    .hero-aura,
+    .hero-aura-2 {
       display: block;
       position: absolute;
-      top: -18rem;
-      right: -12rem;
-      width: 46rem;
-      height: 46rem;
       border-radius: 999px;
+      pointer-events: none;
+      will-change: transform;
+    }
+
+    .hero-aura {
+      top: -20rem;
+      right: -14rem;
+      width: 48rem;
+      height: 48rem;
       background: radial-gradient(
         closest-side,
-        color-mix(in srgb, var(--color-mint) 9%, transparent),
+        color-mix(in srgb, var(--color-mint) 11%, transparent),
+        transparent 70%
+      );
+      animation: aura-zwerven-a 34s ease-in-out infinite;
+    }
+
+    .hero-aura-2 {
+      bottom: -26rem;
+      left: -12rem;
+      width: 42rem;
+      height: 42rem;
+      background: radial-gradient(
+        closest-side,
+        color-mix(in srgb, var(--color-mint) 8%, transparent),
         transparent 72%
       );
-      animation: aura-ademen 14s ease-in-out infinite alternate;
+      animation: aura-zwerven-b 47s ease-in-out infinite;
     }
 
     .hero-gloed {
