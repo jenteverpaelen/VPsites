@@ -611,6 +611,20 @@
   gap: 0.75rem;
   grid-template-columns: minmax(0, 1fr);
 
+  /* dense vult gaten op met een latere, kleinere tegel.
+
+     Zonder dit valt er een gat: op twee kolommen komt na een tegel van één
+     kolom een tegel van twee, die past niet meer in de halve rij die overblijft
+     en schuift dus een rij op. Het gat ernaast blijft leeg. Met dense schuift
+     grid een passende tegel van later naar voren.
+
+     De prijs is dat de zichtbare volgorde kan afwijken van de DOM-volgorde. Dat
+     mag hier: elke tegel is een afgerond paneel met zijn eigen kop, dus wie met
+     een screenreader of het toetsenbord door de pagina gaat volgt nog altijd een
+     logische reeks. Bij tegels die elkaar nodig hebben om gelezen te worden zou
+     dit niet mogen. */
+  grid-auto-flow: dense;
+
   @media (width >= 48rem) {
     gap: 1rem;
     grid-template-columns: repeat(2, minmax(0, 1fr));
