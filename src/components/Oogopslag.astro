@@ -1,0 +1,103 @@
+---
+/**
+ * De cijfers in één blok, in tegels van ongelijke grootte.
+ *
+ * Waarom dit hier staat: de rest van de pagina is een stapel banden over de
+ * volle breedte die allemaal hetzelfde ritme hebben. Dat is precies wat
+ * CLAUDE.md deel 2 als patroon afkeurt ("elke sectie exact even lang") en het
+ * is wat een site die verder klopt toch vlak doet aanvoelen. Eén blok met een
+ * andere structuur breekt dat ritme.
+ *
+ * Bewust geen icoontjesrij met "Snel / Veilig / Responsive". Elke tegel is een
+ * getal dat te controleren valt. Getallen worden ook geciteerd door
+ * AI-zoekmachines, bijvoeglijke naamwoorden niet. Zie CLAUDE.md deel 7.
+ *
+ * Twee tegels zijn dubbel zo breed, zes tegels vullen samen acht kolommen, dus
+ * het raster loopt vol zonder gat maar wel ongelijk. Dat is de bedoeling.
+ */
+
+import { pakketten, goedkoopstePrijs, terugkerend } from '~/data/prijzen';
+import { bedrijf } from '~/data/bedrijf';
+
+const onepager = pakketten.find((p) => p.id === 'onepager')!;
+const starterPakket = pakketten.find((p) => p.id === 'starter')!;
+
+const tegels = [
+  {
+    cijfer: `€${goedkoopstePrijs}`,
+    label: 'vanaf',
+    tekst:
+      'En dat is de eindprijs. Geen btw, want ik val onder de vrijstellingsregeling voor kleine ondernemingen.',
+    breed: true,
+  },
+  {
+    cijfer: onepager.levertijd,
+    label: 'onepager online',
+    tekst: `Een volledige site van vier tot vijf pagina's staat er in ${starterPakket.levertijd}.`,
+    breed: false,
+  },
+  {
+    cijfer: '0',
+    label: 'cookies',
+    tekst: 'Geen enkele. Daarom staat er ook geen banner in de weg.',
+    breed: false,
+  },
+  {
+    cijfer: `€${terugkerend.onderhoud.bedrag}`,
+    label: 'per maand',
+    tekst: `Ik verkoop geen onderhoudsabonnement. Na de oplevering betaal je alleen je domeinnaam, ongeveer €${terugkerend.domein.bedrag} per jaar.`,
+    breed: true,
+  },
+  {
+    cijfer: '20 KB',
+    label: 'javascript',
+    tekst: 'Daaronder blijft deze pagina. Het paneel in de hero meet het live na.',
+    breed: false,
+  },
+  {
+    cijfer: '1',
+    label: 'persoon',
+    tekst: `Ik. Je krijgt altijd mij aan de lijn, en ik zit in ${bedrijf.adres.gemeente}.`,
+    breed: false,
+  },
+];
+---
+
+<section class="sectie border-t border-line">
+  <div class="container-vp">
+    <p class="comment-mono op-scroll"><span class="text-mint-dim">//</span> de cijfers, zonder omweg</p>
+
+    <h2 class="op-scroll kop-sectie mt-5 max-w-2xl">Wat krijg je concreet?</h2>
+
+    <p class="op-scroll mt-6 max-w-2xl text-lg leading-relaxed text-muted">
+      Een vaste prijs vanaf &euro;{goedkoopstePrijs}, online binnen de week, en daarna
+      geen maandelijkse factuur. Hieronder staat het uit elkaar getrokken.
+    </p>
+
+    <dl class="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
+      {
+        tegels.map((tegel, i) => (
+          <div
+            data-stap={String(i % 3)}
+            class:list={[
+              'op-scroll hover-lift flex flex-col rounded-vp border border-line bg-panel p-5 md:p-6',
+              tegel.breed && 'col-span-2',
+            ]}
+          >
+            <dt class="label-mono">{tegel.label}</dt>
+            <dd class="mt-2 flex flex-1 flex-col">
+              {/* text-balance houdt "3 tot 4 dagen" netjes over twee regels in
+                  een halve kolom op 375px, in plaats van er uit te lopen. */}
+              <span class="text-2xl leading-tight font-bold tracking-kop-groot text-balance md:text-3xl">
+                {tegel.cijfer}
+              </span>
+              {/* mt-auto duwt de uitleg naar de onderkant, zodat de tegels op
+                  één lijn eindigen ook al is de ene tekst langer. */}
+              <span class="mt-auto pt-4 text-sm leading-relaxed text-muted">{tegel.tekst}</span>
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>
