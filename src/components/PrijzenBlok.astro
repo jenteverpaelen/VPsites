@@ -58,17 +58,27 @@ const { volledig = false, kop = 'Wat het kost' } = Astro.props;
 
     <div class="md:col-span-7">
       <h3 class="label-mono">Wat het daarna nog kost</h3>
+      <!-- Een div binnen een dl mag alleen dt- en dd-elementen bevatten. Hier stond
+           een geneste div met de term en de uitleg, en daarnaast een losse span met
+           het bedrag. Dat is ongeldig, en het is precies wat de
+           toegankelijkheidscontrole aangaf: een screenreader en een AI-agent kunnen
+           dan niet zien welk bedrag bij welke post hoort.
+
+           Nu is de post de term en het bedrag de beschrijving, met de uitleg als
+           tweede regel in de term. Het beeld blijft identiek. -->
       <dl class="mt-4 divide-y divide-line border-y border-line">
         {
           Object.entries(terugkerend).map(([sleutel, regel]) => (
             <div class="flex items-baseline justify-between gap-6 py-3.5">
-              <div>
-                <dt class="text-sm font-medium capitalize">{sleutel}</dt>
-                <dd class="mt-0.5 text-[0.8125rem] leading-snug text-faint">{regel.wat}</dd>
-              </div>
-              <span class="shrink-0 font-mono text-sm text-fg tabular-nums">
+              <dt class="min-w-0">
+                <span class="block text-sm font-medium capitalize">{sleutel}</span>
+                <span class="mt-0.5 block text-[0.8125rem] leading-snug text-faint">
+                  {regel.wat}
+                </span>
+              </dt>
+              <dd class="shrink-0 font-mono text-sm text-fg tabular-nums">
                 {regel.bedrag === 0 ? 'gratis' : `€${regel.bedrag}/${regel.per}`}
-              </span>
+              </dd>
             </div>
           ))
         }

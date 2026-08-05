@@ -96,8 +96,16 @@
 
   /* Het accent: gebrande klei, opgelicht zodat het op houtskool leesbaar blijft.
      De donkere klei van de lichte weergave haalt hier maar 2,8. */
-  --color-mint: #e8734f; /* 6,9 op ink */
+  --color-mint: #e8734f; /* 6,9 op ink · 6,4 op panel */
+
+  /* dim is uitsluitend voor vlakken en hover, NOOIT voor tekst.
+
+     Nagemeten: op panel haalt dit 4,49 en de ondergrens is 4,5. Tien labels op de
+     home stonden hierop en vielen allemaal net buiten, wat de
+     toegankelijkheidsaudit ook aangaf. Klein accentschrift hoort op --color-mint,
+     dat haalt 6,4 op hetzelfde vlak. */
   --color-mint-dim: #d45f3c;
+
   --color-mint-deep: #33201a; /* alleen als vlak */
 
   --color-ink: #16130f;
