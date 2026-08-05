@@ -35,8 +35,12 @@ const kolommen = [
 ];
 ---
 
-<footer class="border-t border-line bg-panel/40">
-  <div class="container-vp py-16 md:py-20">
+<footer class="relative border-t border-line bg-panel/40">
+  <!-- De rails lopen door tot onderaan, anders stopt het frame van de tekening
+       halverwege en lijkt het alsof de footer er los bij hangt. -->
+  <span class="raster-rails" aria-hidden="true"></span>
+
+  <div class="container-vp relative py-16 md:py-20">
     <div class="grid gap-12 md:grid-cols-12 md:gap-8">
       <div class="md:col-span-4">
         <Logo maat="md" wordmark />

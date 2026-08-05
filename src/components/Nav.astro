@@ -23,6 +23,10 @@ const actief = (href: string) => pad === href || pad.startsWith(`${href}/`);
 <header
   class="sticky top-0 z-50 border-b border-line/70 bg-ink/85 backdrop-blur-md supports-[backdrop-filter]:bg-ink/70"
 >
+  <!-- Dezelfde rails als over de inhoud, zodat het frame van de tekening
+       bovenaan begint en niet pas onder de balk. -->
+  <span class="raster-rails" aria-hidden="true"></span>
+
   <!-- Hoe ver je op de pagina staat. Ligt op de onderrand van de header, dus
        het neemt geen hoogte in en kan geen layout shift geven. -->
   <span class="nav-voortgang" aria-hidden="true"></span>
