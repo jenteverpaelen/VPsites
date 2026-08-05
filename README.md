@@ -165,10 +165,30 @@ A-record naar een IP zit alleen in de weg.
 Voor `www` is er wel handwerk, want `SITE_URL` staat op de apex zonder www:
 
 1. DNS → Add record → type **CNAME**, name `www`, target `vpsites.be`, proxy
-   **aan** (oranje wolkje). Zonder proxy kan een Redirect Rule niet vuren
-2. Rules → Redirect Rules → Create. Als `hostname` gelijk is aan
-   `www.vpsites.be`, dan een **301** naar
-   `concat("https://vpsites.be", http.request.uri.path)`
+   **aan** (oranje wolkje). Zonder proxy gaat het verkeer niet langs Cloudflare
+   en kan de volgende stap niet vuren
+2. Rules → Redirect Rules → Create. Voorwaarde: `Hostname` **equals**
+   `www.vpsites.be`
+
+Kies bij de actie **Dynamic redirect** en niet Static. Dat is de val: een static
+redirect stuurt alles naar één vaste URL, dus `www.vpsites.be/prijzen` komt dan
+op de homepagina terecht in plaats van op de prijzen. Bij dynamic zet je:
+
+```
+concat("https://vpsites.be", http.request.uri.path)
+```
+
+Status **301**, en **Preserve query string** aan, anders verdwijnt alles achter
+een vraagteken.
+
+Test daarna met een pad en niet met de bare domeinnaam, want een fout in de
+expressie zie je alleen daar:
+
+```bash
+curl -sI https://www.vpsites.be/prijzen | grep -i "^location"
+```
+
+Daar hoort `location: https://vpsites.be/prijzen` te staan.
 
 Twee hostnames die allebei de site tonen is dubbele content. De canonicals
 wijzen al naar de apex, maar een redirect is duidelijker dan Google laten kiezen.
