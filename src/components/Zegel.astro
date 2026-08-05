@@ -1,0 +1,146 @@
+---
+import Logo from '~/components/Logo.astro';
+import { bedrijf } from '~/data/bedrijf';
+
+/**
+ * Een gezet zegel, zoals een drukker of een notaris er een zou stempelen.
+ *
+ * Op deze plek stond eerst een portretfoto en daarna een naamkaartje. Dat tweede
+ * werkte niet, en de reden was niet de inhoud maar de vórm: een staand vak van 4:5
+ * ís een fotoplek, wat je er ook in zet. Een cirkel is dat nooit. Daarom is dit
+ * rond, en niet mooier vierkant.
+ *
+ * De ring draait, het midden staat stil. Zou het midden meedraaien, dan wordt het
+ * een laadicoon in plaats van een merkteken.
+ *
+ * In het midden staat het echte Logo-component en geen nagetekende letters in de
+ * SVG. Dat kan omdat het midden gewone HTML boven de SVG is in plaats van erin.
+ * Zo blijft het merkteken op één plek gedefinieerd: pas je het logo aan, dan
+ * wijzigt het zegel mee.
+ *
+ * Verder alleen SVG-vormen en tekst, dus nul afbeeldingen en nul verzoeken. De
+ * ring leest bedrijf.ts, dus een andere gemeente wijzigt het zegel mee.
+ */
+
+interface Props {
+  class?: string;
+}
+
+const { class: klasse = '' } = Astro.props;
+
+/* De ring is 2πr lang, met r = 72 dus ongeveer 452 punten. Op deze lettergrootte
+   past daar rond de 46 tekens in. Wordt de tekst langer, dan loopt hij over
+   zichzelf heen, dus hou het kort. */
+const ringtekst = `${bedrijf.naam} · ${bedrijf.persoon} · ${bedrijf.adres.gemeente} · `;
+---
+
+<div class:list={['zegel relative', klasse]}>
+  <svg
+    viewBox="0 0 200 200"
+    role="img"
+    aria-label={`${bedrijf.naam}, ${bedrijf.persoon}, ${bedrijf.adres.gemeente}, sinds ${bedrijf.startjaar}`}
+  >
+    <defs>
+      <!-- Twee halve bogen, want een volledige cirkel in één arc kan niet. -->
+      <path
+        id="zegel-ring"
+        fill="none"
+        d="M 100,100 m -72,0 a 72,72 0 1,1 144,0 a 72,72 0 1,1 -144,0"
+      ></path>
+    </defs>
+
+    <circle cx="100" cy="100" r="95" class="zegel-buiten"></circle>
+    <circle cx="100" cy="100" r="58" class="zegel-binnen"></circle>
+
+    <g class="zegel-draai">
+      <text class="zegel-tekst">
+        <textPath href="#zegel-ring" startOffset="0">{ringtekst}</textPath>
+      </text>
+    </g>
+  </svg>
+
+  <!-- Het midden ligt als HTML over de SVG, zodat het Logo-component hergebruikt
+       kan worden. aria-hidden, want het label op de svg leest alles al voor.
+
+       De positionering staat met opzet in Tailwind-klassen en niet in de scoped
+       stijl hieronder: die bereikte dit element niet, waardoor het midden onder de
+       cirkel viel in plaats van erin. Utilities zijn globaal en kunnen niet
+       weggescoped worden. -->
+  <div
+    class="pointer-events-none absolute inset-0 grid place-items-center content-center gap-2.5"
+    aria-hidden="true"
+  >
+    <!-- Maat md, en dan als geheel opgeschaald. Niet de lettergrootte binnen het
+         logo aanpassen: dat zijn drie spans met elk hun eigen maat en tracking, en
+         die uit elkaar trekken breekt de verhoudingen van het merkteken. Een scale
+         houdt alles in verhouding. -->
+    <div class="zegel-logo">
+      <Logo maat="md" />
+    </div>
+    <p class="zegel-jaar">sinds {bedrijf.startjaar}</p>
+  </div>
+</div>
+
+<style>
+  .zegel {
+    width: 100%;
+    max-width: 17rem;
+  }
+
+  .zegel svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .zegel-buiten,
+  .zegel-binnen {
+    fill: none;
+    stroke: var(--color-line);
+    stroke-width: 1;
+  }
+
+  .zegel-buiten {
+    stroke: color-mix(in srgb, var(--color-mint) 45%, transparent);
+  }
+
+  .zegel-tekst {
+    fill: var(--color-mint);
+    font-family: var(--font-tekst);
+    font-size: 12.5px;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+  }
+
+  .zegel-logo {
+    transform: scale(1.22);
+  }
+
+  .zegel-jaar {
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-faint);
+  }
+
+  /* Alleen de ring draait. transform-box: view-box is nodig, want zonder dat
+     rekent de browser het draaipunt uit op de bounding box van de tekst en dan
+     slingert het zegel scheef rond in plaats van netjes in zijn as. */
+  .zegel-draai {
+    transform-box: view-box;
+    transform-origin: 100px 100px;
+    animation: zegel-draaien 40s linear infinite;
+  }
+
+  @keyframes zegel-draaien {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .zegel-draai {
+      animation: none;
+    }
+  }
+</style>

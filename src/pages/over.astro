@@ -2,7 +2,7 @@
 import Base from '~/layouts/Base.astro';
 import PaginaKop from '~/components/PaginaKop.astro';
 import ContactCta from '~/components/ContactCta.astro';
-import PortretJente from '~/components/PortretJente.astro';
+import Zegel from '~/components/Zegel.astro';
 import { bedrijf, telHref, mailHref, adresRegel } from '~/data/bedrijf';
 import { kruimelSchema } from '~/lib/schema';
 
@@ -33,26 +33,35 @@ const feiten = [
   <section class="sectie">
     <div class="container-vp">
       <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
-        <div class="lg:col-span-5">
-          <PortretJente prioriteit />
+        <!-- Hier stond een staand vak van 4:5. Dat is een fotoplek, wat je er ook
+             in zet, en Jente wil geen foto van zichzelf op de site. Dus is de
+             plek zelf weg: deze kolom is nu alleen de feiten, op haarlijnen en
+             zonder kader. Geen vorm die om een beeld vraagt.
 
-          <dl class="mt-8 divide-y divide-line border-y border-line">
-            {
-              feiten.map((feit) => (
-                <div class="flex items-baseline justify-between gap-4 py-3">
-                  <dt class="label-mono">{feit.label}</dt>
-                  <dd class="text-right text-sm">{feit.waarde}</dd>
-                </div>
-              ))
-            }
-          </dl>
+             Sticky, want het is een naslagkolom naast een leeskolom. Zo staat het
+             ondernemingsnummer nog in beeld terwijl je de tekst ernaast leest. -->
+        <div class="lg:col-span-4">
+          <div class="lg:sticky lg:top-28">
+            <Zegel class="mb-10" />
+
+            <dl class="border-t border-line">
+              {
+                feiten.map((feit) => (
+                  <div class="border-b border-line py-4">
+                    <dt class="text-sm text-faint">{feit.label}</dt>
+                    <dd class="mt-1 font-display text-lg leading-snug">{feit.waarde}</dd>
+                  </div>
+                ))
+              }
+            </dl>
+          </div>
         </div>
 
         <!-- Ingekort van ongeveer 360 naar 150 woorden. Wat eruit ging waren de
              aanlopen en de herhaling, niet de inhoud: de vier bezwaren staan er
              alle vier nog. Dat is precies wat deze pagina moet doen, want wie
              hier komt zoekt geen verhaal maar een reden om te vertrouwen. -->
-        <div class="prose-vp lg:col-span-7">
+        <div class="prose-vp lg:col-span-8">
           <h2>Waarom ik hieraan begon</h2>
           <p>
             Ik bouw al jaren websites, eerst voor mezelf en daarna voor vrienden. Steeds
