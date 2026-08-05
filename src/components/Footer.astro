@@ -100,4 +100,25 @@ const kolommen = [
       </div>
     </div>
   </div>
+
+  <!-- Slotwoord op formaat. Puur decoratief, dus aria-hidden: de naam staat er
+       hierboven al drie keer en een screenreader hoeft die niet nog eens.
+
+       De maat is zo gekozen dat hij op geen enkele breedte tegen de rand loopt:
+       zeven letters van ongeveer 0,62em is 4,3em breed, en 18vw blijft daarmee
+       onder de binnenbreedte van de container van 320 tot 1920. overflow-hidden
+       staat er als vangnet, niet als oplossing. -->
+  <div class="container-vp overflow-hidden pb-8">
+    <p class="slotwoord select-none" aria-hidden="true">VPsites</p>
+  </div>
 </footer>
+
+<style>
+  .slotwoord {
+    font-size: clamp(2.5rem, 18vw, 13rem);
+    font-weight: 700;
+    line-height: 0.82;
+    letter-spacing: -0.05em;
+    color: var(--color-line);
+  }
+</style>

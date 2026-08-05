@@ -296,12 +296,48 @@
   color: var(--color-faint);
 }
 
+/* Drie sectiehoogtes en niet één.
+
+   Eén uniforme spacing-regel giet "elke sectie exact even lang" in code, en dat
+   staat in CLAUDE.md deel 2 zelf op de lijst van AI-patronen. Gebruik ze om de
+   pagina in een ongelijk ritme te laten ademen. */
 @utility sectie {
   padding-block: 5rem;
 
   @media (width >= 48rem) {
     padding-block: 8rem;
   }
+}
+
+@utility sectie-krap {
+  padding-block: 3.5rem;
+
+  @media (width >= 48rem) {
+    padding-block: 5.5rem;
+  }
+}
+
+@utility sectie-ruim {
+  padding-block: 6.5rem;
+
+  @media (width >= 48rem) {
+    padding-block: 11rem;
+  }
+}
+
+/* Tekst op een vol mint vlak. Daar is ink de tekstkleur, niet fg.
+
+   Nagemeten tegen mint in beide weergaven:
+     op-mint         12,6:1 donker · 6,4:1 licht
+     op-mint-zacht    9,0:1 donker · 5,1:1 licht
+   De zachte variant staat op 85 procent en niet op 75, want op de donkere mint
+   van de lichte weergave haalde 75 procent maar 4,3:1. */
+@utility op-mint {
+  color: var(--color-ink);
+}
+
+@utility op-mint-zacht {
+  color: color-mix(in srgb, var(--color-ink) 85%, var(--color-mint));
 }
 
 /* Doorlopend schalende koppen.
@@ -319,6 +355,14 @@
 
 @utility kop-sectie {
   font-size: clamp(1.875rem, 1.35rem + 2.4vw, 3rem);
+  letter-spacing: var(--tracking-kop-groot);
+}
+
+/* Voor de uitspraak: groter dan een sectiekop, kleiner dan de H1 van de home.
+   Eén keer op de pagina, anders is het geen uitspraak meer maar een stijl. */
+@utility kop-uitspraak {
+  font-size: clamp(2.25rem, 1.2rem + 5vw, 4rem);
+  line-height: 1.02;
   letter-spacing: var(--tracking-kop-groot);
 }
 

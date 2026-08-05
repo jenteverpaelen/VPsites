@@ -1,30 +1,47 @@
 ---
 import { bedrijf, telHref, mailHref } from '~/data/bedrijf';
-import { pakketten } from '~/data/prijzen';
+import { goedkoopstePrijs } from '~/data/prijzen';
 
-const goedkoopste = Math.min(...pakketten.map((p) => p.prijs));
+/**
+ * Het enige volle mint vlak op de pagina.
+ *
+ * Hiervoor was dit een donkere band met een mint knopje erin, net als elke
+ * andere band erboven. Daardoor had de pagina nergens een brandpunt en las mint
+ * als een kleur die de site niet durfde te gebruiken. Nu is het laatste dat je
+ * ziet ook het enige dat schreeuwt.
+ *
+ * Eén vol vlak per pagina, want twee brandpunten is nul brandpunten. Zie de
+ * één-accent-regel in CLAUDE.md deel 3.
+ *
+ * Tekst is hier ink en niet fg, via op-mint en op-mint-zacht. De knoppen keren
+ * mee om: de primaire wordt het donkere vlak, want op mint is donker het
+ * accent.
+ */
 ---
 
-<section class="relative overflow-hidden border-t border-line">
-  <div class="cta-gloed" aria-hidden="true"></div>
+<section class="sectie-ruim relative overflow-hidden bg-mint">
+  <div class="container-vp relative">
+    <div class="max-w-3xl">
+      <!-- Hier bewust niet comment-mono, want die utility zet zelf color op
+           faint. Twee utilities die dezelfde property zetten worden door
+           Tailwind gesorteerd en niet door de volgorde in het class-attribuut,
+           dus welke wint is niet te zien aan deze regel. Faint op mint haalt
+           1,9:1. Dus liever de opmaak hier uitgeschreven. -->
+      <p class="op-scroll op-mint-zacht font-mono text-[0.8125rem] tracking-[0.01em]">
+        <span aria-hidden="true">//</span> geen formulier van twintig velden
+      </p>
 
-  <div class="container-vp relative py-20 md:py-28">
-    <div class="max-w-2xl">
-      <p class="comment-mono op-scroll"><span class="text-mint-dim">//</span> geen formulier van twintig velden</p>
+      <h2 class="kop-hero op-scroll op-mint mt-5">Stuur me gewoon wat je doet.</h2>
 
-      <h2 class="op-scroll mt-5 kop-sectie">
-        Stuur me gewoon wat je doet.
-      </h2>
-
-      <p class="op-scroll mt-6 text-lg leading-relaxed text-muted">
+      <p class="op-scroll op-mint-zacht mt-7 max-w-xl text-lg leading-relaxed md:text-xl">
         Eén zin volstaat. Ik antwoord binnen de dag met wat het bij jou zou kosten en
         hoelang het duurt. Kost je niets en je zit nergens aan vast.
       </p>
 
-      <div class="op-scroll mt-9 flex flex-col gap-3 sm:flex-row">
+      <div class="op-scroll mt-10 flex flex-col gap-3 sm:flex-row">
         <a
           href="/contact"
-          class="group inline-flex min-h-13 items-center justify-center gap-2 rounded-vp bg-mint px-6 font-semibold text-ink transition-colors hover:bg-mint-dim"
+          class="group inline-flex min-h-13 items-center justify-center gap-2 rounded-vp bg-ink px-6 font-semibold text-fg transition-transform hover:-translate-y-0.5"
         >
           Vraag een prijs
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"
@@ -33,19 +50,22 @@ const goedkoopste = Math.min(...pakketten.map((p) => p.prijs));
               stroke-linecap="round" stroke-linejoin="round"></path>
           </svg>
         </a>
+        <!-- border-ink/60 en niet /25: op mint haalt 25 procent maar 1,7:1 en de
+             rand van een knop moet 3:1 halen. Op 60 procent is het 4,5 in het
+             donker en 3,3 in het licht. -->
         <a
           href={telHref}
-          class="inline-flex min-h-13 items-center justify-center rounded-vp border border-line bg-panel px-6 font-medium transition-colors hover:border-line-soft hover:bg-raise"
+          class="op-mint inline-flex min-h-13 items-center justify-center rounded-vp border border-ink/60 px-6 font-medium transition-colors hover:bg-ink/10"
         >
           Of bel {bedrijf.telefoonWeergave}
         </a>
       </div>
 
-      <p class="op-scroll mt-4 flex flex-wrap items-center gap-x-2 font-mono text-xs text-faint">
-        <span>Vanaf €{goedkoopste} en dat is de eindprijs.</span>
+      <p class="op-scroll op-mint-zacht mt-6 flex flex-wrap items-center gap-x-2 font-mono text-xs">
+        <span>Vanaf &euro;{goedkoopstePrijs} en dat is de eindprijs.</span>
         <a
           href={mailHref}
-          class="inline-flex min-h-11 items-center underline decoration-line underline-offset-4 hover:text-mint"
+          class="op-mint inline-flex min-h-11 items-center underline decoration-ink/40 underline-offset-4 hover:decoration-ink"
         >
           {bedrijf.email}
         </a>
@@ -53,15 +73,3 @@ const goedkoopste = Math.min(...pakketten.map((p) => p.prijs));
     </div>
   </div>
 </section>
-
-<style>
-  .cta-gloed {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-      44rem 22rem at 12% 120%,
-      color-mix(in srgb, var(--color-mint) 9%, transparent),
-      transparent 70%
-    );
-  }
-</style>

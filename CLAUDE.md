@@ -123,7 +123,28 @@ precies wat een site die verder klopt toch gedateerd doet aanvoelen.
 
 **Mint is de enige accentkleur.** Geen tweede accent, geen gradient tussen twee kleuren, geen paars, geen blauw. AI-output gebruikt bijna altijd twee of drie accenten plus een gradient. Eén accent is de goedkoopste manier om er niet als AI uit te zien.
 
-Mint alleen voor: interactie (links, knoppen, focus), nadruk (één woord in een kop), de logo-brackets, en de lijn in de proces-pipeline. Nooit als groot gevuld vlak. Nooit als achtergrond van een sectie.
+**Eén accent betekent niet: een schuchter accent.** Die twee heb ik in de eerste
+versie van dit bestand door elkaar gehaald. Er stond "nooit als groot gevuld
+vlak, nooit als achtergrond van een sectie", en het gevolg was een site waar
+mint alleen nog in haarlijnen en kleine tekst voorkwam. Op een bijna zwarte
+pagina leest dat als een site die zijn eigen kleur niet durft te gebruiken.
+
+Wat nu geldt:
+
+- **Eén vol mint vlak per pagina, niet meer.** Het is het brandpunt, dus twee
+  brandpunten is nul brandpunten. Op de home is dat het contactblok onderaan
+- Tekst op mint is `--color-ink`, nooit `--color-fg`. Gebruik de utilities
+  `op-mint` en `op-mint-zacht`. Nagemeten: 12,6:1 en 9:1 in het donker, 6,4:1 en
+  5,1:1 in het licht
+- Op een mint vlak geen `comment-mono` of `label-mono` gebruiken. Die zetten
+  zelf `color` op faint, en faint op mint haalt 1,9:1. Twee utilities die
+  dezelfde property zetten worden door Tailwind gesorteerd en niet door de
+  volgorde in je class-attribuut, dus je ziet in de regel niet wie wint. Schrijf
+  de opmaak daar uit
+- Verder blijft mint voor interactie (links, knoppen, focus), nadruk (één woord
+  in een kop), de logo-brackets en de lijn in de proces-pipeline
+- Nog altijd geen gradient tussen twee kleuren. Mint naar transparant mag,
+  want dat is één kleur
 
 ### Typografie
 
@@ -145,7 +166,21 @@ Die spanning tussen samengeperste koppen en uitgerekte labels is het handschrift
 
 ### Spacing
 
-Tailwind-schaal. Sectie-ritme: `py-20` mobiel, `py-32` desktop. Container `max-w-6xl`, gutters `px-5` mobiel en `px-8` vanaf md.
+Tailwind-schaal. Container `max-w-6xl`, gutters `px-5` mobiel en `px-8` vanaf md.
+
+Sectie-ritme: `sectie` is de basis, `py-20` mobiel en `py-32` desktop. Maar
+**niet elke sectie mag die basis krijgen.** Deel 2 noemt "elke sectie exact even
+lang" zelf als AI-patroon, en dan is één uniforme spacing-regel precies dat
+patroon in code gieten. Daarom staan er drie:
+
+| Utility | Wanneer |
+|---|---|
+| `sectie` | de standaard, het meeste |
+| `sectie-krap` | korte secties die tegen de vorige aan mogen liggen |
+| `sectie-ruim` | een brandpunt dat lucht nodig heeft, zoals het mint blok |
+
+Gebruik ze om de pagina te laten ademen in een ongelijk ritme. Als je door de
+home scrollt en elke band voelt even lang, dan is er iets fout.
 
 ---
 
