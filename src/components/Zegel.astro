@@ -85,6 +85,18 @@ const ringtekst = `${bedrijf.naam} · ${bedrijf.persoon} · ${bedrijf.adres.geme
   .zegel {
     width: 100%;
     max-width: 17rem;
+
+    /* Niet meerekken met de rij.
+
+       Zonder dit rekt dit blok als grid- of flex-item uit tot de hoogte van de
+       kolom ernaast, want stretch is de standaard. De SVG blijft dan 272 hoog
+       terwijl het blok 455 wordt, en het midden staat met inset: 0 dus 92 pixels
+       te laag: het logo zakt uit de cirkel. Nagemeten voor en na.
+
+       De fix staat hier en niet bij de aanroeper, want dit gaat mis op elke plek
+       waar je dit component in een rij met langere inhoud zet. */
+    align-self: start;
+    justify-self: start;
   }
 
   .zegel svg {
