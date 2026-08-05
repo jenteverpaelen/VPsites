@@ -94,7 +94,11 @@ export const pakketten: Pakket[] = [
 /** Losse opties, prijs per stuk. */
 export const opties = [
   { naam: 'Extra pagina', prijs: 20, eenheid: 'per pagina' },
-  { naam: 'Tweede taal', prijs: 120, eenheid: 'voor de hele site' },
+  /* Stond op €120, en dat was niet te verdedigen. Op een site van €250 is dat
+     bijna de helft erbij, terwijl het werk vooral structureel is: elke pagina
+     dubbel, een taalwissel, hreflang-tags en de sitemap verdubbeld. Een paar uur,
+     geen halve site. Het vertalen zelf zit er niet in, dat staat in de eenheid. */
+  { naam: 'Tweede taal', prijs: 60, eenheid: 'jij levert de vertaling' },
   { naam: 'Ik schrijf je teksten', prijs: 90, eenheid: 'voor de hele site' },
   { naam: 'Google Bedrijfsprofiel opzetten', prijs: 45, eenheid: 'eenmalig' },
   { naam: 'Eenvoudig tekstlogo', prijs: 60, eenheid: 'eenmalig' },

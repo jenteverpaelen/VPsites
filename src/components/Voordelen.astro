@@ -75,19 +75,23 @@ const voordelen = [
     animation-delay: calc(var(--i) * 4.5s);
   }
 
-  /* Zichtbaar van 0 tot een derde, met een korte fade aan beide kanten. */
+  /* De drie fasen overlappen elkaar met opzet.
+
+     Eerst stond hier zichtbaar van 6 tot 28 procent, en dat gaf een gat: drie
+     items op een derde van de ronde betekent dat er 1,5 seconde per wisseling
+     helemaal niets stond. Nu loopt elk item van 2 tot 35 procent, dus net iets
+     meer dan een derde, en vangt de volgende de vorige op voor die weg is. */
   @keyframes voordeel-wissel {
-    0%,
-    2% {
+    0% {
       opacity: 0;
       transform: translate3d(0, 0.5rem, 0);
     }
-    6%,
-    28% {
+    4%,
+    31% {
       opacity: 1;
       transform: none;
     }
-    33%,
+    35%,
     100% {
       opacity: 0;
       transform: translate3d(0, -0.5rem, 0);
