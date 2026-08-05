@@ -218,10 +218,19 @@ Content Collections     zod-schema's
 @fontsource-variable    zelf-gehoste fonts
 @astrojs/sitemap
 sharp                   AVIF + WebP tijdens build
-@astrojs/cloudflare     adapter, enkel voor het formulier-endpoint
+wrangler                deploy naar Cloudflare Workers
 ```
 
-Deploy: Cloudflare Pages.
+Deploy: **Cloudflare Workers**, niet Pages. `dist/` gaat als statische assets
+naar de edge en Cloudflare bedient die rechtstreeks. Daarvoor staat één Worker
+uit `worker/`, en die komt alleen aan de beurt voor `/api/contact`.
+
+**Geen Astro-adapter**, en dat is een keuze. Het formulier heeft één server-kant
+nodig en die past in dertig regels. Een adapter zou daarvoor een hele runtime
+meebouwen en de build van statisch naar server duwen. Koppeling tussen `dist/` en
+de Worker staat in `wrangler.jsonc`.
+
+Controleren zonder te uploaden: `npx wrangler deploy --dry-run`.
 
 ### Niet gebruiken
 
@@ -348,6 +357,11 @@ Drempel van de regeling is €25.000 omzet per jaar. Wordt die overschreden, dan
 
 ```
 CLAUDE.md                     dit bestand
+wrangler.jsonc                dist/ als assets plus de Worker ervoor
+worker/
+  index.ts                    routeert /api/contact, rest naar de assets
+  contact.ts                  formulierlogica, honeypot en Resend
+  env.ts                      eigen typering, geen workers-types
 public/
   robots.txt  llms.txt  favicon.svg  apple-touch-icon.png  site.webmanifest
 src/

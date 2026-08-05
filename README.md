@@ -102,30 +102,36 @@ git push -u origin prijzen-aanpassen
 
 ## Online zetten
 
-**Cloudflare Pages, niet Workers.** Dat is geen detail. Het formulier staat als
-Pages Function in `functions/api/contact.ts`, en die conventie bestaat alleen bij
-Pages. De Workers-flow vraagt `npx wrangler deploy`, er is geen `wrangler.toml`
-in dit project, en dan faalt de deploy. Cloudflare duwt nieuwe projecten
-richting Workers, dus je moet Pages actief opzoeken: **Workers & Pages → Create
-→ tabblad Pages → Connect to Git**.
+**Cloudflare Workers**, gekoppeld aan de GitHub-repo. De site is een statische
+build in `dist/` die Cloudflare rechtstreeks van de edge bedient. Daarvoor staat
+één Worker uit [`worker/`](worker/), en die komt alleen aan de beurt voor
+`/api/contact`. De koppeling staat in [`wrangler.jsonc`](wrangler.jsonc).
 
-Instellingen:
+Instellingen in **Workers & Pages → Create → Import a repository**:
 
 | Veld | Waarde |
 |---|---|
-| Framework preset | Astro |
+| Project name | `vpsites` |
 | Build command | `npm run build` |
-| Build output directory | `dist` |
-| Root directory | leeg laten |
+| Deploy command | `npx wrangler deploy` |
+| Non-production branch deploy command | `npx wrangler versions upload` |
+| Path | `/` |
 
 De Node-versie komt uit [`.nvmrc`](.nvmrc), nu 24, dezelfde als in CI. Pikt
 Cloudflare dat niet op, zet dan `NODE_VERSION` op `24` bij de variabelen.
 
-Elke push naar `main` zet vanzelf een nieuwe versie live, en elke pull request
-krijgt een eigen voorbeeld-URL.
+Elke push naar `main` zet vanzelf een nieuwe versie live. Andere branches krijgen
+via `versions upload` een eigen voorbeeld-URL, zonder de productieversie aan te
+raken.
 
-De map `functions/` wordt automatisch opgepikt en bedient `/api/contact`.
-Zet deze variabelen in de Pages-instellingen:
+Controleren of de config klopt zonder iets te uploaden:
+
+```bash
+npx wrangler deploy --dry-run
+```
+
+Zet deze variabelen bij de Worker onder **Settings → Variables and Secrets**,
+en zet de eerste als **Secret** en niet als plain text:
 
 | Variabele | Waarvoor |
 |---|---|
@@ -134,14 +140,22 @@ Zet deze variabelen in de Pages-instellingen:
 | `MAIL_VAN` | afzender op een geverifieerd domein |
 | `TURNSTILE_SECRET` | optioneel, extra spamcontrole |
 
-Het formulier werkt niet in `npm run dev`, want Pages Functions draaien daar
-niet. Je krijgt dan een melding die dat zegt.
+Het formulier werkt niet in `npm run dev`, want de Worker draait daar niet mee.
+Je krijgt dan een melding die dat zegt. Wil je het lokaal wél testen, bouw dan
+eerst en start de Worker apart:
+
+```bash
+npm run build && npx wrangler dev
+```
 
 ### Je domein eraan hangen
 
-Na de eerste deploy: project → **Custom domains** → Set up a domain →
-`vpsites.be`. Staat de DNS van dat domein al bij Cloudflare, dan is het één klik.
-Zo niet, verhuis eerst de nameservers naar Cloudflare.
+Na de eerste deploy: de Worker → **Settings → Domains & Routes** → Add → Custom
+domain → `vpsites.be`. Staat de DNS van dat domein al bij Cloudflare, dan is het
+één klik. Zo niet, verhuis eerst de nameservers naar Cloudflare.
+
+Doe dit ook echt, want de `workers.dev`-URL die je bij de eerste deploy krijgt is
+niet het domein waar de canonicals naar wijzen.
 
 `SITE_URL` in [`src/data/site.mjs`](src/data/site.mjs) staat op
 `https://vpsites.be`, dus **zonder www**. Hang je ook `www.vpsites.be` eraan, zet

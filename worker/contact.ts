@@ -1,9 +1,9 @@
 /**
- * Cloudflare Pages Function. Draait op /api/contact.
+ * Het contactformulier. Draait op POST /api/contact.
  *
- * Bewust géén Astro-adapter: het bestand staat buiten src/ en Cloudflare
- * Pages pikt het vanzelf op. Zo blijft de Astro-build 100% statisch en is
- * er geen server-bundel die meegebouwd moet worden.
+ * Dit stond eerst als Cloudflare Pages Function in functions/api/contact.ts.
+ * Dat werkt alleen bij Pages, en dit project staat op Workers, dus de logica is
+ * verhuisd naar een gewone fetch-handler. Inhoudelijk is er niets veranderd.
  *
  * Draait niet mee in `astro dev`. Het formulier vangt dat af en toont dan
  * een duidelijke melding in plaats van stilletjes te falen.
@@ -11,24 +11,10 @@
  * Drie lagen tegen spam, van goedkoop naar duur:
  *   1. honeypot, een veld dat een mens nooit invult
  *   2. tijdcontrole, want een bot vult sneller in dan een mens kan typen
- *   3. Cloudflare Turnstile, alleen als de sleutels ingesteld zijn
+ *   3. Cloudflare Turnstile, alleen als de sleutel ingesteld is
  */
 
-interface Env {
-  RESEND_API_KEY?: string;
-  TURNSTILE_SECRET?: string;
-  MAIL_NAAR?: string;
-  MAIL_VAN?: string;
-}
-
-/**
- * Minimale eigen typering in plaats van @cloudflare/workers-types.
- * Dat pakket weegt tientallen megabytes voor precies deze drie regels.
- */
-type PagesContext = {
-  request: Request;
-  env: Env;
-};
+import type { Env } from './env';
 
 type Antwoord = { ok: true } | { ok: false; fout: string };
 
@@ -41,7 +27,11 @@ const json = (data: Antwoord, status = 200) =>
 /** Minimale tijd tussen laden en versturen. Een mens haalt dit altijd. */
 const MINIMUM_SECONDEN = 3;
 
-export const onRequestPost = async ({ request, env }: PagesContext): Promise<Response> => {
+export async function contact(request: Request, env: Env): Promise<Response> {
+  if (request.method !== 'POST') {
+    return json({ ok: false, fout: 'Alleen POST.' }, 405);
+  }
+
   let velden: FormData;
   try {
     velden = await request.formData();
@@ -83,18 +73,15 @@ export const onRequestPost = async ({ request, env }: PagesContext): Promise<Res
     const token = tekst('cf-turnstile-response');
     if (!token) return json({ ok: false, fout: 'Bevestig even dat je geen robot bent.' }, 422);
 
-    const controle = await fetch(
-      'https://challenges.cloudflare.com/turnstile/v0/siteverify',
-      {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          secret: env.TURNSTILE_SECRET,
-          response: token,
-          remoteip: request.headers.get('cf-connecting-ip') ?? undefined,
-        }),
-      }
-    )
+    const controle = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        secret: env.TURNSTILE_SECRET,
+        response: token,
+        remoteip: request.headers.get('cf-connecting-ip') ?? undefined,
+      }),
+    })
       .then((r) => r.json() as Promise<{ success: boolean }>)
       .catch(() => ({ success: false }));
 
@@ -149,4 +136,4 @@ export const onRequestPost = async ({ request, env }: PagesContext): Promise<Res
   }
 
   return json({ ok: true });
-};
+}

@@ -1,0 +1,34 @@
+{
+  // Cloudflare Workers, niet Pages. De site is een statische build in dist/ met
+  // één Worker ervoor voor het contactformulier.
+  //
+  // Deploy: npx wrangler deploy
+  // Geheimen (RESEND_API_KEY en de rest) staan NIET hier, maar bij de
+  // Worker onder Settings > Variables and Secrets. Zie de README.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "vpsites",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-08-01",
+
+  "assets": {
+    // Waar `npm run build` de site neerzet.
+    "directory": "./dist",
+
+    // Zonder binding kan de Worker de statische bestanden niet zelf opvragen,
+    // en dan kan hij ook de 404-pagina niet teruggeven.
+    "binding": "ASSETS",
+
+    // Astro bouwt dist/404.html. Zonder deze regel krijg je bij een verkeerde
+    // URL de kale Cloudflare-fout in plaats van onze eigen 404.
+    "not_found_handling": "404-page",
+
+    // De site gebruikt trailingSlash: 'never' en alle canonicals staan zonder
+    // slash. Dus /prijzen/ moet doorverwijzen naar /prijzen, en niet allebei
+    // antwoorden. Twee URL's voor één pagina is dubbele content.
+    "html_handling": "drop-trailing-slash"
+  },
+
+  "observability": {
+    "enabled": true
+  }
+}

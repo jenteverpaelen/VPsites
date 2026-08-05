@@ -12,15 +12,14 @@ import { SITE_URL } from './src/data/site.mjs';
 
 // Volledig statisch, en bewust géén Astro-adapter.
 //
-// Het formulier heeft één server-kant nodig, en die staat als Pages Function in
-// functions/api/contact.ts. Cloudflare Pages pikt die map zelf op en bedient
-// /api/contact. Daardoor blijft deze build 100 procent statisch en hoeft er geen
-// adapter in, wat een hoop KB en een hele runtime scheelt.
+// Het formulier heeft één server-kant nodig, en die staat als losse Cloudflare
+// Worker in worker/. De site zelf is een gewone statische build in dist/, die
+// Cloudflare rechtstreeks van de edge bedient. De Worker komt alleen aan de
+// beurt voor /api/contact. Zo hoeft er geen adapter in en blijft deze build 100
+// procent statisch, wat een hoop KB en een hele runtime scheelt.
 //
-// Gevolg voor het live zetten: dit project hoort op Cloudflare **Pages**, met
-// build command `npm run build` en output directory `dist`. Niet op de
-// Workers-flow met `npx wrangler deploy`, want die kent de functions-conventie
-// niet en er is geen wrangler-config. Zie de README.
+// Live zetten gebeurt met `npx wrangler deploy`. De koppeling tussen dist/ en de
+// Worker staat in wrangler.jsonc. Zie de README.
 export default defineConfig({
   site: SITE_URL,
   output: 'static',
