@@ -3,10 +3,15 @@
  *
  * Draait automatisch voor elke build via het prebuild-script.
  *
- * Let op: sharp rendert SVG via librsvg en dat leest geen ingebed woff2.
- * Archivo is hier dus niet beschikbaar en de tekst staat in Arial Bold.
- * Dat is ook een neo-grotesk en op 1200x630 zie je het verschil niet.
- * Alle andere vormgeving, kleur en het VP-merkteken, is wel identiek.
+ * Let op: sharp rendert SVG via librsvg en dat leest geen ingebed woff2. Fraunces
+ * is hier dus niet beschikbaar. In de plaats staat er een systeem-serif, met een
+ * stack die op Windows én op de Linux-builder van Cloudflare uitkomt op een
+ * serif. Op 1200x630 zie je het verschil met Fraunces niet, en wat wél telt is
+ * dat het een serif is en geen grotesk: dat is de vorm die het nieuwe ontwerp
+ * herkenbaar maakt.
+ *
+ * Alle overige vormgeving, de kleuren en het VP-merkteken, is identiek aan de
+ * site.
  */
 
 import sharp from 'sharp';
@@ -17,14 +22,25 @@ import { dirname, join } from 'node:path';
 const hier = dirname(fileURLToPath(import.meta.url));
 const uit = join(hier, '..', 'public', 'og');
 
-/* Dezelfde tokens als in global.css, maar dan de donkere set. Een OG-kaart
-   volgt de weergavekeuze van de bezoeker niet, dus die is altijd donker.
-   Wijzigen de tokens, wijzig ze hier mee. */
-const MINT = '#79E4AC';
-const INK = '#0A0C0B';
-const FG = '#F2F5F3';
-const MUTED = '#9BA4A0';
-const LINE = '#262C29';
+/* Dezelfde tokens als in global.css, de donkere set. Een OG-kaart volgt de
+   weergavekeuze van de bezoeker niet, dus die is altijd de standaard.
+   Wijzigen de tokens, wijzig ze hier mee.
+
+   De namen zijn nog die van het oude palet omdat ze door dit hele bestand
+   staan: MINT is nu gebrande klei en INK is warm houtskool. */
+const MINT = '#E8734F';
+const INK = '#16130F';
+const FG = '#F5F0E8';
+const MUTED = '#ABA294';
+const LINE = '#383026';
+const VAAG = '#99907F';
+
+/* De kop staat in een serif, net als op de site. librsvg kan geen woff2 uit een
+   SVG laden, dus dit moet een font zijn dat op de bouwmachine staat. Georgia is
+   er op Windows, Liberation en DejaVu op de Linux-builder van Cloudflare. Zo
+   rendert het overal een serif in plaats van terug te vallen op een grotesk. */
+const SERIF = "Georgia, 'Liberation Serif', 'DejaVu Serif', serif";
+const SANS = "Arial, 'Liberation Sans', 'DejaVu Sans', sans-serif";
 
 /* De bedragen hieronder staan ook in src/data/prijzen.ts. Dit is een .mjs die
    tijdens de prebuild draait en geen TypeScript kan importeren, dus dit is de
@@ -32,32 +48,32 @@ const LINE = '#262C29';
    pas dan ook deze twee regels aan. */
 const kaarten = {
   home: {
-    label: 'VPSITES',
+    label: 'VPsites',
     regels: ['Een site die laadt', 'vóór je ademt.'],
     onder: 'Vanaf €150 · geen btw · geen abonnement',
   },
   prijzen: {
-    label: 'VPSITES / PRIJZEN',
+    label: 'Prijzen',
     regels: ['Alle prijzen', 'staan gewoon online.'],
     onder: 'Onepager €150 · Starter €250 · geen btw',
   },
   werk: {
-    label: 'VPSITES / WERK',
+    label: 'Werk',
     regels: ['Klein, en dat', 'mag geweten zijn.'],
     onder: 'Introductieprijs zolang ik mijn portfolio opbouw',
   },
   over: {
-    label: 'VPSITES / OVER',
+    label: 'Over Jente',
     regels: ['Dag, ik ben Jente.'],
     onder: 'Websites in bijberoep, uit passie',
   },
   contact: {
-    label: 'VPSITES / CONTACT',
+    label: 'Contact',
     regels: ['Vertel me', 'wat je doet.'],
     onder: 'Eén zin volstaat. Antwoord binnen de dag',
   },
   kennis: {
-    label: 'VPSITES / KENNIS',
+    label: 'Kennis',
     regels: ['Eerlijke uitleg', 'over websites.'],
     onder: 'Wat het kost, wat moet, en wat niet',
   },
@@ -71,11 +87,14 @@ function bouwSvg({ label, regels, onder }) {
   const grootte = regels.length > 1 ? 82 : 92;
   const start = regels.length > 1 ? 300 : 330;
 
+  /* Gewicht 400 en tracking bijna neutraal, net als op de site. Een serif op
+     formaat heeft geen vet nodig, en 700 met -3 tracking was het handschrift van
+     het oude ontwerp. */
   const titel = regels
     .map(
       (regel, i) =>
-        `<text x="80" y="${start + i * (grootte * 1.06)}" font-family="Arial, Helvetica, sans-serif"
-           font-size="${grootte}" font-weight="700" letter-spacing="-3" fill="${FG}">${veilig(regel)}</text>`
+        `<text x="80" y="${start + i * (grootte * 1.08)}" font-family="${SERIF}"
+           font-size="${grootte}" font-weight="400" letter-spacing="-1" fill="${FG}">${veilig(regel)}</text>`
     )
     .join('\n');
 
@@ -108,17 +127,18 @@ function bouwSvg({ label, regels, onder }) {
     <path stroke="${MINT}" stroke-width="6.2" stroke-linecap="round" d="M65 1.2 57.6 30.9"/>
   </g>
 
-  <text x="80" y="176" font-family="Consolas, 'DejaVu Sans Mono', monospace" font-size="19"
-        letter-spacing="5.5" fill="#6B7370">${veilig(label)}</text>
+  <!-- Het label staat niet meer in mono met wijde tracking. Dat was het
+       developer-signaal, en het nieuwe ontwerp gebruikt daarvoor een streepje met
+       een woord ernaast in de accentkleur. -->
+  <rect x="80" y="169" width="34" height="2" fill="${MINT}"/>
+  <text x="128" y="176" font-family="${SANS}" font-size="21" fill="${MINT}">${veilig(label)}</text>
 
   ${titel}
 
-  <rect x="80" y="486" width="64" height="4" rx="2" fill="${MINT}"/>
+  <text x="80" y="540" font-family="${SANS}" font-size="27" fill="${MUTED}">${veilig(onder)}</text>
 
-  <text x="80" y="546" font-family="Arial, Helvetica, sans-serif" font-size="27" fill="${MUTED}">${veilig(onder)}</text>
-
-  <text x="1120" y="546" text-anchor="end" font-family="Consolas, 'DejaVu Sans Mono', monospace"
-        font-size="19" letter-spacing="1.5" fill="#6B7370">vpsites.be</text>
+  <text x="1120" y="540" text-anchor="end" font-family="${SANS}"
+        font-size="21" fill="${VAAG}">vpsites.be</text>
 </svg>`;
 }
 

@@ -245,7 +245,7 @@ Niet onderhandelbaar. Wordt er één gebroken, dan klopt de belofte van de site 
 | Contrast | minimaal 4.5:1 voor tekst, 3:1 voor UI-componenten |
 | Raakvlakken | minimaal 48×48 CSS-px, 8px tussenruimte |
 | Cookies | **nul**. Geen enkele. Daarom ook geen cookiebanner |
-| localStorage | één sleutel, `vp-thema`, de gekozen weergave. Verlaat het toestel nooit en is niet te volgen. Verder niets |
+| localStorage | één sleutel, `vp-weergave`, de gekozen weergave. Verlaat het toestel nooit en is niet te volgen. Verder niets |
 | Trackers van derden | nul, behalve cookieloze Cloudflare Web Analytics |
 
 De site verkoopt snelheid. Haalt de site die cijfers zelf niet, dan is de site een leugen. Dit is de reden dat er geen React in zit.

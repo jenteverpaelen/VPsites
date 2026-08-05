@@ -56,10 +56,17 @@ const analyticsToken = '';
          vergetelheid. Alleen een expliciete klik op de knop verandert het.
 
          localStorage en geen cookie. Het is een voorkeur van de bezoeker zelf,
-         hij verlaat het toestel nooit, en er valt niemand mee te volgen. -->
+         hij verlaat het toestel nooit, en er valt niemand mee te volgen.
+
+         De sleutel heet `vp-weergave` en niet meer `vp-thema`. Dat is met opzet:
+         tijdens de herbouw is de standaard een keer omgedraaid, en daarmee
+         veranderde de betekenis van de oude waarde. Iemand die toen op licht
+         stond, kreeg licht te zien terwijl donker weer de standaard was. Een
+         sleutel waarvan de betekenis wijzigt hoort een nieuwe naam te krijgen,
+         zodat oude waarden vervallen in plaats van iets anders te betekenen. -->
     <script is:inline>
       try {
-        if (localStorage.getItem('vp-thema') === 'licht') {
+        if (localStorage.getItem('vp-weergave') === 'licht') {
           document.documentElement.dataset.thema = 'licht';
         }
       } catch {

@@ -292,7 +292,7 @@ const actief = (href: string) => pad === href || pad.startsWith(`${href}/`);
       else delete document.documentElement.dataset.thema;
 
       try {
-        localStorage.setItem('vp-thema', licht ? 'licht' : 'donker');
+        localStorage.setItem('vp-weergave', licht ? 'licht' : 'donker');
       } catch {
         // Private mode. De keuze geldt dan alleen voor deze pagina.
       }

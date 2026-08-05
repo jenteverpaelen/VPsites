@@ -73,14 +73,21 @@ een prijs of een levertijd wijzigt:
 
 ## Donker en licht
 
-Donker is de site. De knop in de balk zet het op licht, en die keuze blijft in
-`localStorage` staan onder `vp-thema`. Geen cookie, dus de belofte onderaan de
-site blijft kloppen.
+Donker is de site: warm houtskool met gebrande klei als accent. De knop in de
+balk zet het op papier, en die keuze blijft in `localStorage` staan onder
+`vp-weergave`. Geen cookie, dus de belofte onderaan de site blijft kloppen.
+
+Die sleutel heette eerst `vp-thema`. Tijdens de herbouw is de standaard een keer
+omgedraaid, en daarmee veranderde de betekenis van de opgeslagen waarde: wie toen
+op licht stond, kreeg licht te zien terwijl donker weer de standaard was. Een
+sleutel waarvan de betekenis wijzigt hoort een nieuwe naam te krijgen, zodat oude
+waarden vervallen in plaats van iets anders te betekenen. Draai je de standaard
+ooit nog om, doe dan hetzelfde.
 
 De lichte set staat in [`global.css`](src/styles/global.css) onder
 `:root[data-thema='licht']`. Wijzig je daar een kleur, meet het contrast dan na.
-Mint is in het licht een donkere groen, want de mint uit het logo haalt op wit
-1,6:1 en dat is onleesbaar.
+Het accent moet daar donkerder: de opgelichte klei van de donkere weergave haalt
+op papier maar 2,4:1 en dat is onleesbaar.
 
 ## Werken via GitHub
 
