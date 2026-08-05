@@ -29,16 +29,16 @@ const actief = (href: string) => pad === href || pad.startsWith(`${href}/`);
 
   <!-- Vanaf lg staat het logo en de navigatie in de zijbalk. Deze balk wordt
        daar een smalle werkbalk met alleen zoeken, weergave en de knop. -->
-  <div class="container-app flex h-16 items-center justify-between gap-4 md:h-18 lg:h-14">
+  <div class="container-vp flex h-16 items-center justify-between gap-4 md:h-20">
     <a
       href="/"
-      class="-ml-1 flex min-h-12 items-center rounded-vp px-1 transition-opacity hover:opacity-80 lg:hidden"
+      class="-ml-1 flex min-h-12 items-center rounded-vp px-1 transition-opacity hover:opacity-80 "
       aria-label="VPsites, naar de homepagina"
     >
       <Logo maat="sm" />
     </a>
 
-    <nav class="hidden items-center gap-1 md:flex lg:hidden" aria-label="Hoofdmenu">
+    <nav class="hidden items-center gap-1 md:flex " aria-label="Hoofdmenu">
       {
         links.map((link) => (
           <a
@@ -217,16 +217,16 @@ const actief = (href: string) => pad === href || pad.startsWith(`${href}/`);
     }
   }
 
-  /* In het donker zie je de maan en klik je naar licht. In het licht andersom. */
+  /* Op papier zie je de maan en klik je naar donker. In het donker andersom. */
   .thema-zon {
     display: none;
   }
 
-  :global(:root[data-thema='licht']) .thema-maan {
+  :global(:root[data-thema='donker']) .thema-maan {
     display: none;
   }
 
-  :global(:root[data-thema='licht']) .thema-zon {
+  :global(:root[data-thema='donker']) .thema-zon {
     display: block;
   }
 
@@ -273,31 +273,31 @@ const actief = (href: string) => pad === href || pad.startsWith(`${href}/`);
     const label = document.querySelector('[data-thema-label]');
     const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
 
-    const bij = (licht: boolean) => {
+    const bij = (donker: boolean) => {
       if (label) {
-        label.textContent = licht
-          ? 'Overschakelen naar de donkere weergave'
-          : 'Overschakelen naar de lichte weergave';
+        label.textContent = donker
+          ? 'Overschakelen naar de lichte weergave'
+          : 'Overschakelen naar de donkere weergave';
       }
       // Zelfde waarden als --color-ink in global.css.
-      if (meta) meta.content = licht ? '#fafbfa' : '#0a0c0b';
+      if (meta) meta.content = donker ? '#16130f' : '#faf7f2';
     };
 
-    bij(document.documentElement.dataset.thema === 'licht');
+    bij(document.documentElement.dataset.thema === 'donker');
 
     knop.addEventListener('click', () => {
-      const licht = document.documentElement.dataset.thema !== 'licht';
+      const donker = document.documentElement.dataset.thema !== 'donker';
 
-      if (licht) document.documentElement.dataset.thema = 'licht';
+      if (donker) document.documentElement.dataset.thema = 'donker';
       else delete document.documentElement.dataset.thema;
 
       try {
-        localStorage.setItem('vp-thema', licht ? 'licht' : 'donker');
+        localStorage.setItem('vp-thema', donker ? 'donker' : 'licht');
       } catch {
         // Private mode. De keuze geldt dan alleen voor deze pagina.
       }
 
-      bij(licht);
+      bij(donker);
     });
   }
 </script>

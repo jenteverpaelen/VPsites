@@ -1,7 +1,7 @@
 ---
 import { bedrijf, telHref } from '~/data/bedrijf';
 import PortretJente from '~/components/PortretJente.astro';
-import Kaart from '~/components/Kaart.astro';
+import Blok from '~/components/Blok.astro';
 
 /**
  * Bij een lokale Vlaamse koper komt vertrouwen van een gezicht en een
@@ -9,10 +9,7 @@ import Kaart from '~/components/Kaart.astro';
  */
 ---
 
-<Kaart
-  nr="10"
-  titel="Over Jente"
->
+<Blok label="Wie ik ben" toon="diep">
   <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
     <div class="op-scroll lg:col-span-5">
       <PortretJente class="w-full max-w-sm" />
@@ -57,4 +54,4 @@ import Kaart from '~/components/Kaart.astro';
       </div>
     </div>
   </div>
-</Kaart>
+</Blok>

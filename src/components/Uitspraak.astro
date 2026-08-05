@@ -15,16 +15,12 @@
  */
 
 import { starter } from '~/data/prijzen';
-import Kaart from '~/components/Kaart.astro';
+import Blok from '~/components/Blok.astro';
 ---
 
-<Kaart
-  nr="04"
-  titel="Vergelijking"
-  span={3}
->
+<Blok toon="diep">
   <p class="kop-uitspraak op-scroll mt-6 max-w-4xl font-semibold">
-    Een bureau vraagt vanaf €3.500 voor vier pagina's.<br class="hidden md:block" />
+    Een bureau vraagt vanaf €1.500 voor vier pagina's.<br class="hidden md:block" />
     <span class="text-muted">Ik vraag </span><span class="text-mint">€{starter.prijs}</span
     ><span class="text-muted">.</span>
   </p>
@@ -37,4 +33,4 @@ import Kaart from '~/components/Kaart.astro';
       >Hier staan de cijfers per type bureau</a
     >, en hieronder staat waarom ik eronder kan.
   </p>
-</Kaart>
+</Blok>

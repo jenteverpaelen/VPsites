@@ -1,0 +1,55 @@
+---
+/**
+ * Een editorial sectie. Vervangt de kaart-op-een-bord.
+ *
+ * Waarom weg van de kaarten: een raster van omkaderde tegels leest als software,
+ * en het onderzoek naar 2026 wijst de andere kant op. Warme papiertinten, een
+ * serif op formaat en veel witruimte. Een tijdschrift, geen dashboard.
+ *
+ * Dus geen rand, geen radius, geen kop met een mono-label erin. Wat een sectie
+ * van de volgende scheidt is de toon van het papier en de witruimte ertussen.
+ * Dat is genoeg, en het is wat Apple met "deference" bedoelt: de opmaak dient de
+ * inhoud en concurreert er niet mee.
+ */
+
+interface Props {
+  /** Klein label boven de kop, met een streepje ervoor. Geen mono, geen
+   *  hoofdletters: dat waren de twee dingen die het technisch deden lezen. */
+  label?: string;
+  /** Papier of een halve toon dieper. Wisselen geeft het ritme tussen secties,
+   *  in plaats van een rand om elk blok. */
+  toon?: 'papier' | 'diep';
+  ritme?: 'sectie' | 'sectie-krap' | 'sectie-ruim';
+  /** Inhoud gecentreerd in plaats van links. Voor de brandpunten. */
+  midden?: boolean;
+  id?: string;
+}
+
+const {
+  label,
+  toon = 'papier',
+  ritme = 'sectie',
+  midden = false,
+  id,
+} = Astro.props;
+---
+
+<section id={id} class:list={[ritme, toon === 'diep' && 'bg-panel']}>
+  <div class:list={['container-vp', midden && 'text-center']}>
+    {
+      label && (
+        <p
+          class:list={[
+            'op-scroll mb-6 flex items-center gap-3 text-sm text-mint',
+            midden && 'justify-center',
+          ]}
+        >
+          <span class="h-px w-8 bg-mint/40" aria-hidden="true" />
+          {label}
+        </p>
+      )
+    }
+
+    <slot />
+  </div>
+</section>

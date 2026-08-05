@@ -27,14 +27,10 @@ const kruimels = [{ naam: 'prijzen', pad: '/prijzen' }];
     kruimels={kruimels}
   />
 
-  <div class="container-app py-4 md:py-6">
-    <div class="bord">
-      <PrijzenBlok volledig kop="De drie pakketten" />
-    </div>
-  </div>
+  <PrijzenBlok volledig kop="De drie pakketten" />
 
   <section class="sectie border-t border-line">
-    <div class="container-app">
+    <div class="container-vp">
       <p class="comment-mono op-scroll"><span class="text-mint-dim">//</span> als je iets extra nodig hebt</p>
       <h2 class="op-scroll mt-5 kop-sectie">Losse opties</h2>
       <p class="op-scroll mt-6 max-w-2xl text-lg leading-relaxed text-muted">
@@ -77,10 +73,6 @@ const kruimels = [{ naam: 'prijzen', pad: '/prijzen' }];
   </section>
 
   <Proces />
-  <div class="container-app pb-4 md:pb-6">
-    <div class="bord">
-      <Faq vragen={vragen} kop="Wat mensen meestal nog willen weten" />
-      <ContactCta />
-    </div>
-  </div>
+  <Faq vragen={vragen} kop="Wat mensen meestal nog willen weten" />
+  <ContactCta />
 </Base>

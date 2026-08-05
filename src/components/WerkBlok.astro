@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { introductie } from '~/data/prijzen';
-import Kaart from '~/components/Kaart.astro';
+import Blok from '~/components/Blok.astro';
 
 interface Props {
   /** Op /werk staat alles, op de home alleen de uitgelichte. */
@@ -22,11 +22,7 @@ const badges: Record<string, { label: string; klasse: string }> = {
 };
 ---
 
-<Kaart
-  nr="09"
-  titel="Werk"
-  span={2}
->
+<Blok label="Werk">
   <h2 class="op-scroll max-w-2xl kop-kaart">Werk</h2>
 
   <div class="mt-12 grid gap-5 lg:grid-cols-12">
@@ -133,4 +129,4 @@ const badges: Record<string, { label: string; klasse: string }> = {
       </p>
     )
   }
-</Kaart>
+</Blok>

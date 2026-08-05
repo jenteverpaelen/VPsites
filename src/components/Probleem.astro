@@ -6,7 +6,7 @@
  * pas daarna het aanbod.
  */
 
-import Kaart from '~/components/Kaart.astro';
+import Blok from '~/components/Blok.astro';
 
 const gevallen = [
   {
@@ -27,12 +27,7 @@ const gevallen = [
 ];
 ---
 
-<Kaart
-  nr="01"
-  titel="Het probleem"
-  meta="drie gevallen"
-  span={3}
->
+<Blok label="Het probleem">
   <h2 class="op-scroll max-w-3xl kop-kaart">
     Je klant zoekt je op zijn gsm.<br class="hidden sm:block" />
     <span class="text-muted">Wat vindt hij?</span>
@@ -54,4 +49,4 @@ const gevallen = [
     Alle drie kosten ze je hetzelfde: klanten die bij iemand anders terechtkomen omdat
     die er professioneler uitzag. <span class="text-fg">Daar is geen 4.000 euro voor nodig.</span>
   </p>
-</Kaart>
+</Blok>

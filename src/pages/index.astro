@@ -26,32 +26,19 @@ const vragen = faqVoor('home');
   og="home"
   schema={[faqSchema(vragen), ...dienstenSchema()]}
 >
-  <!-- Eén bord in plaats van dertien banden.
-
-       De home was een verticale stapel volle secties, en dat is wat elke
-       marketingpagina doet. Dit is een bord met panelen: je scant het, je ziet
-       de prijs en de levertijd meteen naast elkaar, en je klikt door naar wat je
-       nodig hebt. Dat past bij wat deze site verkoopt, want het hele argument is
-       dat alles gewoon te zien is zonder dat je een offerte moet vragen.
-
-       De tegels zijn 1, 2 of 3 kolommen breed en dat is met opzet ongelijk. Een
-       raster waarin alles dezelfde maat heeft is weer een stapel, alleen dan in
-       twee richtingen. -->
-  <div class="container-app py-4 md:py-6">
-    <div class="bord">
-      <Hero />
-      <Probleem />
-      <Oogopslag />
-      <PrijzenBlok kop="Wat het kost" />
-      <Uitspraak />
-      <WaaromGoedkoper />
-      <WatIkNietDoe />
-      <SnelheidsRace />
-      <Proces />
-      <WerkBlok />
-      <OverKort />
-      <Faq vragen={vragen} />
-      <ContactCta />
-    </div>
-  </div>
+  <!-- Editorial secties, gescheiden door de toon van het papier en niet door een
+       rand. Zie Blok.astro voor waarom de kaarten eruit zijn. -->
+  <Hero />
+  <Probleem />
+  <Oogopslag />
+  <PrijzenBlok kop="Wat het kost" />
+  <Uitspraak />
+  <WaaromGoedkoper />
+  <WatIkNietDoe />
+  <SnelheidsRace />
+  <Proces />
+  <WerkBlok />
+  <OverKort />
+  <Faq vragen={vragen} />
+  <ContactCta />
 </Base>

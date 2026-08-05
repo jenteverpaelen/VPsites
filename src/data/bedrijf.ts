@@ -14,12 +14,13 @@ export const bedrijf = {
 
   url: SITE_URL,
 
-  // TODO(jente): echt gsm-nummer. Formaat E.164 voor tel: en schema.
-  telefoon: '+32470000000',
-  telefoonWeergave: '0470 00 00 00',
+  // E.164 voor tel: en voor de JSON-LD.
+  telefoon: '+32495336253',
+  telefoonWeergave: '0495 33 62 53',
 
-  // TODO(jente): echt e-mailadres op je eigen domein, niet gmail.
-  email: 'hallo@vpsites.be',
+  // TODO(jente): dit adres moet nog bestaan. Zet Cloudflare Email Routing aan en
+  // laat info@ doorsturen naar je mailbox, anders bounct alles wat hier binnenkomt.
+  email: 'info@vpsites.be',
 
   adres: {
     straat: 'Paalseweg 30A',
@@ -62,5 +63,14 @@ export const bedrijf = {
 
 export const telHref = `tel:${bedrijf.telefoon}`;
 export const mailHref = `mailto:${bedrijf.email}`;
+
+/**
+ * WhatsApp wil het nummer zonder plus en zonder streepjes. wa.me werkt zowel in
+ * de app als op web, dus je hoeft niet te weten waar de bezoeker zit.
+ *
+ * Voor een zelfstandige is dit vaak het kanaal met de laagste drempel: bellen
+ * voelt als storen en mailen voelt formeel, een appje niet.
+ */
+export const whatsappHref = `https://wa.me/${bedrijf.telefoon.replace(/\D/g, '')}`;
 
 export const adresRegel = `${bedrijf.adres.straat}, ${bedrijf.adres.postcode} ${bedrijf.adres.gemeente}`;

@@ -1,5 +1,5 @@
 ---
-import Kaart from '~/components/Kaart.astro';
+import Blok from '~/components/Blok.astro';
 /**
  * Zeggen wat je weigert is het sterkste menselijke signaal dat er is.
  * Een AI schrijft nooit op wat ze niet doet. En het kwalificeert leads:
@@ -34,10 +34,7 @@ const nietDoen = [
 ];
 ---
 
-<Kaart
-  nr="06"
-  titel="Wat ik niet doe"
->
+<Blok label="Grenzen" toon="diep">
   <h2 class="op-scroll max-w-3xl kop-kaart">
     Wat ik <span class="text-mint">niet</span> doe
   </h2>
@@ -71,4 +68,4 @@ const nietDoen = [
       ))
     }
   </ul>
-</Kaart>
+</Blok>

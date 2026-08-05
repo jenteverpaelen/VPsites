@@ -44,7 +44,12 @@ const wordmarken = {
       <span
         class:list={[
           'font-mono font-medium uppercase text-faint',
-          'mt-[0.55em] indent-[0.42em] tracking-[0.42em]',
+          /* letter-spacing zet ook ruimte ná de laatste letter, dus het vakje is
+             0,42em breder dan de letters zelf en staat de wordmark optisch links
+             van het midden. De negatieve rechtermarge trekt die staartruimte
+             weg, zodat items-center op de echte letters centreert. Er stond een
+             indent om dit te compenseren, en die schoof het juist verder op. */
+          'mt-[0.55em] -mr-[0.42em] tracking-[0.42em]',
           wordmarken[maat],
         ]}
         aria-hidden="true"

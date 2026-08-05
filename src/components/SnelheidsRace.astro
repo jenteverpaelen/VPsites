@@ -1,5 +1,6 @@
 ---
-import Kaart from '~/components/Kaart.astro';
+import Blok from '~/components/Blok.astro';
+import PerfStrip from '~/components/PerfStrip.astro';
 /**
  * Twee laadbalken naast elkaar. Maakt "sneller" concreet voor iemand die
  * niet weet wat Core Web Vitals zijn.
@@ -32,12 +33,7 @@ const deelnemers = [
 ];
 ---
 
-<Kaart
-  nr="07"
-  titel="Snelheid"
-  meta="jouw browser"
-  span={2}
->
+<Blok label="Snelheid">
   <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
     <h2 class="op-scroll max-w-2xl kop-kaart">
       Een paar seconden wachten<br class="hidden sm:block" />
@@ -111,7 +107,14 @@ const deelnemers = [
     </p>
   </div>
 
-  <p class="op-scroll mt-8 font-mono text-[0.6875rem] leading-relaxed text-faint">
+  <!-- Het meetpaneel stond eerst naast de kop in de hero. Daar antwoordde het op
+       een vraag die de bezoeker nog niet stelde. Hier, in de sectie die over
+       snelheid gaat, is het het bewijs onder de belofte. -->
+  <div class="op-scroll mt-12 max-w-md">
+    <PerfStrip />
+  </div>
+
+  <p class="op-scroll mt-8 max-w-2xl font-mono text-[0.6875rem] leading-relaxed text-faint">
     De onderste balk is de echte laadtijd van deze pagina in jouw browser, tot het
     moment dat ze bruikbaar was. De bovenste schommelt binnen de spreiding uit
     vergelijkend onderzoek naar WordPress tegenover statische sites op mobiel (2026),
@@ -119,7 +122,7 @@ const deelnemers = [
     Web Vitals als ranking-signaal (18 maart 2026). Jouw resultaat hangt af van je
     hosting, je afbeeldingen en je bezoeker.
   </p>
-</Kaart>
+</Blok>
 <style>
   /* Seconden en honderdsten apart, want counter() kan niet delen door 1000.
      Beide lopen proportioneel op, dus ze landen samen op de juiste waarde. */

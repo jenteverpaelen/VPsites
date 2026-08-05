@@ -1,16 +1,14 @@
 ---
-import PerfStrip from '~/components/PerfStrip.astro';
+import Voordelen from '~/components/Voordelen.astro';
 import { goedkoopstePrijs, introductie, levertijdKort } from '~/data/prijzen';
 
 const vrij = introductie.actief && introductie.plaatsenOver > 0;
 ---
 
-<!-- De hero is nu een tegel op het bord en geen band over de volle breedte meer.
-     Geen Kaart-component: die zet container-type op zijn body en dat maakt er een
-     containing block van, waardoor de drie achtergrondlagen tegen de body zouden
-     gaan liggen in plaats van tegen de hele tegel. Dus hier met de hand, met
-     dezelfde rand en radius als een kaart. -->
-<section class="hero relative overflow-hidden rounded-vp border border-line bg-panel md:col-span-2 xl:col-span-3">
+<!-- Geen tegel meer met een rand eromheen: de hero is de volle breedte van de
+     pagina, met ruime witruimte in plaats van een kader. Dat is wat het van een
+     dashboard naar een tijdschrift brengt. -->
+<section class="hero relative overflow-hidden">
   <!-- Drie lagen achtergrond. Het raster drijft heel traag, de aura ademt, en
        de gloed volgt de muis. Alleen transform en opacity, dus geen enkele
        herberekening van de layout. De twee lussen staan achter pointer: fine,
@@ -19,22 +17,23 @@ const vrij = introductie.actief && introductie.plaatsenOver > 0;
   <div class="hero-aura" aria-hidden="true"></div>
   <div class="hero-gloed" aria-hidden="true"></div>
 
-  <div class="relative p-6 md:p-10 lg:p-12">
-    <div class="grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
+  <div class="container-vp relative pt-16 pb-20 md:pt-24 md:pb-28">
+    <div class="grid items-center gap-14 lg:grid-cols-12 lg:gap-16">
       <div class="lg:col-span-7">
         {
           vrij && (
-            <p class="hero-in inline-flex min-h-8 items-center gap-2 rounded-full border border-mint/30 bg-mint-deep/40 pr-3.5 pl-3 font-mono text-xs text-mint">
+            <p class="hero-in inline-flex min-h-9 items-center gap-2.5 rounded-full border border-mint/30 bg-mint-deep px-4 text-sm text-mint">
               <span class="stip-live" aria-hidden="true" />
-              nog {introductie.plaatsenOver} plaatsen aan introductieprijs
+              Nog {introductie.plaatsenOver} plaatsen aan introductieprijs
             </p>
           )
         }
 
-        <p class="comment-mono hero-in mt-4" style="--in: 1">
-          <span class="text-mint-dim">//</span> vaste prijs
-          <span class="text-faint/40">·</span> {levertijdKort}
-          <span class="text-faint/40">·</span> geen abonnement
+        <!-- Was een `// commentaar` in mono. Dat was het developer-signaal, en
+             precies dat moest eraf: mono maakt van een zin een terminalregel. -->
+        <p class="hero-in mt-5 text-sm text-muted" style="--in: 1">
+          Vaste prijs <span class="text-faint">·</span> {levertijdKort}
+          <span class="text-faint">·</span> geen abonnement
         </p>
 
         <h1 class="kop-hero-tegel mt-4">
@@ -73,7 +72,7 @@ const vrij = introductie.actief && introductie.plaatsenOver > 0;
       </div>
 
       <div class="hero-in lg:col-span-5" style="--in: 4">
-        <PerfStrip />
+        <Voordelen />
       </div>
     </div>
   </div>
@@ -91,31 +90,21 @@ const vrij = introductie.actief && introductie.plaatsenOver > 0;
       );
   }
 
+  /* Eén regel voor beide weergaven: de stippen worden uit fg gemengd, en fg
+     draait mee met het thema. Hiervoor stond hier een aparte override omdat de
+     line-token op bijna wit onzichtbaar is. Die is nu niet meer nodig. */
   .hero-raster {
     position: absolute;
     /* Ruimer dan de sectie, zodat het driften nergens een rand laat zien. */
     inset: -4rem -6rem;
-    background-image: radial-gradient(circle at center, var(--color-line) 1px, transparent 1px);
+    background-image: radial-gradient(
+      circle at center,
+      color-mix(in srgb, var(--color-fg) 13%, transparent) 1px,
+      transparent 1px
+    );
     background-size: 2.25rem 2.25rem;
     /* Naar de randen toe uitfaden, anders wordt het een tafelkleed. */
     mask-image: radial-gradient(54rem 34rem at 22% 0%, #000 0%, transparent 78%);
-    opacity: 0.7;
-  }
-
-  /* In het licht is mint een donkere groen, dus een wash ervan wordt een vlek
-     in plaats van een gloed. Het raster moet daar juist de andere kant op:
-     line op bijna wit is nauwelijks te zien. */
-  :global(:root[data-thema='licht']) .hero-raster {
-    opacity: 1;
-    background-image: radial-gradient(
-      circle at center,
-      color-mix(in srgb, var(--color-fg) 16%, transparent) 1px,
-      transparent 1px
-    );
-  }
-
-  :global(:root[data-thema='licht']) .hero-aura {
-    opacity: 0.35;
   }
 
   .hero-aura,

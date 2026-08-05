@@ -12,7 +12,7 @@ const { comment, titel, intro, kruimels = [] } = Astro.props;
 <section class="relative overflow-hidden border-b border-line">
   <div class="kop-raster" aria-hidden="true"></div>
 
-  <div class="container-app relative pt-10 pb-12 md:pt-14 md:pb-16">
+  <div class="container-vp relative pt-10 pb-12 md:pt-14 md:pb-16">
     {
       kruimels.length > 0 && (
         <nav aria-label="Kruimelpad" class="mb-6">
@@ -58,23 +58,17 @@ const { comment, titel, intro, kruimels = [] } = Astro.props;
 </section>
 
 <style>
+  /* Uit fg gemengd, dus dit werkt in beide weergaven zonder override.
+     Zelfde aanpak als in Hero.astro. */
   .kop-raster {
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(circle at center, var(--color-line) 1px, transparent 1px);
-    background-size: 2.25rem 2.25rem;
-    mask-image: radial-gradient(42rem 22rem at 20% 0%, #000 0%, transparent 76%);
-    opacity: 0.6;
-  }
-
-  /* line op bijna wit is nauwelijks te zien, dus in de lichte weergave komt het
-     raster van fg met een lage menging. Zelfde aanpak als in Hero.astro. */
-  :global(:root[data-thema='licht']) .kop-raster {
-    opacity: 1;
     background-image: radial-gradient(
       circle at center,
-      color-mix(in srgb, var(--color-fg) 14%, transparent) 1px,
+      color-mix(in srgb, var(--color-fg) 12%, transparent) 1px,
       transparent 1px
     );
+    background-size: 2.25rem 2.25rem;
+    mask-image: radial-gradient(42rem 22rem at 20% 0%, #000 0%, transparent 76%);
   }
 </style>

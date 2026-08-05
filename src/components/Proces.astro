@@ -8,7 +8,7 @@
  */
 
 import { levertijdKort } from '~/data/prijzen';
-import Kaart from '~/components/Kaart.astro';
+import Blok from '~/components/Blok.astro';
 
 const stappen = [
   {
@@ -42,10 +42,7 @@ const stappen = [
 ];
 ---
 
-<Kaart
-  nr="08"
-  titel="Proces"
->
+<Blok label="Hoe het loopt" toon="diep">
   <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
     <h2 class="op-scroll max-w-2xl kop-kaart">Hoe het loopt</h2>
     <p class="op-scroll font-mono text-sm text-faint">totaal: {levertijdKort}</p>
@@ -75,7 +72,7 @@ const stappen = [
       ))
     }
   </ol>
-</Kaart>
+</Blok>
 <style>
   .pijplijn-spoor,
   .pijplijn-lijn {

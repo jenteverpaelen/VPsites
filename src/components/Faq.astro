@@ -1,6 +1,6 @@
 ---
 import type { FaqItem } from '~/data/faq';
-import Kaart from '~/components/Kaart.astro';
+import Blok from '~/components/Blok.astro';
 
 interface Props {
   vragen: FaqItem[];
@@ -18,11 +18,7 @@ const { vragen, kop = 'De vragen die je toch ging stellen' } = Astro.props;
  */
 ---
 
-<Kaart
-  nr="11"
-  titel="Vragen"
-  span={2}
->
+<Blok label="Vragen">
   <h2 class="op-scroll max-w-2xl kop-kaart">{kop}</h2>
 
   <div class="mt-12 max-w-3xl">
@@ -52,7 +48,7 @@ const { vragen, kop = 'De vragen die je toch ging stellen' } = Astro.props;
       ))
     }
   </div>
-</Kaart>
+</Blok>
 <style>
   /* Safari toont anders zijn eigen driehoekje naast het onze. */
   .vraag summary::-webkit-details-marker {

@@ -36,7 +36,7 @@ const kolommen = [
 ---
 
 <footer class="border-t border-line bg-panel/40">
-  <div class="container-app py-16 md:py-20">
+  <div class="container-vp py-16 md:py-20">
     <div class="grid gap-12 md:grid-cols-12 md:gap-8">
       <div class="md:col-span-4">
         <Logo maat="md" wordmark />
@@ -108,24 +108,4 @@ const kolommen = [
        zeven letters van ongeveer 0,62em is 4,3em breed, en 18vw blijft daarmee
        onder de binnenbreedte van de container van 320 tot 1920. overflow-hidden
        staat er als vangnet, niet als oplossing. -->
-  <div class="slotvak container-app overflow-hidden pb-8">
-    <p class="slotwoord select-none" aria-hidden="true">VPsites</p>
-  </div>
 </footer>
-
-<style>
-  /* cqw en niet vw: de footer staat naast de zijbalk, dus de kolom is smaller
-     dan het venster. Met vw zou het woord over de rand lopen zodra die zijbalk
-     er is. Een container query meet de kolom zelf. */
-  .slotvak {
-    container-type: inline-size;
-  }
-
-  .slotwoord {
-    font-size: clamp(2.5rem, 21cqw, 13rem);
-    font-weight: 700;
-    line-height: 0.82;
-    letter-spacing: -0.05em;
-    color: var(--color-line);
-  }
-</style>

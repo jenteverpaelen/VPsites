@@ -23,7 +23,7 @@ const kruimels = [{ naam: 'contact', pad: '/contact' }];
   />
 
   <section class="sectie">
-    <div class="container-app">
+    <div class="container-vp">
       <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
         <div class="lg:col-span-7">
           <form
@@ -206,11 +206,12 @@ const kruimels = [{ naam: 'contact', pad: '/contact' }];
       background-color 150ms;
   }
 
-  /* In het licht is het veld wit op bijna wit, en dan moet de rand het werk
-     doen. line haalt daar 1,1 tegen de pagina en dat is te weinig: de grens van
-     een invulveld moet 3:1 halen (WCAG 1.4.11). fg op 48 procent geeft 3,2. */
-  :global(:root[data-thema='licht']) .veld {
-    border-color: color-mix(in srgb, var(--color-fg) 48%, transparent);
+  /* Een invulveld op papier is bijna dezelfde kleur als de pagina, dus de rand
+     moet het werk doen. De line-token haalt daar maar 1,1 en de grens van een
+     bedieningselement moet 3:1 halen (WCAG 1.4.11). fg op 45 procent geeft 3,2,
+     en omdat het uit fg gemengd is werkt dezelfde regel in beide weergaven. */
+  .veld {
+    border-color: color-mix(in srgb, var(--color-fg) 45%, transparent);
   }
 
   .veld::placeholder {
@@ -233,11 +234,11 @@ const kruimels = [{ naam: 'contact', pad: '/contact' }];
      De rand staat nooit alleen, er hoort altijd een tekstmelding bij, want
      kleur alleen mag geen informatie dragen. */
   .veld[aria-invalid='true'] {
-    border-color: #e8897a;
+    border-color: #b23a26;
   }
 
-  :global(:root[data-thema='licht']) .veld[aria-invalid='true'] {
-    border-color: #b23a26;
+  :global(:root[data-thema='donker']) .veld[aria-invalid='true'] {
+    border-color: #e8897a;
   }
 
   select.veld {

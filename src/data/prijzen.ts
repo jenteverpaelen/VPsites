@@ -9,8 +9,10 @@
 export const introductie = {
   actief: true,
   plaatsen: 5,
-  // TODO(jente): tel af naarmate je klanten binnenhaalt.
-  plaatsenOver: 5,
+  // Eén plaats is bezet, want er loopt al een project. Tel dit af naarmate er
+  // klanten bijkomen; op 0 verdwijnen de doorstreepte bedragen niet, dus zet dan
+  // ook `actief` op false.
+  plaatsenOver: 4,
   uitleg: 'Introductieprijs voor mijn eerste vijf klanten. Daarna gaat de normale prijs in.',
 } as const;
 

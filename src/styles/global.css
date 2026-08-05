@@ -6,6 +6,22 @@
    Zie CLAUDE.md deel 3.
    ============================================================ */
 
+/* De display-serif. Dit is de grootste verandering in het uiterlijk van de site.
+   Fraunces is warm en heeft karakter, en het onderzoek naar 2026 is expliciet:
+   de beweging gaat weg van de steriele dark-tech-look en naar warme paletten met
+   serif-koppen en veel witruimte. Een grotesk in bold met strakke tracking, wat
+   hier stond, is precies de look die we achter ons laten. */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('/fonts/fraunces-latin.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 @font-face {
   font-family: 'Archivo';
   font-style: normal;
@@ -55,81 +71,104 @@
    ============================================================ */
 
 @theme {
-  /* Het enige accent. Geen tweede. Zie de één-accent-regel. */
-  --color-mint: #79e4ac;
-  --color-mint-dim: #4fbf89;
-  --color-mint-deep: #1f3a2c;
+  /* ------------------------------------------------------------
+     PALET: warm papier, licht als standaard.
 
-  /* De donkere set is één trap lichter dan de eerste versie. Die zat te dicht
-     op elkaar: een kaart van #0E100F op een pagina van #080908 is een verschil
-     van zes eenheden en dat leest als één plat zwart vlak. Nu komen de kaarten
-     los van de achtergrond zonder dat het een grijze site wordt. */
-  --color-ink: #0a0c0b;
-  --color-panel: #121514;
-  --color-raise: #1a1e1c;
-  --color-line: #262c29;
-  --color-line-soft: #1e2320;
+     Hiervoor was dit bijna zwart met mint. Dat is de dark-tech-look, en het
+     onderzoek naar 2026 is daar hard over: stark wit wordt vervangen door warme
+     papiertinten, zuiver zwart door diep espressobruin, en scherpe neon-accenten
+     door terracotta en oker. Precies de tegenovergestelde richting van waar deze
+     site stond.
 
-  /* Alle drie nagemeten tegen ink, panel én raise. Ondergrens is 4.5:1,
-     want de mono-labels zijn 11px en tellen dus als kleine tekst.
-     faint zat op #7C8480 en haalde na het optrekken van raise maar 4,38.
-     Zie CLAUDE.md deel 4. */
-  --color-fg: #f2f5f3; /* 17,9 op ink */
-  --color-muted: #9ba4a0; /* 7,7 op ink · 6,6 op raise */
-  --color-faint: #848c88; /* 5,7 op ink · 5,3 op panel · 4,9 op raise */
+     Alles nagemeten. De ondergrens blijft 4.5:1 voor tekst en 3:1 voor de rand
+     van een bedieningselement.
+     ------------------------------------------------------------ */
 
-  --font-display: 'Archivo', 'Archivo Fallback', system-ui, sans-serif;
+  /* De tokennamen zijn nog die van het oude palet, want ze staan in elk
+     component. De waarden erachter zijn volledig vervangen. Lees dus mee:
+     `mint` is nu gebrande klei, `ink` is papier en `fg` is espresso-inkt.
+     De namen liegen, de kleuren niet. Omdopen doe ik pas als de richting
+     blijft staan, want dat raakt honderd klassen in dertig bestanden. */
+
+  /* Het accent: gebrande klei. Warm en zeker van zichzelf. */
+  --color-mint: #b4472b; /* 5,1 op papier · papier erop 5,1 */
+  --color-mint-dim: #8e3520; /* 7,3 met papier erop */
+  --color-mint-deep: #f9ede7; /* alleen als vlak, klei erop haalt 4,7 */
+
+  /* Papier in drie diepten. Geen wit: wit is koud en leest als een leeg
+     tekstverwerkersdocument. */
+  --color-ink: #faf7f2;
+  --color-panel: #f2ebe0;
+  --color-raise: #ede5da;
+  --color-line: #dfd5c5;
+  --color-line-soft: #eae1d4;
+
+  /* Inkt in drie sterktes. Espresso, geen zwart. */
+  --color-fg: #221c16; /* 15,8 op papier */
+  --color-muted: #5c5348; /* 7,1 op papier */
+  --color-faint: #6e6458; /* 5,4 papier · 4,9 panel · 4,6 raise */
+
+  /* ------------------------------------------------------------
+     TYPOGRAFIE
+
+     Koppen in een serif, en niet meer in een vette grotesk met strakke
+     tracking. Dat laatste is het handschrift van elke SaaS-landingspagina. Een
+     serif op formaat, met licht gewicht en ruime witruimte, leest als een
+     tijdschrift en geeft autoriteit zonder te schreeuwen.
+     ------------------------------------------------------------ */
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-tekst: 'Archivo', 'Archivo Fallback', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Mono Fallback', ui-monospace, monospace;
 
-  /* Koppen: strak en zwaar. Labels: wijd en rustig. Dat contrast
-     is het typografische handschrift van deze site. */
-  --tracking-kop: -0.03em;
-  --tracking-kop-groot: -0.04em;
-  --tracking-label: 0.15em;
+  /* Een serif op formaat heeft geen negatieve tracking nodig. Die was er om een
+     grotesk samen te persen. Hier is bijna neutraal juist. */
+  --tracking-kop: -0.012em;
+  --tracking-kop-groot: -0.018em;
+  --tracking-label: 0.08em;
 
-  --radius-vp: 0.625rem;
+  /* Bijna rechte hoeken. De ronde hoeken van 10px waren onderdeel van de
+     kaartjes-look. Papier heeft scherpe randen. */
+  --radius-vp: 0.25rem;
 
   --ease-uit: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ============================================================
-   LICHTE WEERGAVE
-   Donker is de site. Licht is een keuze achter de knop in de nav.
-   Daarom staat de donkere set in @theme en overschrijft deze blok
-   alleen wat anders moet.
+   DONKERE WEERGAVE
 
-   Mint kan niet blijven zoals het is. #79E4AC is een licht pastel en
-   haalt op wit 1,6:1. In de lichte weergave gaat het accent dus naar
-   een donkere groen van dezelfde familie. Nog altijd één accent.
+   Omgedraaid. Papier is nu de site en donker is de keuze achter de knop, want
+   het hele punt van deze richting is dat de site níet meer als een developer-
+   dashboard leest. De standaard is dus licht, ook als het toestel op donker
+   staat: alleen een klik verandert het.
 
-   Alles hieronder is nagemeten, want een lichte weergave die niet
-   leesbaar is, is geen weergave. Ondergrens blijft 4.5:1.
+   Geen blauwzwart. Dat is de dark-tech-look waar we van weg gaan. Dit is warm
+   houtskool, dezelfde familie als het papier maar dan gedoofd, met een klei-
+   accent dat opgelicht is zodat het op donker leesbaar blijft.
+
+   Alles nagemeten, ondergrens 4.5:1.
    ============================================================ */
 
-:root[data-thema='licht'] {
+:root {
   color-scheme: light;
-
-  /* Iets donkerder dan strikt nodig voor 4.5:1 op wit. Dat is met opzet: mint
-     ligt op een paar plaatsen als bg-mint-deep/25 of /40 achter tekst, en dan
-     is het vlak niet meer wit maar een lichte munttint. Op #D8F1E4, de
-     donkerste van die mengsels, haalt dit accent nog 5,5. */
-  --color-mint: #0a6b3d; /* 6,6 op panel · 6,4 op ink · 5,5 op mint-deep/40 */
-  --color-mint-dim: #075129; /* 9,1 op ink */
-  --color-mint-deep: #a6e3c3; /* alleen als vlak, nooit als tekst */
-
-  --color-ink: #fafbfa;
-  --color-panel: #ffffff;
-  --color-raise: #f1f4f2;
-  --color-line: #dde3df;
-  --color-line-soft: #e8edea;
-
-  --color-fg: #0c0f0d; /* 18,6 op ink */
-  --color-muted: #4a5350; /* 7,7 op ink */
-  --color-faint: #5f6864; /* 5,5 op ink · 5,8 op panel · 5,2 op raise */
 }
 
-:root {
+:root[data-thema='donker'] {
   color-scheme: dark;
+
+  /* Klei moet lichter worden op donker: #B4472B haalt op houtskool maar 2,8. */
+  --color-mint: #e8734f; /* 6,9 op papier-donker */
+  --color-mint-dim: #d45f3c;
+  --color-mint-deep: #33201a; /* alleen als vlak */
+
+  --color-ink: #16130f;
+  --color-panel: #1f1b16;
+  --color-raise: #29241d;
+  --color-line: #383026;
+  --color-line-soft: #2b2620;
+
+  --color-fg: #f5f0e8; /* 16,3 op ink */
+  --color-muted: #aba294; /* 7,4 op ink */
+  --color-faint: #99907f; /* 5,9 op ink · 4,9 op raise */
 }
 
 /* ============================================================
@@ -159,10 +198,12 @@
     margin: 0;
     background-color: var(--color-ink);
     color: var(--color-fg);
-    font-family: var(--font-display);
+    /* Bodytekst in de sans, koppen in de serif. Hiervoor stond alles in
+       dezelfde grotesk. */
+    font-family: var(--font-tekst);
     /* 16px minimum: kleiner en iOS zoomt in bij focus op een veld. */
-    font-size: 1rem;
-    line-height: 1.6;
+    font-size: 1.0625rem;
+    line-height: 1.7;
     font-synthesis-weight: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -186,25 +227,28 @@
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    opacity: 0.05;
+    opacity: 0.03;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
   }
 
-  /* Op wit valt korrel harder op, want grijze ruis is daar donkerder dan de
-     achtergrond in plaats van lichter. Dus minder. Geen mix-blend-mode:
-     dat maakt van deze laag een stacking context over het hele venster en dat
-     is duurder dan wat het oplevert. */
-  :root[data-thema='licht'] body::after {
-    opacity: 0.03;
+  /* Op donker mag er meer korrel op: grijze ruis is daar lichter dan de
+     achtergrond en valt dus minder op. Geen mix-blend-mode, dat maakt van deze
+     laag een stacking context over het hele venster. */
+  :root[data-thema='donker'] body::after {
+    opacity: 0.05;
   }
 
   h1,
   h2,
   h3,
   h4 {
-    font-weight: 650;
+    /* Serif, en gewicht 400 in plaats van 650. Een serif op formaat heeft geen
+       vet nodig om te wegen; die haalt zijn autoriteit uit de vorm. Vet plus
+       strakke tracking was precies het SaaS-handschrift dat eraf moest. */
+    font-family: var(--font-display);
+    font-weight: 400;
     letter-spacing: var(--tracking-kop);
-    line-height: 1.08;
+    line-height: 1.1;
     text-wrap: balance;
     margin: 0;
   }
@@ -404,16 +448,15 @@
   }
 }
 
-/* De kop binnen een tegel. Schaalt met de tegel en niet met het venster.
-
-   Dat moet met cqw en niet met vw, want een tegel kan 1, 2 of 3 kolommen breed
-   zijn. Met vw krijgt een tegel van één kolom dezelfde kop van 48px als een van
-   drie, en dan breekt die in vijf regels. De body van Kaart.astro is de
-   container die opgemeten wordt. */
+/* De sectiekop. Stond op cqw toen elke sectie een tegel was met een eigen
+   containerbreedte. Die tegels zijn er niet meer, en zonder container valt cqw
+   terug op de ondergrens van de clamp: dan staat elke kop op 22px. Dus weer op
+   vw, en flink groter dan hiervoor, want een serif op formaat met witruimte
+   eromheen is de hele richting. */
 @utility kop-kaart {
-  font-size: clamp(1.375rem, 4cqw, 2.75rem);
-  line-height: 1.05;
-  letter-spacing: var(--tracking-kop-groot);
+  font-size: clamp(2rem, 1.1rem + 3.4vw, 3.75rem);
+  line-height: 1.08;
+  letter-spacing: var(--tracking-kop);
 }
 
 /* Voor de uitspraak: groter dan een sectiekop, kleiner dan de H1 van de home.

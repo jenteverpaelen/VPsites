@@ -18,7 +18,7 @@
 
 import { pakketten, goedkoopstePrijs, terugkerend } from '~/data/prijzen';
 import { bedrijf } from '~/data/bedrijf';
-import Kaart from '~/components/Kaart.astro';
+import Blok from '~/components/Blok.astro';
 
 const onepager = pakketten.find((p) => p.id === 'onepager')!;
 const starterPakket = pakketten.find((p) => p.id === 'starter')!;
@@ -58,17 +58,13 @@ const tegels = [
   {
     cijfer: '1',
     label: 'persoon',
-    tekst: `Ik. Je krijgt altijd mij aan de lijn, en ik zit in ${bedrijf.adres.gemeente}.`,
+    tekst: 'Ik. Je krijgt altijd mij aan de lijn, geen callcenter en geen accountmanager.',
     breed: false,
   },
 ];
 ---
 
-<Kaart
-  nr="02"
-  titel="De cijfers"
-  span={3}
->
+<Blok label="In cijfers" toon="diep">
   <h2 class="op-scroll kop-kaart max-w-2xl">Wat krijg je concreet?</h2>
 
   <p class="op-scroll mt-6 max-w-2xl text-lg leading-relaxed text-muted">
@@ -101,4 +97,4 @@ const tegels = [
       ))
     }
   </dl>
-</Kaart>
+</Blok>

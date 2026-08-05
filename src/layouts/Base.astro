@@ -1,7 +1,6 @@
 ---
 import '~/styles/global.css';
 import Nav from '~/components/Nav.astro';
-import Zijbalk from '~/components/Zijbalk.astro';
 import Footer from '~/components/Footer.astro';
 import MobielActieBalk from '~/components/MobielActieBalk.astro';
 import CommandPalette from '~/components/CommandPalette.astro';
@@ -52,20 +51,19 @@ const analyticsToken = '';
          paginawissel eerst een donkere flits. Daarom is dit het enige inline
          script op de site.
 
-         Donker is de standaard: staat er niets opgeslagen, dan blijft het
-         donker, ook als het toestel op licht staat. Dat is een merkkeuze, geen
+         Papier is de standaard: staat er niets opgeslagen, dan blijft het licht,
+         ook als het toestel op donker staat. Dat is een merkkeuze, geen
          vergetelheid. Alleen een expliciete klik op de knop verandert het.
 
          localStorage en geen cookie. Het is een voorkeur van de bezoeker zelf,
-         hij verlaat het toestel nooit, en er valt niemand mee te volgen.
-         Zie CLAUDE.md deel 4. -->
+         hij verlaat het toestel nooit, en er valt niemand mee te volgen. -->
     <script is:inline>
       try {
-        if (localStorage.getItem('vp-thema') === 'licht') {
-          document.documentElement.dataset.thema = 'licht';
+        if (localStorage.getItem('vp-thema') === 'donker') {
+          document.documentElement.dataset.thema = 'donker';
         }
       } catch {
-        /* Private mode kan localStorage blokkeren. Dan gewoon donker. */
+        /* Private mode kan localStorage blokkeren. Dan gewoon papier. */
       }
     </script>
 
@@ -112,7 +110,7 @@ const analyticsToken = '';
     <link rel="manifest" href="/site.webmanifest" />
     <!-- De knop in de nav werkt dit bij, zodat de browserbalk op mobiel
          meekleurt met de gekozen weergave. -->
-    <meta name="theme-color" content="#0a0c0b" />
+    <meta name="theme-color" content="#faf7f2" />
 
     <meta name="author" content={bedrijf.persoon} />
     <meta name="geo.region" content="BE-VLI" />
@@ -140,25 +138,18 @@ const analyticsToken = '';
       Naar de inhoud
     </a>
 
-    <!-- De app-shell: vaste kolom links, inhoud rechts. Onder lg bestaat de
-         zijbalk niet en neemt Nav.astro het over met het popover-menu.
+    <!-- De vaste zijbalk is eruit. Die hoorde bij de dashboard-richting, en die
+         richting is verlaten: een toepassing met een navigatiekolom leest als
+         software, en deze site moet als een tijdschrift lezen. Terug naar één
+         kolom met een smalle balk bovenaan, zodat de inhoud de volle breedte
+         en alle witruimte krijgt. -->
+    <Nav />
 
-         De verticale rails van de vorige versie zijn eruit. Die tekenden een
-         kader rond één brede kolom, en dat kader is nu de rand van de zijbalk
-         en van de kaarten zelf. Twee rasters over elkaar is ruis. -->
-    <div class="schil">
-      <Zijbalk />
+    <main id="hoofd">
+      <slot />
+    </main>
 
-      <div class="min-w-0">
-        <Nav />
-
-        <main id="hoofd">
-          <slot />
-        </main>
-
-        <Footer />
-      </div>
-    </div>
+    <Footer />
 
     {actiebalk && <MobielActieBalk />}
 
