@@ -155,7 +155,36 @@ domain → `vpsites.be`. Staat de DNS van dat domein al bij Cloudflare, dan is h
 één klik. Zo niet, verhuis eerst de nameservers naar Cloudflare.
 
 Doe dit ook echt, want de `workers.dev`-URL die je bij de eerste deploy krijgt is
-niet het domein waar de canonicals naar wijzen.
+niet het domein waar de canonicals naar wijzen. Zet die URL daarna uit, anders
+staat de site op twee adressen.
+
+**Voeg voor de site geen DNS-record met de hand toe.** Cloudflare maakt het zelf
+aan zodra je het domein aan de Worker hangt, en beheert het daarna. Een eigen
+A-record naar een IP zit alleen in de weg.
+
+Voor `www` is er wel handwerk, want `SITE_URL` staat op de apex zonder www:
+
+1. DNS → Add record → type **CNAME**, name `www`, target `vpsites.be`, proxy
+   **aan** (oranje wolkje). Zonder proxy kan een Redirect Rule niet vuren
+2. Rules → Redirect Rules → Create. Als `hostname` gelijk is aan
+   `www.vpsites.be`, dan een **301** naar
+   `concat("https://vpsites.be", http.request.uri.path)`
+
+Twee hostnames die allebei de site tonen is dubbele content. De canonicals
+wijzen al naar de apex, maar een redirect is duidelijker dan Google laten kiezen.
+
+### E-mail op het domein
+
+`hallo@vpsites.be` staat op de site, in de JSON-LD en in de footer. Dat adres
+moet dus echt bestaan, en daar heb je MX-records voor nodig. Gratis via
+Cloudflare: **Email → Email Routing** → aanzetten, dan een adres toevoegen dat
+doorstuurt naar je gewone mailbox. Cloudflare zet de MX- en TXT-records er zelf
+bij.
+
+Dat is voor mail **ontvangen**. Om via het formulier te kunnen **versturen** moet
+je `vpsites.be` nog verifiëren bij Resend. Die geeft je een paar DKIM- en
+SPF-records om toe te voegen. Doe dat voor je `MAIL_VAN` instelt, anders weigert
+Resend de verzending.
 
 `SITE_URL` in [`src/data/site.mjs`](src/data/site.mjs) staat op
 `https://vpsites.be`, dus **zonder www**. Hang je ook `www.vpsites.be` eraan, zet
