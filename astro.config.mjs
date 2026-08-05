@@ -10,8 +10,17 @@ import { SITE_URL } from './src/data/site.mjs';
 // niet met een rehype-plugin: Astro 7 gebruikt Sätteri als markdown-processor
 // en daarvoor zou @astrojs/markdown-remark apart geïnstalleerd moeten worden.
 
-// Statisch by default. Enkel /api/contact draait server-side (prerender = false),
-// vandaar output: 'static' met een adapter. Zie CLAUDE.md deel 5.
+// Volledig statisch, en bewust géén Astro-adapter.
+//
+// Het formulier heeft één server-kant nodig, en die staat als Pages Function in
+// functions/api/contact.ts. Cloudflare Pages pikt die map zelf op en bedient
+// /api/contact. Daardoor blijft deze build 100 procent statisch en hoeft er geen
+// adapter in, wat een hoop KB en een hele runtime scheelt.
+//
+// Gevolg voor het live zetten: dit project hoort op Cloudflare **Pages**, met
+// build command `npm run build` en output directory `dist`. Niet op de
+// Workers-flow met `npx wrangler deploy`, want die kent de functions-conventie
+// niet en er is geen wrangler-config. Zie de README.
 export default defineConfig({
   site: SITE_URL,
   output: 'static',

@@ -102,12 +102,27 @@ git push -u origin prijzen-aanpassen
 
 ## Online zetten
 
-Cloudflare Pages, gekoppeld aan de GitHub-repo. Elke push naar `main` zet dan
-vanzelf een nieuwe versie live, en elke pull request krijgt een eigen
-voorbeeld-URL.
+**Cloudflare Pages, niet Workers.** Dat is geen detail. Het formulier staat als
+Pages Function in `functions/api/contact.ts`, en die conventie bestaat alleen bij
+Pages. De Workers-flow vraagt `npx wrangler deploy`, er is geen `wrangler.toml`
+in dit project, en dan faalt de deploy. Cloudflare duwt nieuwe projecten
+richting Workers, dus je moet Pages actief opzoeken: **Workers & Pages → Create
+→ tabblad Pages → Connect to Git**.
 
-- Build command: `npm run build`
-- Output directory: `dist`
+Instellingen:
+
+| Veld | Waarde |
+|---|---|
+| Framework preset | Astro |
+| Build command | `npm run build` |
+| Build output directory | `dist` |
+| Root directory | leeg laten |
+
+De Node-versie komt uit [`.nvmrc`](.nvmrc), nu 24, dezelfde als in CI. Pikt
+Cloudflare dat niet op, zet dan `NODE_VERSION` op `24` bij de variabelen.
+
+Elke push naar `main` zet vanzelf een nieuwe versie live, en elke pull request
+krijgt een eigen voorbeeld-URL.
 
 De map `functions/` wordt automatisch opgepikt en bedient `/api/contact`.
 Zet deze variabelen in de Pages-instellingen:
@@ -121,6 +136,30 @@ Zet deze variabelen in de Pages-instellingen:
 
 Het formulier werkt niet in `npm run dev`, want Pages Functions draaien daar
 niet. Je krijgt dan een melding die dat zegt.
+
+### Je domein eraan hangen
+
+Na de eerste deploy: project → **Custom domains** → Set up a domain →
+`vpsites.be`. Staat de DNS van dat domein al bij Cloudflare, dan is het één klik.
+Zo niet, verhuis eerst de nameservers naar Cloudflare.
+
+`SITE_URL` in [`src/data/site.mjs`](src/data/site.mjs) staat op
+`https://vpsites.be`, dus **zonder www**. Hang je ook `www.vpsites.be` eraan, zet
+daar dan een Redirect Rule op naar de apex. Twee domeinen die allebei antwoorden
+is dubbele content.
+
+### Voor je live gaat
+
+Drie dingen in [`src/data/bedrijf.ts`](src/data/bedrijf.ts) staan er nog als
+voorbeeldwaarde, en het eerste is een wettelijk probleem:
+
+- **`ondernemingsnummer`** staat op `BE 0000.000.000`. Dat nummer is in België
+  verplicht op je site en het staat nu als verzinsel in de footer én in de
+  JSON-LD. Vul dit in voor je het domein eraan hangt
+- **`telefoon`** en **`telefoonWeergave`** staan op `0470 00 00 00`. De hele site
+  zegt "bel me gerust" met een nummer dat niet bestaat
+- **`email`** staat op `hallo@vpsites.be`. Dat moet bestaan, anders komt het
+  formulier nergens toe
 
 Na het live gaan: dien `sitemap-index.xml` in bij Google Search Console en Bing
 Webmaster Tools, en zet de verificatiecode in
