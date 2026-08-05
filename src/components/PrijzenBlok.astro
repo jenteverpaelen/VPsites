@@ -2,6 +2,7 @@
 import PrijsKaart from '~/components/PrijsKaart.astro';
 import { pakketten, introductie, terugkerend, geenAbonnement, starter } from '~/data/prijzen';
 import { bedrijf } from '~/data/bedrijf';
+import Sectie from '~/components/Sectie.astro';
 
 interface Props {
   /** Op /prijzen alles tonen, op de home de korte versie. */
@@ -12,102 +13,100 @@ interface Props {
 const { volledig = false, kop = 'Wat het kost' } = Astro.props;
 ---
 
-<section id="prijzen" class="sectie border-t border-line">
-  <div class="container-vp">
-    <p class="comment-mono op-scroll">
-      <span class="text-mint-dim">//</span> geen offerte nodig, het staat er gewoon
-    </p>
-
-    <div class="mt-5 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-      <h2 class="op-scroll max-w-2xl kop-sectie">
-        {kop}
-      </h2>
-
-      {
-        introductie.actief && (
-          <p class="op-scroll max-w-sm rounded-vp border border-mint/30 bg-mint-deep/25 px-4 py-3 text-sm leading-snug text-muted">
-            <span class="font-semibold text-mint">
-              Nog {introductie.plaatsenOver} van de {introductie.plaatsen} plaatsen.
-            </span>{' '}
-            {introductie.uitleg}
-          </p>
-        )
-      }
-    </div>
-
-    <div class="mt-12 grid gap-5 md:grid-cols-3">
-      {
-        pakketten.map((pakket, i) => (
-          <PrijsKaart pakket={pakket} volledig={volledig} stap={i} />
-        ))
-      }
-    </div>
-
-    <!-- De zin die het verschil maakt tegenover elke concurrent die
-         "excl. btw" in kleine letters onderaan zet. -->
-    <div class="op-scroll mt-12 grid gap-8 rounded-vp border border-line bg-panel p-7 md:grid-cols-12 md:p-9">
-      <div class="md:col-span-5">
-        <p class="text-2xl leading-snug font-semibold sm:text-3xl">
-          Geen btw. <span class="text-mint">&euro;{starter.prijs} is &euro;{starter.prijs}.</span>
-        </p>
-        <p class="mt-4 text-sm leading-relaxed text-muted">
-          Ik val onder de vrijstellingsregeling voor kleine ondernemingen. Er komt geen 21
-          procent bovenop. Een concurrent die &euro;995 excl. btw vraagt, rekent in
-          werkelijkheid &euro;1.204 aan.
-        </p>
-        <p class="mt-4 font-mono text-[0.6875rem] leading-relaxed text-faint">
-          {bedrijf.btwVermelding}
-        </p>
-      </div>
-
-      <div class="md:col-span-7">
-        <h3 class="label-mono">Wat het daarna nog kost</h3>
-        <dl class="mt-4 divide-y divide-line border-y border-line">
-          {
-            Object.entries(terugkerend).map(([sleutel, regel]) => (
-              <div class="flex items-baseline justify-between gap-6 py-3.5">
-                <div>
-                  <dt class="text-sm font-medium capitalize">{sleutel}</dt>
-                  <dd class="mt-0.5 text-[0.8125rem] leading-snug text-faint">{regel.wat}</dd>
-                </div>
-                <span class="shrink-0 font-mono text-sm text-fg tabular-nums">
-                  {regel.bedrag === 0 ? 'gratis' : `€${regel.bedrag}/${regel.per}`}
-                </span>
-              </div>
-            ))
-          }
-        </dl>
-        <p class="mt-4 text-sm leading-relaxed text-muted">{geenAbonnement}</p>
-      </div>
-    </div>
+<Sectie
+  nr="03"
+  comment="geen offerte nodig, het staat er gewoon"
+  id="prijzen"
+>
+  <div class="mt-5 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+    <h2 class="op-scroll max-w-2xl kop-sectie">
+      {kop}
+    </h2>
 
     {
-      !volledig && (
-        <p class="op-scroll mt-8">
-          <a
-            href="/prijzen"
-            class="group inline-flex min-h-11 items-center gap-2 text-mint underline decoration-mint/35 underline-offset-4 transition-colors hover:decoration-mint"
-          >
-            Alle details en losse opties
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 16 16"
-              fill="none"
-              aria-hidden="true"
-              class="transition-transform group-hover:translate-x-0.5"
-            >
-              <path
-                d="M3 8h9m0 0L8.5 4.5M12 8l-3.5 3.5"
-                stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </a>
+      introductie.actief && (
+        <p class="op-scroll max-w-sm rounded-vp border border-mint/30 bg-mint-deep/25 px-4 py-3 text-sm leading-snug text-muted">
+          <span class="font-semibold text-mint">
+            Nog {introductie.plaatsenOver} van de {introductie.plaatsen} plaatsen.
+          </span>{' '}
+          {introductie.uitleg}
         </p>
       )
     }
   </div>
-</section>
+
+  <div class="mt-12 grid gap-5 md:grid-cols-3">
+    {
+      pakketten.map((pakket, i) => (
+        <PrijsKaart pakket={pakket} volledig={volledig} stap={i} />
+      ))
+    }
+  </div>
+
+  <!-- De zin die het verschil maakt tegenover elke concurrent die
+       "excl. btw" in kleine letters onderaan zet. -->
+  <div class="op-scroll mt-12 grid gap-8 rounded-vp border border-line bg-panel p-7 md:grid-cols-12 md:p-9">
+    <div class="md:col-span-5">
+      <p class="text-2xl leading-snug font-semibold sm:text-3xl">
+        Geen btw. <span class="text-mint">&euro;{starter.prijs} is &euro;{starter.prijs}.</span>
+      </p>
+      <p class="mt-4 text-sm leading-relaxed text-muted">
+        Ik val onder de vrijstellingsregeling voor kleine ondernemingen. Er komt geen 21
+        procent bovenop. Een concurrent die &euro;995 excl. btw vraagt, rekent in
+        werkelijkheid &euro;1.204 aan.
+      </p>
+      <p class="mt-4 font-mono text-[0.6875rem] leading-relaxed text-faint">
+        {bedrijf.btwVermelding}
+      </p>
+    </div>
+
+    <div class="md:col-span-7">
+      <h3 class="label-mono">Wat het daarna nog kost</h3>
+      <dl class="mt-4 divide-y divide-line border-y border-line">
+        {
+          Object.entries(terugkerend).map(([sleutel, regel]) => (
+            <div class="flex items-baseline justify-between gap-6 py-3.5">
+              <div>
+                <dt class="text-sm font-medium capitalize">{sleutel}</dt>
+                <dd class="mt-0.5 text-[0.8125rem] leading-snug text-faint">{regel.wat}</dd>
+              </div>
+              <span class="shrink-0 font-mono text-sm text-fg tabular-nums">
+                {regel.bedrag === 0 ? 'gratis' : `€${regel.bedrag}/${regel.per}`}
+              </span>
+            </div>
+          ))
+        }
+      </dl>
+      <p class="mt-4 text-sm leading-relaxed text-muted">{geenAbonnement}</p>
+    </div>
+  </div>
+
+  {
+    !volledig && (
+      <p class="op-scroll mt-8">
+        <a
+          href="/prijzen"
+          class="group inline-flex min-h-11 items-center gap-2 text-mint underline decoration-mint/35 underline-offset-4 transition-colors hover:decoration-mint"
+        >
+          Alle details en losse opties
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 16 16"
+            fill="none"
+            aria-hidden="true"
+            class="transition-transform group-hover:translate-x-0.5"
+          >
+            <path
+              d="M3 8h9m0 0L8.5 4.5M12 8l-3.5 3.5"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </a>
+      </p>
+    )
+  }
+</Sectie>

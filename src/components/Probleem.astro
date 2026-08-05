@@ -6,6 +6,8 @@
  * pas daarna het aanbod.
  */
 
+import Sectie from '~/components/Sectie.astro';
+
 const gevallen = [
   {
     kop: 'Je hebt geen website',
@@ -25,30 +27,26 @@ const gevallen = [
 ];
 ---
 
-<section class="sectie border-t border-line">
-  <div class="container-vp">
-    <p class="comment-mono op-scroll"><span class="text-mint-dim">//</span> waar het meestal misloopt</p>
+<Sectie nr="01" comment="waar het meestal misloopt">
+  <h2 class="op-scroll mt-5 max-w-3xl kop-sectie">
+    Je klant zoekt je op zijn gsm.<br class="hidden sm:block" />
+    <span class="text-muted">Wat vindt hij?</span>
+  </h2>
 
-    <h2 class="op-scroll mt-5 max-w-3xl kop-sectie">
-      Je klant zoekt je op zijn gsm.<br class="hidden sm:block" />
-      <span class="text-muted">Wat vindt hij?</span>
-    </h2>
-
-    <div class="mt-14 grid gap-px overflow-hidden rounded-vp border border-line bg-line md:grid-cols-3">
-      {
-        gevallen.map((geval, i) => (
-          <article class="op-scroll flex flex-col bg-panel p-7 md:p-8">
-            <span class="font-mono text-xs text-mint-dim">{String(i + 1).padStart(2, '0')}</span>
-            <h3 class="mt-4 text-xl leading-snug">{geval.kop}</h3>
-            <p class="mt-3 text-[0.9375rem] leading-relaxed text-muted">{geval.tekst}</p>
-          </article>
-        ))
-      }
-    </div>
-
-    <p class="op-scroll mt-10 max-w-2xl text-lg leading-relaxed text-muted">
-      Alle drie kosten ze je hetzelfde: klanten die bij iemand anders terechtkomen omdat
-      die er professioneler uitzag. <span class="text-fg">Daar is geen 4.000 euro voor nodig.</span>
-    </p>
+  <div class="mt-14 grid gap-px overflow-hidden rounded-vp border border-line bg-line md:grid-cols-3">
+    {
+      gevallen.map((geval, i) => (
+        <article class="op-scroll flex flex-col bg-panel p-7 md:p-8">
+          <span class="font-mono text-xs text-mint-dim">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="mt-4 text-xl leading-snug">{geval.kop}</h3>
+          <p class="mt-3 text-[0.9375rem] leading-relaxed text-muted">{geval.tekst}</p>
+        </article>
+      ))
+    }
   </div>
-</section>
+
+  <p class="op-scroll mt-10 max-w-2xl text-lg leading-relaxed text-muted">
+    Alle drie kosten ze je hetzelfde: klanten die bij iemand anders terechtkomen omdat
+    die er professioneler uitzag. <span class="text-fg">Daar is geen 4.000 euro voor nodig.</span>
+  </p>
+</Sectie>

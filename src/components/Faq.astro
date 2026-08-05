@@ -1,5 +1,6 @@
 ---
 import type { FaqItem } from '~/data/faq';
+import Sectie from '~/components/Sectie.astro';
 
 interface Props {
   vragen: FaqItem[];
@@ -17,42 +18,37 @@ const { vragen, kop = 'De vragen die je toch ging stellen' } = Astro.props;
  */
 ---
 
-<section class="sectie border-t border-line">
-  <div class="container-vp">
-    <p class="comment-mono op-scroll"><span class="text-mint-dim">//</span> eerlijke antwoorden, ook de lastige</p>
+<Sectie nr="11" comment="eerlijke antwoorden, ook de lastige">
+  <h2 class="op-scroll mt-5 max-w-2xl kop-sectie">{kop}</h2>
 
-    <h2 class="op-scroll mt-5 max-w-2xl kop-sectie">{kop}</h2>
-
-    <div class="mt-12 max-w-3xl">
-      {
-        vragen.map((item) => (
-          <details class="vraag op-scroll group border-t border-line last:border-b">
-            {/* summary mag precies één heading bevatten. Goed voor de
-                koppenstructuur en voor AI die de vraag wil herkennen. */}
-            <summary class="flex cursor-pointer list-none items-start justify-between gap-6 py-5 transition-colors hover:text-mint">
-              <h3 class="text-lg leading-snug font-normal md:text-xl">{item.vraag}</h3>
-              <span
-                class="mt-1 shrink-0 text-faint transition-transform duration-200 group-open:rotate-45"
-                aria-hidden="true"
-              >
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                  <path
-                    d="M9 3.5v11M3.5 9h11"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                  />
-                </svg>
-              </span>
-            </summary>
-            <p class="max-w-2xl pb-6 leading-relaxed text-muted">{item.antwoord}</p>
-          </details>
-        ))
-      }
-    </div>
+  <div class="mt-12 max-w-3xl">
+    {
+      vragen.map((item) => (
+        <details class="vraag op-scroll group border-t border-line last:border-b">
+          {/* summary mag precies één heading bevatten. Goed voor de
+              koppenstructuur en voor AI die de vraag wil herkennen. */}
+          <summary class="flex cursor-pointer list-none items-start justify-between gap-6 py-5 transition-colors hover:text-mint">
+            <h3 class="text-lg leading-snug font-normal md:text-xl">{item.vraag}</h3>
+            <span
+              class="mt-1 shrink-0 text-faint transition-transform duration-200 group-open:rotate-45"
+              aria-hidden="true"
+            >
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path
+                  d="M9 3.5v11M3.5 9h11"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </span>
+          </summary>
+          <p class="max-w-2xl pb-6 leading-relaxed text-muted">{item.antwoord}</p>
+        </details>
+      ))
+    }
   </div>
-</section>
-
+</Sectie>
 <style>
   /* Safari toont anders zijn eigen driehoekje naast het onze. */
   .vraag summary::-webkit-details-marker {

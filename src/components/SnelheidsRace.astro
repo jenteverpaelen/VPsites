@@ -1,4 +1,5 @@
 ---
+import Sectie from '~/components/Sectie.astro';
 /**
  * Twee laadbalken naast elkaar. Maakt "sneller" concreet voor iemand die
  * niet weet wat Core Web Vitals zijn.
@@ -31,94 +32,93 @@ const deelnemers = [
 ];
 ---
 
-<section class="sectie-krap border-t border-line">
-  <div class="container-vp">
-    <p class="comment-mono op-scroll"><span class="text-mint-dim">//</span> hetzelfde bezoek, twee sites</p>
+<Sectie
+  nr="06"
+  comment="hetzelfde bezoek, twee sites"
+  ritme="sectie-krap"
+>
+  <div class="mt-5 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+    <h2 class="op-scroll max-w-2xl kop-sectie">
+      Een paar seconden wachten<br class="hidden sm:block" />
+      <span class="text-muted">of niet.</span>
+    </h2>
 
-    <div class="mt-5 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-      <h2 class="op-scroll max-w-2xl kop-sectie">
-        Een paar seconden wachten<br class="hidden sm:block" />
-        <span class="text-muted">of niet.</span>
-      </h2>
+    <button
+      type="button"
+      data-race-opnieuw
+      class="inline-flex min-h-12 w-fit items-center gap-2 rounded-vp border border-line bg-panel px-4 text-sm text-muted transition-colors hover:border-line-soft hover:text-fg"
+    >
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path
+          d="M12 7a5 5 0 1 1-1.5-3.5M12 1.5V4.5H9"
+          stroke="currentColor"
+          stroke-width="1.4"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path>
+      </svg>
+      Speel opnieuw
+    </button>
+  </div>
 
-      <button
-        type="button"
-        data-race-opnieuw
-        class="inline-flex min-h-12 w-fit items-center gap-2 rounded-vp border border-line bg-panel px-4 text-sm text-muted transition-colors hover:border-line-soft hover:text-fg"
-      >
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-          <path
-            d="M12 7a5 5 0 1 1-1.5-3.5M12 1.5V4.5H9"
-            stroke="currentColor"
-            stroke-width="1.4"
-            stroke-linecap="round"
-            stroke-linejoin="round"></path>
-        </svg>
-        Speel opnieuw
-      </button>
-    </div>
-
-    <div class="race mt-14 space-y-8" data-race>
-      {
-        deelnemers.map((deelnemer) => (
-          <div data-rij>
-            <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-              <h3 class="text-lg">
-                {deelnemer.naam}
-                <span class="ml-2 font-mono text-xs text-faint">{deelnemer.detail}</span>
-              </h3>
-              <span
-                class:list={[
-                  'teller font-mono text-lg tabular-nums',
-                  deelnemer.mint ? 'text-mint' : 'text-muted',
-                ]}
-                aria-hidden="true"
-              />
-              <span class="sr-only" data-rij-sr />
-            </div>
-
-            <div class="mt-3 h-2.5 overflow-hidden rounded-full bg-raise">
-              <div
-                class:list={['balk h-full rounded-full', deelnemer.mint ? 'bg-mint' : 'bg-faint']}
-              />
-            </div>
+  <div class="race mt-14 space-y-8" data-race>
+    {
+      deelnemers.map((deelnemer) => (
+        <div data-rij>
+          <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+            <h3 class="text-lg">
+              {deelnemer.naam}
+              <span class="ml-2 font-mono text-xs text-faint">{deelnemer.detail}</span>
+            </h3>
+            <span
+              class:list={[
+                'teller font-mono text-lg tabular-nums',
+                deelnemer.mint ? 'text-mint' : 'text-muted',
+              ]}
+              aria-hidden="true"
+            />
+            <span class="sr-only" data-rij-sr />
           </div>
-        ))
-      }
-    </div>
 
-    <noscript>
-      <p class="mt-8 leading-relaxed text-muted">
-        De balken hierboven meten je eigen bezoek, en daar is JavaScript voor nodig. Kort
-        samengevat: een WordPress-site op mobiel doet er doorgaans 2 tot 5 seconden over,
-        een statische site blijft onder de halve seconde.
-      </p>
-    </noscript>
+          <div class="mt-3 h-2.5 overflow-hidden rounded-full bg-raise">
+            <div
+              class:list={['balk h-full rounded-full', deelnemer.mint ? 'bg-mint' : 'bg-faint']}
+            />
+          </div>
+        </div>
+      ))
+    }
+  </div>
 
-    <div class="op-scroll mt-12 grid gap-8 md:grid-cols-2">
-      <p class="leading-relaxed text-muted">
-        Dat verschil zie je niet alleen. Google meet het ook. WordPress-sites halen in
-        43 procent van de gevallen een voldoende op Core Web Vitals. Statische sites
-        zitten doorgaans boven de 95.
-      </p>
-      <p class="leading-relaxed text-muted">
-        En sinds Google in maart 2026 bevestigde dat reactiesnelheid volwaardig meetelt,
-        zakken trage sites gemiddeld bijna een positie in de resultaten.
-        <span class="text-fg">Traag is duur geworden.</span>
-      </p>
-    </div>
+  <noscript>
+    <p class="mt-8 leading-relaxed text-muted">
+      De balken hierboven meten je eigen bezoek, en daar is JavaScript voor nodig. Kort
+      samengevat: een WordPress-site op mobiel doet er doorgaans 2 tot 5 seconden over,
+      een statische site blijft onder de halve seconde.
+    </p>
+  </noscript>
 
-    <p class="op-scroll mt-8 font-mono text-[0.6875rem] leading-relaxed text-faint">
-      De onderste balk is de echte laadtijd van deze pagina in jouw browser, tot het
-      moment dat ze bruikbaar was. De bovenste schommelt binnen de spreiding uit
-      vergelijkend onderzoek naar WordPress tegenover statische sites op mobiel (2026),
-      dus hij staat nooit twee keer op hetzelfde. Verder: Google Search Central over Core
-      Web Vitals als ranking-signaal (18 maart 2026). Jouw resultaat hangt af van je
-      hosting, je afbeeldingen en je bezoeker.
+  <div class="op-scroll mt-12 grid gap-8 md:grid-cols-2">
+    <p class="leading-relaxed text-muted">
+      Dat verschil zie je niet alleen. Google meet het ook. WordPress-sites halen in
+      43 procent van de gevallen een voldoende op Core Web Vitals. Statische sites
+      zitten doorgaans boven de 95.
+    </p>
+    <p class="leading-relaxed text-muted">
+      En sinds Google in maart 2026 bevestigde dat reactiesnelheid volwaardig meetelt,
+      zakken trage sites gemiddeld bijna een positie in de resultaten.
+      <span class="text-fg">Traag is duur geworden.</span>
     </p>
   </div>
-</section>
 
+  <p class="op-scroll mt-8 font-mono text-[0.6875rem] leading-relaxed text-faint">
+    De onderste balk is de echte laadtijd van deze pagina in jouw browser, tot het
+    moment dat ze bruikbaar was. De bovenste schommelt binnen de spreiding uit
+    vergelijkend onderzoek naar WordPress tegenover statische sites op mobiel (2026),
+    dus hij staat nooit twee keer op hetzelfde. Verder: Google Search Central over Core
+    Web Vitals als ranking-signaal (18 maart 2026). Jouw resultaat hangt af van je
+    hosting, je afbeeldingen en je bezoeker.
+  </p>
+</Sectie>
 <style>
   /* Seconden en honderdsten apart, want counter() kan niet delen door 1000.
      Beide lopen proportioneel op, dus ze landen samen op de juiste waarde. */

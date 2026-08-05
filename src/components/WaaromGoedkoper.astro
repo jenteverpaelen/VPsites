@@ -8,6 +8,8 @@
  * bescheidenheid: het maakt de rest geloofwaardig.
  */
 
+import Sectie from '~/components/Sectie.astro';
+
 const redenen = [
   {
     kop: 'Geen kantoor, geen team',
@@ -32,68 +34,66 @@ const redenen = [
 ];
 ---
 
-<section class="sectie-ruim border-t border-line">
-  <div class="container-vp">
-    <p class="comment-mono op-scroll">
-      <span class="text-mint-dim">//</span> de vraag die je toch al aan het denken was
-    </p>
+<Sectie
+  nr="05"
+  comment="de vraag die je toch al aan het denken was"
+  ritme="sectie-ruim"
+>
+  <h2 class="op-scroll mt-5 max-w-3xl kop-sectie">
+    Waarom ben ik zoveel goedkoper?
+  </h2>
 
-    <h2 class="op-scroll mt-5 max-w-3xl kop-sectie">
-      Waarom ben ik zoveel goedkoper?
-    </h2>
+  <p class="op-scroll mt-6 max-w-2xl text-lg leading-relaxed text-muted">
+    Een website van vijf pagina's kost in België doorgaans tussen €3.500 en €8.000.
+    Ik vraag een fractie daarvan. Dat is een terechte vraag, dus hier is het
+    eerlijke antwoord.
+  </p>
 
-    <p class="op-scroll mt-6 max-w-2xl text-lg leading-relaxed text-muted">
-      Een website van vijf pagina's kost in België doorgaans tussen €3.500 en €8.000.
-      Ik vraag een fractie daarvan. Dat is een terechte vraag, dus hier is het
-      eerlijke antwoord.
-    </p>
-
-    <div class="mt-14 grid gap-12 lg:grid-cols-12 lg:gap-16">
-      <ol class="lg:col-span-7">
-        {
-          redenen.map((reden, i) => (
-            <li class="op-scroll-zij border-t border-line py-7 first:border-t-0 first:pt-0">
-              <div class="flex gap-5">
-                <span class="mt-1 shrink-0 font-mono text-xs text-mint-dim">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <div>
-                  <h3 class="text-xl leading-snug">{reden.kop}</h3>
-                  <p class="mt-3 leading-relaxed text-muted">{reden.tekst}</p>
-                </div>
+  <div class="mt-14 grid gap-12 lg:grid-cols-12 lg:gap-16">
+    <ol class="lg:col-span-7">
+      {
+        redenen.map((reden, i) => (
+          <li class="op-scroll-zij border-t border-line py-7 first:border-t-0 first:pt-0">
+            <div class="flex gap-5">
+              <span class="mt-1 shrink-0 font-mono text-xs text-mint-dim">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <div>
+                <h3 class="text-xl leading-snug">{reden.kop}</h3>
+                <p class="mt-3 leading-relaxed text-muted">{reden.tekst}</p>
               </div>
-            </li>
-          ))
-        }
-      </ol>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
 
-      <aside class="op-scroll lg:col-span-5">
-        <div class="rounded-vp border border-line bg-panel p-7 lg:sticky lg:top-28">
-          <h3 class="label-mono">Even eerlijk</h3>
-          <p class="mt-4 text-xl leading-snug">Wat je bij een bureau wél krijgt</p>
+    <aside class="op-scroll lg:col-span-5">
+      <div class="rounded-vp border border-line bg-panel p-7 lg:sticky lg:top-28">
+        <h3 class="label-mono">Even eerlijk</h3>
+        <p class="mt-4 text-xl leading-snug">Wat je bij een bureau wél krijgt</p>
 
-          <ul class="mt-5 space-y-3 text-[0.9375rem] leading-relaxed text-muted">
-            <li class="border-t border-line pt-3">
-              Iemand die opneemt op een dinsdagnamiddag. Ik antwoord meestal 's avonds.
-            </li>
-            <li class="border-t border-line pt-3">
-              Een team dat blijft draaien als er iemand ziek is of op reis gaat.
-            </li>
-            <li class="border-t border-line pt-3">
-              Een copywriter, een fotograaf en een SEO-specialist onder één dak.
-            </li>
-            <li class="border-t border-line pt-3">
-              Ervaring met grote projecten, webshops en koppelingen die ik niet doe.
-            </li>
-          </ul>
+        <ul class="mt-5 space-y-3 text-[0.9375rem] leading-relaxed text-muted">
+          <li class="border-t border-line pt-3">
+            Iemand die opneemt op een dinsdagnamiddag. Ik antwoord meestal 's avonds.
+          </li>
+          <li class="border-t border-line pt-3">
+            Een team dat blijft draaien als er iemand ziek is of op reis gaat.
+          </li>
+          <li class="border-t border-line pt-3">
+            Een copywriter, een fotograaf en een SEO-specialist onder één dak.
+          </li>
+          <li class="border-t border-line pt-3">
+            Ervaring met grote projecten, webshops en koppelingen die ik niet doe.
+          </li>
+        </ul>
 
-          <p class="mt-6 border-t border-line pt-5 leading-relaxed text-fg">
-            Heb je dat nodig, ga dan naar een bureau. Dat meen ik. Maar als je een
-            zelfstandige bent die gewoon deftig online wil staan, dan betaal je daar
-            voor een hoop dat je nooit gebruikt.
-          </p>
-        </div>
-      </aside>
-    </div>
+        <p class="mt-6 border-t border-line pt-5 leading-relaxed text-fg">
+          Heb je dat nodig, ga dan naar een bureau. Dat meen ik. Maar als je een
+          zelfstandige bent die gewoon deftig online wil staan, dan betaal je daar
+          voor een hoop dat je nooit gebruikt.
+        </p>
+      </div>
+    </aside>
   </div>
-</section>
+</Sectie>

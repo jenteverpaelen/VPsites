@@ -1,4 +1,5 @@
 ---
+import Sectie from '~/components/Sectie.astro';
 /**
  * Zeggen wat je weigert is het sterkste menselijke signaal dat er is.
  * Een AI schrijft nooit op wat ze niet doet. En het kwalificeert leads:
@@ -33,42 +34,42 @@ const nietDoen = [
 ];
 ---
 
-<section class="sectie-krap border-t border-line">
-  <div class="container-vp">
-    <p class="comment-mono op-scroll"><span class="text-mint-dim">//</span> zodat je niet voor niets belt</p>
+<Sectie
+  nr="07"
+  comment="zodat je niet voor niets belt"
+  ritme="sectie-krap"
+>
+  <h2 class="op-scroll mt-5 max-w-3xl kop-sectie">
+    Wat ik <span class="text-mint">niet</span> doe
+  </h2>
 
-    <h2 class="op-scroll mt-5 max-w-3xl kop-sectie">
-      Wat ik <span class="text-mint">niet</span> doe
-    </h2>
-
-    <ul class="mt-14 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
-      {
-        nietDoen.map((item, i) => (
-          <li class="op-scroll border-t border-line pt-5" data-stap={String(i % 3)}>
-            <div class="flex gap-3">
-              <svg
-                width="17"
-                height="17"
-                viewBox="0 0 17 17"
-                fill="none"
-                aria-hidden="true"
-                class="mt-1 shrink-0 text-faint"
-              >
-                <path
-                  d="M4.5 4.5l8 8M12.5 4.5l-8 8"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                />
-              </svg>
-              <div>
-                <h3 class="leading-snug font-medium">{item.kop}</h3>
-                <p class="mt-2 text-[0.9375rem] leading-relaxed text-muted">{item.tekst}</p>
-              </div>
+  <ul class="mt-14 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      nietDoen.map((item, i) => (
+        <li class="op-scroll border-t border-line pt-5" data-stap={String(i % 3)}>
+          <div class="flex gap-3">
+            <svg
+              width="17"
+              height="17"
+              viewBox="0 0 17 17"
+              fill="none"
+              aria-hidden="true"
+              class="mt-1 shrink-0 text-faint"
+            >
+              <path
+                d="M4.5 4.5l8 8M12.5 4.5l-8 8"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+            </svg>
+            <div>
+              <h3 class="leading-snug font-medium">{item.kop}</h3>
+              <p class="mt-2 text-[0.9375rem] leading-relaxed text-muted">{item.tekst}</p>
             </div>
-          </li>
-        ))
-      }
-    </ul>
-  </div>
-</section>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</Sectie>

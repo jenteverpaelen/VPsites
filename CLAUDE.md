@@ -112,6 +112,52 @@ voorkomt.
 Het attribuut wordt blokkerend gezet door het enige inline script op de site, in
 `Base.astro`. Zonder dat script zie je bij elke paginawissel een donkere flits.
 
+### De layout is een zichtbaar constructieraster
+
+Dit is sinds augustus 2026 de structuur van de site, en het is meer dan een
+stijl. Uit het onderzoek naar wat een techsite in 2026 geloofwaardig maakt komt
+één patroon er duidelijk bovenuit: een zichtbaar raster van haarlijnen, de
+zogenaamde blueprint grid. De reden dat het werkt: *een raster zegt systeem, het
+zegt dat dit met opzet gebouwd is, op maat, door iemand die wist wat hij deed.*
+Precies wat deze site moet uitstralen.
+
+Hoe het in elkaar zit:
+
+- **Twee verticale rails** op de randen van de container, over de volle hoogte
+  van de inhoud. Staan in `Base.astro` als `raster-rails`, absoluut binnen een
+  `raster`-wikkel om `<main>`
+- **De sectieregels zijn schermbreed** en lopen dwars door die rails heen. Op elk
+  snijpunt krijg je zo een kruis, en dat is wat het als tekening laat lezen in
+  plaats van als een stapel banden
+- **Kolomlijnen** op een derde en twee derde, pas vanaf `xl`
+- **Vanaf `md`.** Onder 768px is er geen ruimte voor een goot, en een haarlijn
+  tegen de schermrand wordt afgesneden door de ronde hoeken van een gsm
+
+**De belangrijkste regel: het raster mag nauwelijks te zien zijn.** Je voelt het
+voor je het opmerkt. Wordt het duidelijker dan de `line`-token, dan is het
+decoratie geworden en werkt het tegen. Het onderzoek is daar expliciet over:
+boven ongeveer 15 procent dekking is het te sterk.
+
+### Elke sectie via `Sectie.astro`
+
+Bouw een sectie nooit meer met de hand. Als de layout een zichtbaar raster is,
+moet elke sectie op exact dezelfde lijnen vallen, en één sectie die zijn eigen
+padding of goot kiest breekt dat meteen zichtbaar.
+
+```astro
+<Sectie nr="03" comment="geen offerte nodig, het staat er gewoon">
+  ...
+</Sectie>
+```
+
+`Sectie` bezit de regel bovenaan, de container en het grid. Links een goot met
+het sectienummer dat meeloopt terwijl je scrollt, rechts de inhoud. Die goot is
+de asymmetrie van de pagina: de inhoud begint niet aan de linkerrand.
+
+De nummers zijn de identiteit van de sectie, niet de positie op de pagina. Prijzen
+is altijd `03`, ook op `/prijzen` waar het bovenaan staat. Zo hoef je bij het
+herschikken van de home geen nummers om te gooien.
+
 ### Textuur
 
 Over de hele site ligt filmkorrel: een SVG met `feTurbulence` als data-URI op

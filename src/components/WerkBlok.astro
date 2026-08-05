@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { introductie } from '~/data/prijzen';
+import Sectie from '~/components/Sectie.astro';
 
 interface Props {
   /** Op /werk staat alles, op de home alleen de uitgelichte. */
@@ -21,115 +22,111 @@ const badges: Record<string, { label: string; klasse: string }> = {
 };
 ---
 
-<section class="sectie border-t border-line">
-  <div class="container-vp">
-    <p class="comment-mono op-scroll"><span class="text-mint-dim">//</span> waar ik nu aan werk</p>
+<Sectie nr="09" comment="waar ik nu aan werk">
+  <h2 class="op-scroll mt-5 max-w-2xl kop-sectie">Werk</h2>
 
-    <h2 class="op-scroll mt-5 max-w-2xl kop-sectie">Werk</h2>
+  <div class="mt-12 grid gap-5 lg:grid-cols-12">
+    <!-- Eerlijk blok. Een lege portfolio verstoppen werkt niet, maar er
+         open over zijn maakt van het gebrek een reden om nu te reageren. -->
+    <div class="op-scroll rounded-vp border border-mint/30 bg-mint-deep/20 p-7 lg:col-span-5 md:p-8">
+      <h3 class="text-2xl leading-snug">Ik ben net gestart.</h3>
+      <p class="mt-4 leading-relaxed text-muted">
+        Dus je vindt hier geen twintig cases. Dat ga ik ook niet verzinnen. Er loopt
+        één project en dat staat hiernaast.
+      </p>
+      <p class="mt-4 leading-relaxed text-muted">
+        Daar staat iets tegenover. Zolang mijn portfolio nog opgebouwd moet worden,
+        betaal je de introductieprijs. Als het af is, mag je de site aan je collega's
+        tonen. Dat is de hele afspraak.
+      </p>
 
-    <div class="mt-12 grid gap-5 lg:grid-cols-12">
-      <!-- Eerlijk blok. Een lege portfolio verstoppen werkt niet, maar er
-           open over zijn maakt van het gebrek een reden om nu te reageren. -->
-      <div class="op-scroll rounded-vp border border-mint/30 bg-mint-deep/20 p-7 lg:col-span-5 md:p-8">
-        <h3 class="text-2xl leading-snug">Ik ben net gestart.</h3>
-        <p class="mt-4 leading-relaxed text-muted">
-          Dus je vindt hier geen twintig cases. Dat ga ik ook niet verzinnen. Er loopt
-          één project en dat staat hiernaast.
-        </p>
-        <p class="mt-4 leading-relaxed text-muted">
-          Daar staat iets tegenover. Zolang mijn portfolio nog opgebouwd moet worden,
-          betaal je de introductieprijs. Als het af is, mag je de site aan je collega's
-          tonen. Dat is de hele afspraak.
-        </p>
+      {
+        introductie.actief && (
+          <p class="mt-6 border-t border-mint/25 pt-5 font-mono text-sm text-mint">
+            Nog {introductie.plaatsenOver} van de {introductie.plaatsen} plaatsen vrij.
+          </p>
+        )
+      }
 
-        {
-          introductie.actief && (
-            <p class="mt-6 border-t border-mint/25 pt-5 font-mono text-sm text-mint">
-              Nog {introductie.plaatsenOver} van de {introductie.plaatsen} plaatsen vrij.
-            </p>
-          )
-        }
-
-        <a
-          href="/contact"
-          class="mt-6 flex min-h-13 items-center justify-center rounded-vp bg-mint px-5 font-semibold text-ink transition-colors hover:bg-mint-dim"
-        >
-          Word mijn eerste klant
-        </a>
-      </div>
-
-      <div class="grid gap-5 lg:col-span-7 lg:content-start">
-        {
-          projecten.map((project, i) => {
-            const badge = badges[project.data.status];
-            return (
-              <article
-                data-stap={String(Math.min(i + 1, 2))}
-                class="op-scroll hover-lift rounded-vp border border-line bg-panel p-7 md:p-8"
-              >
-                <div class="flex flex-wrap items-center gap-3">
-                  <span
-                    class:list={[
-                      'rounded-full border px-2.5 py-0.5 font-mono text-[0.625rem] tracking-wider uppercase',
-                      badge?.klasse,
-                    ]}
-                  >
-                    {badge?.label}
-                  </span>
-                  <span class="font-mono text-xs text-faint">
-                    {project.data.branche}
-                    {project.data.gemeente && ` · ${project.data.gemeente}`}
-                  </span>
-                </div>
-
-                <h3 class="mt-4 text-2xl leading-snug">{project.data.titel}</h3>
-                <p class="mt-3 leading-relaxed text-muted">{project.data.samenvatting}</p>
-
-                {project.data.url && (
-                  <a
-                    href={project.data.url}
-                    target="_blank"
-                    rel="noopener"
-                    class="mt-5 inline-flex items-center gap-1.5 text-sm text-mint underline decoration-mint/35 underline-offset-4 hover:decoration-mint"
-                  >
-                    Bekijk de site
-                    <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
-                      <path
-                        d="M3 8 8 3M8 3H4.2M8 3v3.8"
-                        stroke="currentColor"
-                        stroke-width="1.3"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  </a>
-                )}
-              </article>
-            );
-          })
-        }
-
-        {
-          projecten.length === 0 && (
-            <p class="rounded-vp border border-dashed border-line p-8 text-center text-muted">
-              Het eerste project komt hier zodra het af is.
-            </p>
-          )
-        }
-      </div>
+      <a
+        href="/contact"
+        class="mt-6 flex min-h-13 items-center justify-center rounded-vp bg-mint px-5 font-semibold text-ink transition-colors hover:bg-mint-dim"
+      >
+        Word mijn eerste klant
+      </a>
     </div>
 
-    {
-      !volledig && alles.length > projecten.length && (
-        <p class="op-scroll mt-8">
-          <a
-            href="/werk"
-            class="text-mint underline decoration-mint/35 underline-offset-4 hover:decoration-mint"
-          >
-            Bekijk al het werk
-          </a>
-        </p>
-      )
-    }
+    <div class="grid gap-5 lg:col-span-7 lg:content-start">
+      {
+        projecten.map((project, i) => {
+          const badge = badges[project.data.status];
+          return (
+            <article
+              data-stap={String(Math.min(i + 1, 2))}
+              class="op-scroll hover-lift rounded-vp border border-line bg-panel p-7 md:p-8"
+            >
+              <div class="flex flex-wrap items-center gap-3">
+                <span
+                  class:list={[
+                    'rounded-full border px-2.5 py-0.5 font-mono text-[0.625rem] tracking-wider uppercase',
+                    badge?.klasse,
+                  ]}
+                >
+                  {badge?.label}
+                </span>
+                <span class="font-mono text-xs text-faint">
+                  {project.data.branche}
+                  {project.data.gemeente && ` · ${project.data.gemeente}`}
+                </span>
+              </div>
+
+              <h3 class="mt-4 text-2xl leading-snug">{project.data.titel}</h3>
+              <p class="mt-3 leading-relaxed text-muted">{project.data.samenvatting}</p>
+
+              {project.data.url && (
+                <a
+                  href={project.data.url}
+                  target="_blank"
+                  rel="noopener"
+                  class="mt-5 inline-flex items-center gap-1.5 text-sm text-mint underline decoration-mint/35 underline-offset-4 hover:decoration-mint"
+                >
+                  Bekijk de site
+                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
+                    <path
+                      d="M3 8 8 3M8 3H4.2M8 3v3.8"
+                      stroke="currentColor"
+                      stroke-width="1.3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </a>
+              )}
+            </article>
+          );
+        })
+      }
+
+      {
+        projecten.length === 0 && (
+          <p class="rounded-vp border border-dashed border-line p-8 text-center text-muted">
+            Het eerste project komt hier zodra het af is.
+          </p>
+        )
+      }
+    </div>
   </div>
-</section>
+
+  {
+    !volledig && alles.length > projecten.length && (
+      <p class="op-scroll mt-8">
+        <a
+          href="/werk"
+          class="text-mint underline decoration-mint/35 underline-offset-4 hover:decoration-mint"
+        >
+          Bekijk al het werk
+        </a>
+      </p>
+    )
+  }
+</Sectie>

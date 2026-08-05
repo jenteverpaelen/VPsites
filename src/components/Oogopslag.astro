@@ -18,6 +18,7 @@
 
 import { pakketten, goedkoopstePrijs, terugkerend } from '~/data/prijzen';
 import { bedrijf } from '~/data/bedrijf';
+import Sectie from '~/components/Sectie.astro';
 
 const onepager = pakketten.find((p) => p.id === 'onepager')!;
 const starterPakket = pakketten.find((p) => p.id === 'starter')!;
@@ -63,41 +64,41 @@ const tegels = [
 ];
 ---
 
-<section class="sectie-krap border-t border-line">
-  <div class="container-vp">
-    <p class="comment-mono op-scroll"><span class="text-mint-dim">//</span> de cijfers, zonder omweg</p>
+<Sectie
+  nr="02"
+  comment="de cijfers, zonder omweg"
+  ritme="sectie-krap"
+>
+  <h2 class="op-scroll kop-sectie mt-5 max-w-2xl">Wat krijg je concreet?</h2>
 
-    <h2 class="op-scroll kop-sectie mt-5 max-w-2xl">Wat krijg je concreet?</h2>
+  <p class="op-scroll mt-6 max-w-2xl text-lg leading-relaxed text-muted">
+    Een vaste prijs vanaf &euro;{goedkoopstePrijs}, online binnen de week, en daarna
+    geen maandelijkse factuur. Hieronder staat het uit elkaar getrokken.
+  </p>
 
-    <p class="op-scroll mt-6 max-w-2xl text-lg leading-relaxed text-muted">
-      Een vaste prijs vanaf &euro;{goedkoopstePrijs}, online binnen de week, en daarna
-      geen maandelijkse factuur. Hieronder staat het uit elkaar getrokken.
-    </p>
-
-    <dl class="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
-      {
-        tegels.map((tegel, i) => (
-          <div
-            data-stap={String(i % 3)}
-            class:list={[
-              'op-scroll hover-lift flex flex-col rounded-vp border border-line bg-panel p-5 md:p-6',
-              tegel.breed && 'col-span-2',
-            ]}
-          >
-            <dt class="label-mono">{tegel.label}</dt>
-            <dd class="mt-2 flex flex-1 flex-col">
-              {/* text-balance houdt "3 tot 4 dagen" netjes over twee regels in
-                  een halve kolom op 375px, in plaats van er uit te lopen. */}
-              <span class="text-2xl leading-tight font-bold tracking-kop-groot text-balance md:text-3xl">
-                {tegel.cijfer}
-              </span>
-              {/* mt-auto duwt de uitleg naar de onderkant, zodat de tegels op
-                  één lijn eindigen ook al is de ene tekst langer. */}
-              <span class="mt-auto pt-4 text-sm leading-relaxed text-muted">{tegel.tekst}</span>
-            </dd>
-          </div>
-        ))
-      }
-    </dl>
-  </div>
-</section>
+  <dl class="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
+    {
+      tegels.map((tegel, i) => (
+        <div
+          data-stap={String(i % 3)}
+          class:list={[
+            'op-scroll hover-lift flex flex-col rounded-vp border border-line bg-panel p-5 md:p-6',
+            tegel.breed && 'col-span-2',
+          ]}
+        >
+          <dt class="label-mono">{tegel.label}</dt>
+          <dd class="mt-2 flex flex-1 flex-col">
+            {/* text-balance houdt "3 tot 4 dagen" netjes over twee regels in
+                een halve kolom op 375px, in plaats van er uit te lopen. */}
+            <span class="text-2xl leading-tight font-bold tracking-kop-groot text-balance md:text-3xl">
+              {tegel.cijfer}
+            </span>
+            {/* mt-auto duwt de uitleg naar de onderkant, zodat de tegels op
+                één lijn eindigen ook al is de ene tekst langer. */}
+            <span class="mt-auto pt-4 text-sm leading-relaxed text-muted">{tegel.tekst}</span>
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+</Sectie>

@@ -1,6 +1,7 @@
 ---
 import { bedrijf, telHref } from '~/data/bedrijf';
 import PortretJente from '~/components/PortretJente.astro';
+import Sectie from '~/components/Sectie.astro';
 
 /**
  * Bij een lokale Vlaamse koper komt vertrouwen van een gezicht en een
@@ -8,53 +9,53 @@ import PortretJente from '~/components/PortretJente.astro';
  */
 ---
 
-<section class="sectie-krap border-t border-line">
-  <div class="container-vp">
-    <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
-      <div class="op-scroll lg:col-span-5">
-        <PortretJente class="w-full max-w-sm" />
+<Sectie
+  nr="10"
+  comment="wie er opneemt als je belt"
+  ritme="sectie-krap"
+>
+  <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+    <div class="op-scroll lg:col-span-5">
+      <PortretJente class="w-full max-w-sm" />
+    </div>
+
+    <div class="lg:col-span-7">
+      <h2 class="op-scroll kop-sectie">
+        Dag, ik ben Jente.
+      </h2>
+
+      <div class="op-scroll mt-7 space-y-5 text-lg leading-relaxed text-muted">
+        <p>
+          Ik maak websites omdat ik het graag doe. Overdag heb ik een gewone job,
+          's avonds zit ik hieraan. Dat is geen verkooppraatje, dat is gewoon hoe het is.
+        </p>
+        <p>
+          Het viel me op dat een zelfstandige met vier pagina's dezelfde offerte krijgt
+          als een bedrijf met veertig medewerkers. Terwijl het werk niet hetzelfde is.
+          Voor een schrijnwerker, een kapster of een coach heb je geen systeem nodig dat
+          duizend producten aankan. Je hebt een site nodig die snel laadt, er deftig
+          uitziet en waar je nummer op staat.
+        </p>
+        <p class="text-fg">
+          Als je belt, krijg je mij. Niet een callcenter, niet een accountmanager die
+          je dossier moet opzoeken.
+        </p>
       </div>
 
-      <div class="lg:col-span-7">
-        <p class="comment-mono op-scroll"><span class="text-mint-dim">//</span> wie je aan de lijn krijgt</p>
-
-        <h2 class="op-scroll mt-5 kop-sectie">
-          Dag, ik ben Jente.
-        </h2>
-
-        <div class="op-scroll mt-7 space-y-5 text-lg leading-relaxed text-muted">
-          <p>
-            Ik maak websites omdat ik het graag doe. Overdag heb ik een gewone job,
-            's avonds zit ik hieraan. Dat is geen verkooppraatje, dat is gewoon hoe het is.
-          </p>
-          <p>
-            Het viel me op dat een zelfstandige met vier pagina's dezelfde offerte krijgt
-            als een bedrijf met veertig medewerkers. Terwijl het werk niet hetzelfde is.
-            Voor een schrijnwerker, een kapster of een coach heb je geen systeem nodig dat
-            duizend producten aankan. Je hebt een site nodig die snel laadt, er deftig
-            uitziet en waar je nummer op staat.
-          </p>
-          <p class="text-fg">
-            Als je belt, krijg je mij. Niet een callcenter, niet een accountmanager die
-            je dossier moet opzoeken.
-          </p>
-        </div>
-
-        <div class="op-scroll mt-9 flex flex-wrap gap-3">
-          <a
-            href={telHref}
-            class="inline-flex min-h-13 items-center rounded-vp border border-line bg-panel px-5 font-medium transition-colors hover:border-line-soft hover:bg-raise"
-          >
-            {bedrijf.telefoonWeergave}
-          </a>
-          <a
-            href="/over"
-            class="inline-flex min-h-13 items-center rounded-vp px-5 text-mint underline decoration-mint/35 underline-offset-4 transition-colors hover:decoration-mint"
-          >
-            Meer over mij
-          </a>
-        </div>
+      <div class="op-scroll mt-9 flex flex-wrap gap-3">
+        <a
+          href={telHref}
+          class="inline-flex min-h-13 items-center rounded-vp border border-line bg-panel px-5 font-medium transition-colors hover:border-line-soft hover:bg-raise"
+        >
+          {bedrijf.telefoonWeergave}
+        </a>
+        <a
+          href="/over"
+          class="inline-flex min-h-13 items-center rounded-vp px-5 text-mint underline decoration-mint/35 underline-offset-4 transition-colors hover:decoration-mint"
+        >
+          Meer over mij
+        </a>
       </div>
     </div>
   </div>
-</section>
+</Sectie>

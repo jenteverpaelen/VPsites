@@ -358,6 +358,30 @@
   letter-spacing: var(--tracking-kop-groot);
 }
 
+/* Het grid binnen een sectie: een goot met het sectienummer, en daarnaast de
+   inhoud. Onder lg staat het nummer boven de inhoud, want een goot van 5,5rem
+   naast een kolom van 300px laat niets over voor de tekst. */
+@utility sectie-grid {
+  display: grid;
+  gap: 1.75rem;
+
+  @media (width >= 64rem) {
+    grid-template-columns: 5.5rem 1fr;
+    gap: 0;
+  }
+}
+
+/* Het nummer loopt mee zolang je in de sectie zit. Kost niets, want position:
+   sticky is geen scroll-listener, en het maakt van de goot een echte marge in
+   plaats van een lege kolom. */
+@utility sectie-goot {
+  @media (width >= 64rem) {
+    position: sticky;
+    top: 6.5rem;
+    align-self: start;
+  }
+}
+
 /* Voor de uitspraak: groter dan een sectiekop, kleiner dan de H1 van de home.
    Eén keer op de pagina, anders is het geen uitspraak meer maar een stijl. */
 @utility kop-uitspraak {
@@ -521,6 +545,60 @@
   & tbody tr:last-child th,
   & tbody tr:last-child td {
     border-bottom: 0;
+  }
+}
+
+/* ============================================================
+   HET RASTER
+   De layout van de site is een zichtbaar constructieraster.
+
+   Twee verticale haarlijnen op de randen van de container, over de volle hoogte
+   van de pagina. De horizontale sectieregels lopen over de volle breedte en dus
+   dwars door die rails heen, zodat je op elk snijpunt een kruis krijgt. Zo leest
+   de pagina als een technische tekening in plaats van als een stapel banden.
+
+   Eén regel is belangrijker dan alle andere: het raster moet nauwelijks te zien
+   zijn. Je voelt het voor je het opmerkt. Wordt het duidelijker dan dit, dan is
+   het decoratie geworden en werkt het tegen. Vandaar de bestaande line-token en
+   niet iets sterkers.
+
+   Vanaf md. Onder 768px is er geen ruimte voor een goot, en een haarlijn tegen
+   de schermrand wordt afgesneden door de ronde hoeken van een gsm.
+   ============================================================ */
+
+@utility raster {
+  position: relative;
+}
+
+@utility raster-rails {
+  display: none;
+
+  @media (width >= 48rem) {
+    display: block;
+    position: absolute;
+    inset: 0;
+    left: 0;
+    right: 0;
+    max-width: 72rem;
+    margin-inline: auto;
+    border-inline: 1px solid var(--color-line);
+    pointer-events: none;
+  }
+}
+
+/* De kolomlijnen op een derde en twee derde. Pas vanaf xl, want daaronder
+   staan ze te dicht op de tekst en wordt het ruis. */
+@utility raster-kolom {
+  display: none;
+
+  @media (width >= 80rem) {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: var(--color-line);
+    opacity: 0.5;
   }
 }
 

@@ -141,9 +141,20 @@ const analyticsToken = '';
 
     <Nav />
 
-    <main id="hoofd">
-      <slot />
-    </main>
+    <!-- De rails van het constructieraster. Absoluut binnen deze wikkel, dus ze
+         lopen over de volle hoogte van de inhoud mee. De sectieregels zijn
+         schermbreed en lopen er dwars door, wat op elk snijpunt een kruis
+         geeft. Zie de uitleg bij `raster` in global.css. -->
+    <div class="raster">
+      <span class="raster-rails" aria-hidden="true">
+        <span class="raster-kolom" style="left: 33.333%"></span>
+        <span class="raster-kolom" style="left: 66.667%"></span>
+      </span>
+
+      <main id="hoofd" class="relative">
+        <slot />
+      </main>
+    </div>
 
     <Footer />
 

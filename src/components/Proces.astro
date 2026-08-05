@@ -8,6 +8,7 @@
  */
 
 import { levertijdKort } from '~/data/prijzen';
+import Sectie from '~/components/Sectie.astro';
 
 const stappen = [
   {
@@ -41,42 +42,37 @@ const stappen = [
 ];
 ---
 
-<section class="sectie border-t border-line">
-  <div class="container-vp">
-    <p class="comment-mono op-scroll"><span class="text-mint-dim">//</span> van bellen tot online</p>
-
-    <div class="mt-5 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-      <h2 class="op-scroll max-w-2xl kop-sectie">Hoe het loopt</h2>
-      <p class="op-scroll font-mono text-sm text-faint">totaal: {levertijdKort}</p>
-    </div>
-
-    <ol class="pijplijn relative mt-16">
-      <!-- Het spoor loopt achter de stappen door. -->
-      <span class="pijplijn-spoor" aria-hidden="true"></span>
-      <span class="pijplijn-lijn" aria-hidden="true"></span>
-
-      {
-        stappen.map((stap, i) => (
-          <li class="op-scroll relative grid gap-x-8 gap-y-3 pb-12 pl-14 last:pb-0 md:grid-cols-12 md:pl-20">
-            <span class="pijplijn-punt" aria-hidden="true">
-              <span class="pijplijn-ring"></span>
-              {String(i + 1).padStart(2, '0')}
-            </span>
-
-            <div class="md:col-span-4">
-              <span class="label-mono text-mint-dim">{stap.tag}</span>
-              <h3 class="mt-2 text-xl leading-snug">{stap.kop}</h3>
-              <p class="mt-1.5 font-mono text-xs text-faint">{stap.duur}</p>
-            </div>
-
-            <p class="leading-relaxed text-muted md:col-span-8 md:pt-7">{stap.tekst}</p>
-          </li>
-        ))
-      }
-    </ol>
+<Sectie nr="08" comment="van bellen tot online">
+  <div class="mt-5 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+    <h2 class="op-scroll max-w-2xl kop-sectie">Hoe het loopt</h2>
+    <p class="op-scroll font-mono text-sm text-faint">totaal: {levertijdKort}</p>
   </div>
-</section>
 
+  <ol class="pijplijn relative mt-16">
+    <!-- Het spoor loopt achter de stappen door. -->
+    <span class="pijplijn-spoor" aria-hidden="true"></span>
+    <span class="pijplijn-lijn" aria-hidden="true"></span>
+
+    {
+      stappen.map((stap, i) => (
+        <li class="op-scroll relative grid gap-x-8 gap-y-3 pb-12 pl-14 last:pb-0 md:grid-cols-12 md:pl-20">
+          <span class="pijplijn-punt" aria-hidden="true">
+            <span class="pijplijn-ring"></span>
+            {String(i + 1).padStart(2, '0')}
+          </span>
+
+          <div class="md:col-span-4">
+            <span class="label-mono text-mint-dim">{stap.tag}</span>
+            <h3 class="mt-2 text-xl leading-snug">{stap.kop}</h3>
+            <p class="mt-1.5 font-mono text-xs text-faint">{stap.duur}</p>
+          </div>
+
+          <p class="leading-relaxed text-muted md:col-span-8 md:pt-7">{stap.tekst}</p>
+        </li>
+      ))
+    }
+  </ol>
+</Sectie>
 <style>
   .pijplijn-spoor,
   .pijplijn-lijn {

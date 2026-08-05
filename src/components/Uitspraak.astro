@@ -15,25 +15,22 @@
  */
 
 import { starter } from '~/data/prijzen';
+import Sectie from '~/components/Sectie.astro';
 ---
 
-<section class="sectie-krap border-t border-line">
-  <div class="container-vp">
-    <p class="comment-mono op-scroll"><span class="text-mint-dim">//</span> even naast elkaar</p>
+<Sectie nr="04" comment="even naast elkaar" ritme="sectie-krap">
+  <p class="kop-uitspraak op-scroll mt-6 max-w-4xl font-semibold">
+    Een bureau vraagt vanaf €3.500 voor vier pagina's.<br class="hidden md:block" />
+    <span class="text-muted">Ik vraag </span><span class="text-mint">€{starter.prijs}</span
+    ><span class="text-muted">.</span>
+  </p>
 
-    <p class="kop-uitspraak op-scroll mt-6 max-w-4xl font-semibold">
-      Een bureau vraagt vanaf €3.500 voor vier pagina's.<br class="hidden md:block" />
-      <span class="text-muted">Ik vraag </span><span class="text-mint">€{starter.prijs}</span
-      ><span class="text-muted">.</span>
-    </p>
-
-    <p class="op-scroll mt-8 max-w-xl font-mono text-xs leading-relaxed text-faint">
-      Zelfde aantal pagina's, zelfde werk. Het verschil zit in wie de rekening
-      meebetaalt. <a
-        href="/kennis/wat-kost-een-website-belgie"
-        class="text-muted underline decoration-line underline-offset-4 transition-colors hover:text-mint hover:decoration-mint"
-        >Hier staan de cijfers per type bureau</a
-      >, en hieronder staat waarom ik eronder kan.
-    </p>
-  </div>
-</section>
+  <p class="op-scroll mt-8 max-w-xl font-mono text-xs leading-relaxed text-faint">
+    Zelfde aantal pagina's, zelfde werk. Het verschil zit in wie de rekening
+    meebetaalt. <a
+      href="/kennis/wat-kost-een-website-belgie"
+      class="text-muted underline decoration-line underline-offset-4 transition-colors hover:text-mint hover:decoration-mint"
+      >Hier staan de cijfers per type bureau</a
+    >, en hieronder staat waarom ik eronder kan.
+  </p>
+</Sectie>

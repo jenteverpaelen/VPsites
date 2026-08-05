@@ -12,7 +12,16 @@ const { comment, titel, intro, kruimels = [] } = Astro.props;
 <section class="relative overflow-hidden border-b border-line">
   <div class="kop-raster" aria-hidden="true"></div>
 
+  <!-- Zelfde grid als Sectie.astro, zodat de kop op dezelfde lijnen valt als
+       alles eronder. In de goot staat geen nummer maar het kruimelpad: dat is
+       navigatie en hoort niet in de leeskolom. -->
   <div class="container-vp relative pt-12 pb-14 md:pt-20 md:pb-20">
+    <div class="sectie-grid">
+      <div class="sectie-goot">
+        <p class="font-mono text-xs text-mint-dim">00</p>
+      </div>
+
+      <div>
     {
       kruimels.length > 0 && (
         <nav aria-label="Kruimelpad" class="mb-6">
@@ -54,6 +63,8 @@ const { comment, titel, intro, kruimels = [] } = Astro.props;
     {intro && <p class="mt-7 max-w-2xl text-lg leading-relaxed text-muted md:text-xl">{intro}</p>}
 
     <slot />
+      </div>
+    </div>
   </div>
 </section>
 
