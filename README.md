@@ -193,18 +193,56 @@ Daar hoort `location: https://vpsites.be/prijzen` te staan.
 Twee hostnames die allebei de site tonen is dubbele content. De canonicals
 wijzen al naar de apex, maar een redirect is duidelijker dan Google laten kiezen.
 
+### Welke DNS-records er horen te staan
+
+| Record | Waarvoor | Wie zet het |
+|---|---|---|
+| apex `vpsites.be` | de site | Cloudflare, bij het aanhangen van de Worker |
+| `www` CNAME → `vpsites.be` | doorverwijzen naar de apex | jij |
+| MX | mail op `@vpsites.be` ontvangen | Cloudflare Email Routing |
+| TXT met `v=spf1` | wie namens jou mag verzenden | Email Routing, later aanvullen |
+| TXT op `_dmarc` | voorkomen dat iemand je adres misbruikt | jij |
+| DKIM | ondertekening van verzonden mail | Resend geeft de waarden |
+
+Niet toevoegen, ook als een blog het aanraadt: CAA (Cloudflare regelt de
+certificaten, en een verkeerde CAA blokkeert de uitgifte), een AAAA op de apex
+(dat doet de proxy), BIMI (vraagt een certificaat van meer dan duizend euro per
+jaar) en MTA-STS. Voor een eenmanszaak leveren die niets op.
+
 ### E-mail op het domein
 
 `hallo@vpsites.be` staat op de site, in de JSON-LD en in de footer. Dat adres
 moet dus echt bestaan, en daar heb je MX-records voor nodig. Gratis via
-Cloudflare: **Email → Email Routing** → aanzetten, dan een adres toevoegen dat
-doorstuurt naar je gewone mailbox. Cloudflare zet de MX- en TXT-records er zelf
-bij.
+Cloudflare: **Email → Email Routing** → aanzetten, dan `hallo@vpsites.be`
+toevoegen als adres dat doorstuurt naar je gewone mailbox. Cloudflare zet de MX-
+en SPF-records er zelf bij.
+
+Dat sluit ook de kring rond het formulier: `MAIL_NAAR` staat op
+`hallo@vpsites.be`, dus een aanvraag komt dan in je echte mailbox terecht.
 
 Dat is voor mail **ontvangen**. Om via het formulier te kunnen **versturen** moet
-je `vpsites.be` nog verifiëren bij Resend. Die geeft je een paar DKIM- en
-SPF-records om toe te voegen. Doe dat voor je `MAIL_VAN` instelt, anders weigert
-Resend de verzending.
+je `vpsites.be` nog verifiëren bij Resend. Die geeft je exacte DKIM-records. Neem
+die letterlijk over en verzin er niets bij. Doe dit voor je `MAIL_VAN` instelt,
+anders weigert Resend de verzending.
+
+**Eén SPF-record per domein.** Dat is de klassieke fout: Email Routing zet er een,
+en dan komt Resend erbij en zet je een tweede. Twee SPF-records maken de controle
+ongeldig en dan komt je mail in de spam. Je voegt de `include:` van Resend toe aan
+het bestaande record, je maakt geen nieuw record.
+
+### Voorkomen dat iemand met je adres verzendt
+
+Zonder DMARC kan iedereen mail versturen die van `hallo@vpsites.be` lijkt te
+komen. Voeg toe: TXT-record, name `_dmarc`, content:
+
+```
+v=DMARC1; p=none; rua=mailto:hallo@vpsites.be; fo=1
+```
+
+Begin op `p=none`. Dat verandert nog niets aan de aflevering en je krijgt enkel
+rapporten. Staat Resend een paar weken goed te verzenden, zet het dan op
+`p=quarantine` en daarna op `p=reject`. Meteen op `reject` beginnen is de manier
+om je eigen formuliermail stil te laten verdwijnen.
 
 `SITE_URL` in [`src/data/site.mjs`](src/data/site.mjs) staat op
 `https://vpsites.be`, dus **zonder www**. Hang je ook `www.vpsites.be` eraan, zet
