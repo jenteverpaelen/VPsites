@@ -214,8 +214,9 @@ const groepen = [...new Set(acties.map((a) => a.groep))];
 
       // Doorgeven aan een knop die elders al bestaat, bijvoorbeeld de
       // weergaveknop in de nav.
-      if (item.dataset.klik) {
-        document.querySelector<HTMLElement>(item.dataset.klik)?.click();
+      const klik = item.dataset.klik;
+      if (klik) {
+        document.querySelector<HTMLElement>(klik)?.click();
         palet.close();
         return;
       }

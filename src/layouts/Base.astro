@@ -63,7 +63,7 @@ const analyticsToken = '';
         if (localStorage.getItem('vp-thema') === 'licht') {
           document.documentElement.dataset.thema = 'licht';
         }
-      } catch (e) {
+      } catch {
         /* Private mode kan localStorage blokkeren. Dan gewoon donker. */
       }
     </script>
