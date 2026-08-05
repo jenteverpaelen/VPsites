@@ -408,17 +408,19 @@
    Index die Google in 2026 introduceerde. Zie CLAUDE.md deel 7.
    ============================================================ */
 
-/* LET OP, twee valkuilen die me al eens beet hebben gehad.
+/* Twee dingen om te weten bij scroll-gedreven animaties hier.
 
-   1. Schrijf een scroll-gedreven animatie nooit met de `animation`-shorthand.
-      Die zet animation-duration op 0s, en Chrome rekent die duur ook echt mee
-      bij een scroll-timeline. Gevolg: de animatie staat meteen op het eind en
-      loopt niet mee met de scroll. In een oudere Chromium werkt het wel, dus je
-      ziet het niet in elke browser. Altijd longhands, altijd duration: auto.
+   1. Schrijf ze met longhands en zet animation-duration expliciet op `auto`.
+      De `animation`-shorthand zet de duur op 0s. Chrome 148 negeert die 0s bij
+      een progress-based timeline en gebruikt alsnog `auto`, dus daar valt het
+      niet op, maar de shorthand laat het wel aan de browser over. Nagemeten:
+      beide varianten rapporteren duration `auto` in Chrome 148. Expliciet is
+      hier gewoon beter, want het is de waarde die de spec voorschrijft.
 
    2. Het reduce-blok onderaan zet animation-duration op 0.01ms met !important.
       Dat treft ook een scroll-timeline en laat die op het eind springen. Elke
-      scroll-gedreven animatie moet daar dus expliciet uitgezet worden. */
+      scroll-gedreven animatie moet daar dus expliciet uitgezet worden. Dat is
+      een echte valkuil: vergeet je het, dan staat het eindbeeld er meteen. */
 
 @layer utilities {
   @keyframes vp-op {

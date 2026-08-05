@@ -79,17 +79,17 @@ const stappen = [
   .pijplijn-spoor,
   .pijplijn-lijn {
     position: absolute;
-    left: 1.0625rem;
+    left: 1rem;
     top: 0.25rem;
     bottom: 1.5rem;
-    width: 2px;
-    border-radius: 1px;
+    width: 3px;
+    border-radius: 2px;
   }
 
   @media (width >= 48rem) {
     .pijplijn-spoor,
     .pijplijn-lijn {
-      left: 1.4375rem;
+      left: 1.375rem;
     }
   }
 
@@ -107,9 +107,17 @@ const stappen = [
 
   /* Loopt mee terwijl je door de sectie scrollt.
 
-     Longhands, geen shorthand. De `animation`-shorthand zet duration op 0s en
-     Chrome rekent die duur mee bij een scroll-timeline, waardoor de lijn meteen
-     vol staat in plaats van mee te lopen. Zie de uitleg in global.css. */
+     Het bereik stond op `entry 55% cover 72%`. Dat is een geldig bereik, maar de
+     lengte ervan hangt af van de hoogte van het scherm: op een hoge desktop was
+     de lijn al bijna vol terwijl je nog aan stap twee las, op een smal scherm
+     kroop hij mee. Vandaar dat het in de ene browser wel opvalt en in de andere
+     niet.
+
+     `entry 50% exit 50%` is precies één schermhoogte scrollen, wat het scherm
+     ook is. De lijn is dus leeg als de sectie halfweg binnenkomt en vol als ze
+     halfweg vertrekt. Dat is voorspelbaar en het valt op.
+
+     Longhands en duration: auto, zie de uitleg in global.css. */
   @supports (animation-timeline: view()) {
     .pijplijn-lijn {
       animation-name: lijn-groeien;
@@ -117,7 +125,7 @@ const stappen = [
       animation-timing-function: linear;
       animation-fill-mode: both;
       animation-timeline: view();
-      animation-range: entry 62% cover 78%;
+      animation-range: entry 50% exit 50%;
     }
   }
 
@@ -168,6 +176,9 @@ const stappen = [
     opacity: 0;
   }
 
+  /* Het bereik staat op cover en niet op entry, want de subject is hier de ring
+     zelf en die is maar 34 pixels hoog. Een entry-bereik is dan ook 34 pixels
+     scrollen en dan ploft de ring aan in plaats van op te komen. */
   @supports (animation-timeline: view()) {
     .pijplijn-ring {
       animation-name: ring-aan;
@@ -175,7 +186,7 @@ const stappen = [
       animation-timing-function: linear;
       animation-fill-mode: both;
       animation-timeline: view();
-      animation-range: entry 70% entry 100%;
+      animation-range: cover 10% cover 35%;
     }
   }
 
