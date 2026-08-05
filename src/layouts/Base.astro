@@ -1,6 +1,7 @@
 ---
 import '~/styles/global.css';
 import Nav from '~/components/Nav.astro';
+import Zijbalk from '~/components/Zijbalk.astro';
 import Footer from '~/components/Footer.astro';
 import MobielActieBalk from '~/components/MobielActieBalk.astro';
 import CommandPalette from '~/components/CommandPalette.astro';
@@ -139,24 +140,25 @@ const analyticsToken = '';
       Naar de inhoud
     </a>
 
-    <Nav />
+    <!-- De app-shell: vaste kolom links, inhoud rechts. Onder lg bestaat de
+         zijbalk niet en neemt Nav.astro het over met het popover-menu.
 
-    <!-- De rails van het constructieraster. Absoluut binnen deze wikkel, dus ze
-         lopen over de volle hoogte van de inhoud mee. De sectieregels zijn
-         schermbreed en lopen er dwars door, wat op elk snijpunt een kruis
-         geeft. Zie de uitleg bij `raster` in global.css. -->
-    <div class="raster">
-      <span class="raster-rails" aria-hidden="true">
-        <span class="raster-kolom" style="left: 33.333%"></span>
-        <span class="raster-kolom" style="left: 66.667%"></span>
-      </span>
+         De verticale rails van de vorige versie zijn eruit. Die tekenden een
+         kader rond één brede kolom, en dat kader is nu de rand van de zijbalk
+         en van de kaarten zelf. Twee rasters over elkaar is ruis. -->
+    <div class="schil">
+      <Zijbalk />
 
-      <main id="hoofd" class="relative">
-        <slot />
-      </main>
+      <div class="min-w-0">
+        <Nav />
+
+        <main id="hoofd">
+          <slot />
+        </main>
+
+        <Footer />
+      </div>
     </div>
-
-    <Footer />
 
     {actiebalk && <MobielActieBalk />}
 

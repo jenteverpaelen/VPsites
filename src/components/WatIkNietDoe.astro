@@ -1,5 +1,5 @@
 ---
-import Sectie from '~/components/Sectie.astro';
+import Kaart from '~/components/Kaart.astro';
 /**
  * Zeggen wat je weigert is het sterkste menselijke signaal dat er is.
  * Een AI schrijft nooit op wat ze niet doet. En het kwalificeert leads:
@@ -34,12 +34,11 @@ const nietDoen = [
 ];
 ---
 
-<Sectie
-  nr="07"
-  comment="zodat je niet voor niets belt"
-  ritme="sectie-krap"
+<Kaart
+  nr="06"
+  titel="Wat ik niet doe"
 >
-  <h2 class="op-scroll mt-5 max-w-3xl kop-sectie">
+  <h2 class="op-scroll max-w-3xl kop-kaart">
     Wat ik <span class="text-mint">niet</span> doe
   </h2>
 
@@ -72,4 +71,4 @@ const nietDoen = [
       ))
     }
   </ul>
-</Sectie>
+</Kaart>

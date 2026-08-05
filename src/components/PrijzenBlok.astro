@@ -2,7 +2,7 @@
 import PrijsKaart from '~/components/PrijsKaart.astro';
 import { pakketten, introductie, terugkerend, geenAbonnement, starter } from '~/data/prijzen';
 import { bedrijf } from '~/data/bedrijf';
-import Sectie from '~/components/Sectie.astro';
+import Kaart from '~/components/Kaart.astro';
 
 interface Props {
   /** Op /prijzen alles tonen, op de home de korte versie. */
@@ -13,13 +13,15 @@ interface Props {
 const { volledig = false, kop = 'Wat het kost' } = Astro.props;
 ---
 
-<Sectie
+<Kaart
   nr="03"
-  comment="geen offerte nodig, het staat er gewoon"
+  titel="Prijzen"
+  meta="geen offerte nodig"
+  span={3}
   id="prijzen"
 >
-  <div class="mt-5 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-    <h2 class="op-scroll max-w-2xl kop-sectie">
+  <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+    <h2 class="op-scroll max-w-2xl kop-kaart">
       {kop}
     </h2>
 
@@ -109,4 +111,4 @@ const { volledig = false, kop = 'Wat het kost' } = Astro.props;
       </p>
     )
   }
-</Sectie>
+</Kaart>

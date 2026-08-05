@@ -1,5 +1,5 @@
 ---
-import Sectie from '~/components/Sectie.astro';
+import Kaart from '~/components/Kaart.astro';
 /**
  * Twee laadbalken naast elkaar. Maakt "sneller" concreet voor iemand die
  * niet weet wat Core Web Vitals zijn.
@@ -32,13 +32,14 @@ const deelnemers = [
 ];
 ---
 
-<Sectie
-  nr="06"
-  comment="hetzelfde bezoek, twee sites"
-  ritme="sectie-krap"
+<Kaart
+  nr="07"
+  titel="Snelheid"
+  meta="jouw browser"
+  span={2}
 >
-  <div class="mt-5 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-    <h2 class="op-scroll max-w-2xl kop-sectie">
+  <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+    <h2 class="op-scroll max-w-2xl kop-kaart">
       Een paar seconden wachten<br class="hidden sm:block" />
       <span class="text-muted">of niet.</span>
     </h2>
@@ -118,7 +119,7 @@ const deelnemers = [
     Web Vitals als ranking-signaal (18 maart 2026). Jouw resultaat hangt af van je
     hosting, je afbeeldingen en je bezoeker.
   </p>
-</Sectie>
+</Kaart>
 <style>
   /* Seconden en honderdsten apart, want counter() kan niet delen door 1000.
      Beide lopen proportioneel op, dus ze landen samen op de juiste waarde. */

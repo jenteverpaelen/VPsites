@@ -1,6 +1,6 @@
 ---
 import type { FaqItem } from '~/data/faq';
-import Sectie from '~/components/Sectie.astro';
+import Kaart from '~/components/Kaart.astro';
 
 interface Props {
   vragen: FaqItem[];
@@ -18,8 +18,12 @@ const { vragen, kop = 'De vragen die je toch ging stellen' } = Astro.props;
  */
 ---
 
-<Sectie nr="11" comment="eerlijke antwoorden, ook de lastige">
-  <h2 class="op-scroll mt-5 max-w-2xl kop-sectie">{kop}</h2>
+<Kaart
+  nr="11"
+  titel="Vragen"
+  span={2}
+>
+  <h2 class="op-scroll max-w-2xl kop-kaart">{kop}</h2>
 
   <div class="mt-12 max-w-3xl">
     {
@@ -48,7 +52,7 @@ const { vragen, kop = 'De vragen die je toch ging stellen' } = Astro.props;
       ))
     }
   </div>
-</Sectie>
+</Kaart>
 <style>
   /* Safari toont anders zijn eigen driehoekje naast het onze. */
   .vraag summary::-webkit-details-marker {

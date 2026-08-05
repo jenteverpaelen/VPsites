@@ -1,6 +1,7 @@
 ---
 import { bedrijf, telHref, mailHref } from '~/data/bedrijf';
 import { goedkoopstePrijs } from '~/data/prijzen';
+import Kaart from '~/components/Kaart.astro';
 
 /**
  * Het enige volle mint vlak op de pagina.
@@ -19,9 +20,11 @@ import { goedkoopstePrijs } from '~/data/prijzen';
  */
 ---
 
-<section class="sectie-ruim relative overflow-hidden bg-mint">
-  <div class="container-vp relative">
-    <div class="max-w-3xl">
+<!-- Op md twee kolommen breed, op xl één. Zo staat het mint vlak op een breed
+     scherm naast de vragen en anker het de hoek van het bord, terwijl het op een
+     tablet een volle rij pakt in plaats van een halve met een gat ernaast. -->
+<Kaart nr="12" titel="Contact" accent class="md:col-span-2 xl:col-span-1">
+  <div>
       <!-- Hier bewust niet comment-mono, want die utility zet zelf color op
            faint. Twee utilities die dezelfde property zetten worden door
            Tailwind gesorteerd en niet door de volgorde in het class-attribuut,
@@ -31,7 +34,7 @@ import { goedkoopstePrijs } from '~/data/prijzen';
         <span aria-hidden="true">//</span> geen formulier van twintig velden
       </p>
 
-      <h2 class="kop-hero op-scroll op-mint mt-5">Stuur me gewoon wat je doet.</h2>
+      <h2 class="kop-kaart op-scroll op-mint mt-5">Stuur me gewoon wat je doet.</h2>
 
       <p class="op-scroll op-mint-zacht mt-7 max-w-xl text-lg leading-relaxed md:text-xl">
         Eén zin volstaat. Ik antwoord binnen de dag met wat het bij jou zou kosten en
@@ -70,6 +73,5 @@ import { goedkoopstePrijs } from '~/data/prijzen';
           {bedrijf.email}
         </a>
       </p>
-    </div>
   </div>
-</section>
+</Kaart>

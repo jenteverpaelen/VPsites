@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import { introductie } from '~/data/prijzen';
-import Sectie from '~/components/Sectie.astro';
+import Kaart from '~/components/Kaart.astro';
 
 interface Props {
   /** Op /werk staat alles, op de home alleen de uitgelichte. */
@@ -22,8 +22,12 @@ const badges: Record<string, { label: string; klasse: string }> = {
 };
 ---
 
-<Sectie nr="09" comment="waar ik nu aan werk">
-  <h2 class="op-scroll mt-5 max-w-2xl kop-sectie">Werk</h2>
+<Kaart
+  nr="09"
+  titel="Werk"
+  span={2}
+>
+  <h2 class="op-scroll max-w-2xl kop-kaart">Werk</h2>
 
   <div class="mt-12 grid gap-5 lg:grid-cols-12">
     <!-- Eerlijk blok. Een lege portfolio verstoppen werkt niet, maar er
@@ -129,4 +133,4 @@ const badges: Record<string, { label: string; klasse: string }> = {
       </p>
     )
   }
-</Sectie>
+</Kaart>

@@ -8,7 +8,7 @@
  * bescheidenheid: het maakt de rest geloofwaardig.
  */
 
-import Sectie from '~/components/Sectie.astro';
+import Kaart from '~/components/Kaart.astro';
 
 const redenen = [
   {
@@ -34,12 +34,13 @@ const redenen = [
 ];
 ---
 
-<Sectie
+<Kaart
   nr="05"
-  comment="de vraag die je toch al aan het denken was"
-  ritme="sectie-ruim"
+  titel="Waarom goedkoper"
+  meta="het eerlijke antwoord"
+  span={2}
 >
-  <h2 class="op-scroll mt-5 max-w-3xl kop-sectie">
+  <h2 class="op-scroll max-w-3xl kop-kaart">
     Waarom ben ik zoveel goedkoper?
   </h2>
 
@@ -96,4 +97,4 @@ const redenen = [
       </div>
     </aside>
   </div>
-</Sectie>
+</Kaart>

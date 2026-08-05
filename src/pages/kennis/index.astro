@@ -39,7 +39,7 @@ const laatsteWijziging = artikels.length
   />
 
   <section class="sectie">
-    <div class="container-vp">
+    <div class="container-app">
       <ul class="grid gap-5 md:grid-cols-3">
         {
           artikels.map((artikel, i) => (
@@ -92,5 +92,9 @@ const laatsteWijziging = artikels.length
     </div>
   </section>
 
-  <ContactCta />
+  <div class="container-app py-4 md:py-6">
+    <div class="bord">
+      <ContactCta />
+    </div>
+  </div>
 </Base>

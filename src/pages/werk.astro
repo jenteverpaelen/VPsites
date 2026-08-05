@@ -21,10 +21,14 @@ const kruimels = [{ naam: 'werk', pad: '/werk' }];
     kruimels={kruimels}
   />
 
-  <WerkBlok volledig />
+  <div class="container-app py-4 md:py-6">
+    <div class="bord">
+      <WerkBlok volledig />
+    </div>
+  </div>
 
   <section class="sectie border-t border-line">
-    <div class="container-vp">
+    <div class="container-app">
       <div class="max-w-2xl">
         <p class="comment-mono op-scroll"><span class="text-mint-dim">//</span> wat er komt</p>
         <h2 class="op-scroll mt-5 text-3xl sm:text-4xl">Wat hier binnenkort staat</h2>
@@ -41,5 +45,9 @@ const kruimels = [{ naam: 'werk', pad: '/werk' }];
     </div>
   </section>
 
-  <ContactCta />
+  <div class="container-app pb-4 md:pb-6">
+    <div class="bord">
+      <ContactCta />
+    </div>
+  </div>
 </Base>

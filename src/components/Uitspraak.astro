@@ -15,10 +15,14 @@
  */
 
 import { starter } from '~/data/prijzen';
-import Sectie from '~/components/Sectie.astro';
+import Kaart from '~/components/Kaart.astro';
 ---
 
-<Sectie nr="04" comment="even naast elkaar" ritme="sectie-krap">
+<Kaart
+  nr="04"
+  titel="Vergelijking"
+  span={3}
+>
   <p class="kop-uitspraak op-scroll mt-6 max-w-4xl font-semibold">
     Een bureau vraagt vanaf €3.500 voor vier pagina's.<br class="hidden md:block" />
     <span class="text-muted">Ik vraag </span><span class="text-mint">€{starter.prijs}</span
@@ -33,4 +37,4 @@ import Sectie from '~/components/Sectie.astro';
       >Hier staan de cijfers per type bureau</a
     >, en hieronder staat waarom ik eronder kan.
   </p>
-</Sectie>
+</Kaart>

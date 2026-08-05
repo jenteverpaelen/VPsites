@@ -265,6 +265,19 @@
    UTILITIES
    ============================================================ */
 
+/* De container binnen de app-shell. Linksuitgelijnd en niet gecentreerd, want
+   naast een vaste zijbalk hoort de inhoud tegen die balk aan te beginnen en niet
+   ergens in het midden te zweven. Alleen padding, geen auto-marge. */
+@utility container-app {
+  width: 100%;
+  max-width: 96rem;
+  padding-inline: 1rem;
+
+  @media (width >= 48rem) {
+    padding-inline: 1.5rem;
+  }
+}
+
 @utility container-vp {
   width: 100%;
   max-width: 72rem;
@@ -353,6 +366,15 @@
   letter-spacing: var(--tracking-kop-groot);
 }
 
+/* De H1 in de herotegel. Iets kleiner dan kop-hero, want de tegel heeft een
+   rand en padding en staat niet meer over de volle breedte van het venster.
+   Dezelfde maat aanhouden zou de kop tegen de rand van de tegel duwen. */
+@utility kop-hero-tegel {
+  font-size: clamp(2.25rem, 1.4rem + 3.6vw, 3.75rem);
+  line-height: 0.98;
+  letter-spacing: var(--tracking-kop-groot);
+}
+
 @utility kop-sectie {
   font-size: clamp(1.875rem, 1.35rem + 2.4vw, 3rem);
   letter-spacing: var(--tracking-kop-groot);
@@ -380,6 +402,18 @@
     top: 6.5rem;
     align-self: start;
   }
+}
+
+/* De kop binnen een tegel. Schaalt met de tegel en niet met het venster.
+
+   Dat moet met cqw en niet met vw, want een tegel kan 1, 2 of 3 kolommen breed
+   zijn. Met vw krijgt een tegel van één kolom dezelfde kop van 48px als een van
+   drie, en dan breekt die in vijf regels. De body van Kaart.astro is de
+   container die opgemeten wordt. */
+@utility kop-kaart {
+  font-size: clamp(1.375rem, 4cqw, 2.75rem);
+  line-height: 1.05;
+  letter-spacing: var(--tracking-kop-groot);
 }
 
 /* Voor de uitspraak: groter dan een sectiekop, kleiner dan de H1 van de home.
@@ -565,6 +599,57 @@
    Vanaf md. Onder 768px is er geen ruimte voor een goot, en een haarlijn tegen
    de schermrand wordt afgesneden door de ronde hoeken van een gsm.
    ============================================================ */
+
+/* Het bord: het dichte kaartraster dat de bandenstapel vervangt.
+
+   Eén kolom op een gsm, twee vanaf md, drie vanaf xl. Tegels nemen 1, 2 of 3
+   kolommen, dus het raster loopt ongelijk vol. Dat ongelijke is het punt: een
+   raster waarin elke tegel dezelfde maat heeft is weer een stapel, alleen dan
+   in twee richtingen. */
+@utility bord {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: minmax(0, 1fr);
+
+  @media (width >= 48rem) {
+    gap: 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (width >= 80rem) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* De app-shell. Zijbalk links vanaf lg, inhoud rechts.
+
+   De zijbalk is geen navigatie die meescrollt maar een vaste kolom, zoals in een
+   toepassing. Daardoor staan het telefoonnummer en de knop altijd in beeld, en
+   dat is voor een lokale dienstverlener meer waard dan een hero die je
+   voorbijscrollt. */
+@utility schil {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+
+  @media (width >= 64rem) {
+    grid-template-columns: 15rem minmax(0, 1fr);
+  }
+}
+
+@utility zijbalk {
+  display: none;
+
+  @media (width >= 64rem) {
+    display: block;
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-right: 1px solid var(--color-line);
+  }
+}
 
 @utility raster {
   position: relative;

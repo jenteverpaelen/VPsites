@@ -8,7 +8,7 @@
  */
 
 import { levertijdKort } from '~/data/prijzen';
-import Sectie from '~/components/Sectie.astro';
+import Kaart from '~/components/Kaart.astro';
 
 const stappen = [
   {
@@ -42,9 +42,12 @@ const stappen = [
 ];
 ---
 
-<Sectie nr="08" comment="van bellen tot online">
-  <div class="mt-5 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-    <h2 class="op-scroll max-w-2xl kop-sectie">Hoe het loopt</h2>
+<Kaart
+  nr="08"
+  titel="Proces"
+>
+  <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+    <h2 class="op-scroll max-w-2xl kop-kaart">Hoe het loopt</h2>
     <p class="op-scroll font-mono text-sm text-faint">totaal: {levertijdKort}</p>
   </div>
 
@@ -72,7 +75,7 @@ const stappen = [
       ))
     }
   </ol>
-</Sectie>
+</Kaart>
 <style>
   .pijplijn-spoor,
   .pijplijn-lijn {

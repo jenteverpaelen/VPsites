@@ -18,7 +18,7 @@
 
 import { pakketten, goedkoopstePrijs, terugkerend } from '~/data/prijzen';
 import { bedrijf } from '~/data/bedrijf';
-import Sectie from '~/components/Sectie.astro';
+import Kaart from '~/components/Kaart.astro';
 
 const onepager = pakketten.find((p) => p.id === 'onepager')!;
 const starterPakket = pakketten.find((p) => p.id === 'starter')!;
@@ -64,12 +64,12 @@ const tegels = [
 ];
 ---
 
-<Sectie
+<Kaart
   nr="02"
-  comment="de cijfers, zonder omweg"
-  ritme="sectie-krap"
+  titel="De cijfers"
+  span={3}
 >
-  <h2 class="op-scroll kop-sectie mt-5 max-w-2xl">Wat krijg je concreet?</h2>
+  <h2 class="op-scroll kop-kaart max-w-2xl">Wat krijg je concreet?</h2>
 
   <p class="op-scroll mt-6 max-w-2xl text-lg leading-relaxed text-muted">
     Een vaste prijs vanaf &euro;{goedkoopstePrijs}, online binnen de week, en daarna
@@ -101,4 +101,4 @@ const tegels = [
       ))
     }
   </dl>
-</Sectie>
+</Kaart>

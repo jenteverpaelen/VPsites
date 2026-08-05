@@ -5,7 +5,12 @@ import { goedkoopstePrijs, introductie, levertijdKort } from '~/data/prijzen';
 const vrij = introductie.actief && introductie.plaatsenOver > 0;
 ---
 
-<section class="hero relative overflow-hidden">
+<!-- De hero is nu een tegel op het bord en geen band over de volle breedte meer.
+     Geen Kaart-component: die zet container-type op zijn body en dat maakt er een
+     containing block van, waardoor de drie achtergrondlagen tegen de body zouden
+     gaan liggen in plaats van tegen de hele tegel. Dus hier met de hand, met
+     dezelfde rand en radius als een kaart. -->
+<section class="hero relative overflow-hidden rounded-vp border border-line bg-panel md:col-span-2 xl:col-span-3">
   <!-- Drie lagen achtergrond. Het raster drijft heel traag, de aura ademt, en
        de gloed volgt de muis. Alleen transform en opacity, dus geen enkele
        herberekening van de layout. De twee lussen staan achter pointer: fine,
@@ -14,18 +19,9 @@ const vrij = introductie.actief && introductie.plaatsenOver > 0;
   <div class="hero-aura" aria-hidden="true"></div>
   <div class="hero-gloed" aria-hidden="true"></div>
 
-  <div class="container-vp relative pt-14 pb-14 md:pt-24 md:pb-20">
-    <!-- Zelfde goot als elke sectie eronder. Zonder dit begint de H1 tegen de
-         linkerrail terwijl elke sectiekop 5,5rem verder start, en dan leest het
-         raster als een fout in plaats van als een systeem. Uitlijnen is het hele
-         punt van een raster. -->
-    <div class="sectie-grid">
-      <div class="sectie-goot">
-        <p class="font-mono text-xs text-mint-dim">00</p>
-      </div>
-
-      <div class="grid items-center gap-12 lg:grid-cols-12 lg:gap-14">
-        <div class="lg:col-span-7">
+  <div class="relative p-6 md:p-10 lg:p-12">
+    <div class="grid items-center gap-10 lg:grid-cols-12 lg:gap-12">
+      <div class="lg:col-span-7">
         {
           vrij && (
             <p class="hero-in inline-flex min-h-8 items-center gap-2 rounded-full border border-mint/30 bg-mint-deep/40 pr-3.5 pl-3 font-mono text-xs text-mint">
@@ -41,7 +37,7 @@ const vrij = introductie.actief && introductie.plaatsenOver > 0;
           <span class="text-faint/40">·</span> geen abonnement
         </p>
 
-        <h1 class="kop-hero mt-4">
+        <h1 class="kop-hero-tegel mt-4">
           Een site die laadt<br />
           <span class="relative inline-block">
             vóór je ademt.
@@ -76,9 +72,8 @@ const vrij = introductie.actief && introductie.plaatsenOver > 0;
         </div>
       </div>
 
-        <div class="hero-in lg:col-span-5" style="--in: 4">
-          <PerfStrip />
-        </div>
+      <div class="hero-in lg:col-span-5" style="--in: 4">
+        <PerfStrip />
       </div>
     </div>
   </div>

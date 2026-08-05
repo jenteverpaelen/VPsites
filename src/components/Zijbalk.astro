@@ -1,0 +1,118 @@
+---
+import Logo from '~/components/Logo.astro';
+import { bedrijf, telHref, mailHref } from '~/data/bedrijf';
+import { goedkoopstePrijs, introductie } from '~/data/prijzen';
+
+/**
+ * De vaste kolom links. Alleen vanaf lg, daaronder blijft het popover-menu uit
+ * Nav.astro het werk doen.
+ *
+ * Waarom een vaste kolom en geen balk bovenaan: hierdoor staan het
+ * telefoonnummer en de knop altijd in beeld. Voor een lokale dienstverlener is
+ * dat meer waard dan een hero die je voorbijscrollt. Het is ook wat een
+ * toepassing van een website onderscheidt, en dat is precies het signaal dat
+ * deze site moet geven.
+ */
+
+const pad = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+const links = [
+  { nr: '01', naam: 'Overzicht', href: '/' },
+  { nr: '02', naam: 'Prijzen', href: '/prijzen' },
+  { nr: '03', naam: 'Werk', href: '/werk' },
+  { nr: '04', naam: 'Kennis', href: '/kennis' },
+  { nr: '05', naam: 'Over Jente', href: '/over' },
+  { nr: '06', naam: 'Contact', href: '/contact' },
+];
+
+const actief = (href: string) =>
+  href === '/' ? pad === '/' : pad === href || pad.startsWith(`${href}/`);
+
+const vrij = introductie.actief && introductie.plaatsenOver > 0;
+---
+
+<aside class="zijbalk" aria-label="Zijbalk">
+  <div class="flex min-h-full flex-col p-4">
+    <a
+      href="/"
+      class="flex min-h-12 items-center rounded-vp px-2 transition-opacity hover:opacity-80"
+      aria-label={`${bedrijf.naam}, naar de homepagina`}
+    >
+      <Logo maat="sm" />
+    </a>
+
+    <nav class="mt-6" aria-label="Hoofdmenu">
+      <ul class="space-y-0.5">
+        {
+          links.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                aria-current={actief(link.href) ? 'page' : undefined}
+                class:list={[
+                  'flex min-h-11 items-center gap-3 rounded-vp px-2 text-sm transition-colors',
+                  actief(link.href)
+                    ? 'bg-raise text-fg'
+                    : 'text-muted hover:bg-raise/60 hover:text-fg',
+                ]}
+              >
+                <span
+                  class:list={[
+                    'font-mono text-[0.6875rem]',
+                    actief(link.href) ? 'text-mint' : 'text-faint',
+                  ]}
+                >
+                  {link.nr}
+                </span>
+                {link.naam}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <!-- mt-auto duwt dit blok naar de onderkant van de kolom, zodat de
+         navigatie bovenaan blijft en het contact onderaan staat. -->
+    <div class="mt-auto pt-8">
+      {
+        vrij && (
+          <p class="mb-4 flex items-center gap-2 rounded-vp border border-mint/30 bg-mint-deep/40 px-2.5 py-2 font-mono text-[0.6875rem] text-mint">
+            <span class="stip-live" aria-hidden="true" />
+            {introductie.plaatsenOver} plaatsen vrij
+          </p>
+        )
+      }
+
+      <a
+        href="/contact"
+        class="flex min-h-12 items-center justify-center rounded-vp bg-mint px-4 text-sm font-semibold text-ink transition-colors hover:bg-mint-dim"
+      >
+        Vraag een prijs
+      </a>
+
+      <dl class="mt-4 space-y-0.5 border-t border-line pt-3 font-mono text-[0.6875rem]">
+        <div>
+          <dt class="sr-only">Vanaf</dt>
+          <dd class="flex min-h-8 items-center text-faint">vanaf &euro;{goedkoopstePrijs}, geen btw</dd>
+        </div>
+        <div>
+          <dt class="sr-only">Telefoon</dt>
+          <dd>
+            <a href={telHref} class="flex min-h-11 items-center text-muted hover:text-mint">
+              {bedrijf.telefoonWeergave}
+            </a>
+          </dd>
+        </div>
+        <div>
+          <dt class="sr-only">E-mail</dt>
+          <dd>
+            <a href={mailHref} class="flex min-h-11 items-center break-all text-muted hover:text-mint">
+              {bedrijf.email}
+            </a>
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</aside>

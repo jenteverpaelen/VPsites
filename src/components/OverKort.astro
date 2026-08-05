@@ -1,7 +1,7 @@
 ---
 import { bedrijf, telHref } from '~/data/bedrijf';
 import PortretJente from '~/components/PortretJente.astro';
-import Sectie from '~/components/Sectie.astro';
+import Kaart from '~/components/Kaart.astro';
 
 /**
  * Bij een lokale Vlaamse koper komt vertrouwen van een gezicht en een
@@ -9,10 +9,9 @@ import Sectie from '~/components/Sectie.astro';
  */
 ---
 
-<Sectie
+<Kaart
   nr="10"
-  comment="wie er opneemt als je belt"
-  ritme="sectie-krap"
+  titel="Over Jente"
 >
   <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
     <div class="op-scroll lg:col-span-5">
@@ -20,7 +19,7 @@ import Sectie from '~/components/Sectie.astro';
     </div>
 
     <div class="lg:col-span-7">
-      <h2 class="op-scroll kop-sectie">
+      <h2 class="op-scroll kop-kaart">
         Dag, ik ben Jente.
       </h2>
 
@@ -58,4 +57,4 @@ import Sectie from '~/components/Sectie.astro';
       </div>
     </div>
   </div>
-</Sectie>
+</Kaart>
