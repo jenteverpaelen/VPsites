@@ -9,13 +9,23 @@ const vrij = introductie.actief && introductie.plaatsenOver > 0;
      pagina, met ruime witruimte in plaats van een kader. Dat is wat het van een
      dashboard naar een tijdschrift brengt. -->
 <section class="hero relative overflow-hidden">
-  <!-- Drie lagen achtergrond. Het raster drijft heel traag, de aura ademt, en
-       de gloed volgt de muis. Alleen transform en opacity, dus geen enkele
-       herberekening van de layout. De twee lussen staan achter pointer: fine,
-       want een animatie die eeuwig doorloopt kost batterij op een gsm. -->
+  <!-- Drie lagen achtergrond. Het raster drijft heel traag, twee gloedvlekken
+       zwerven rond, en een derde volgt de muis. Alleen transform en opacity, dus
+       geen enkele herberekening van de layout. De lussen staan achter
+       pointer: fine, want een animatie die eeuwig doorloopt kost batterij op een
+       gsm. -->
   <div class="hero-raster" aria-hidden="true"></div>
-  <div class="hero-aura" aria-hidden="true"></div>
-  <div class="hero-aura-2" aria-hidden="true"></div>
+
+  <!-- De twee zwervende vlekken zitten in één wikkel met een verloopmasker
+       eronder. Zonder dat masker snijdt de overflow van de sectie de gloed
+       kaarsrecht af op de plek waar het volgende blok begint, en dan lijkt het
+       eraf gehakt. Nu is de laag al uitgedoofd voor die rand, dus er valt niets
+       meer af te snijden. -->
+  <div class="hero-auras" aria-hidden="true">
+    <div class="hero-aura"></div>
+    <div class="hero-aura-2"></div>
+  </div>
+
   <div class="hero-gloed" aria-hidden="true"></div>
 
   <div class="container-vp relative pt-16 pb-20 md:pt-24 md:pb-28">
@@ -118,10 +128,19 @@ const vrij = introductie.actief && introductie.plaatsenOver > 0;
     mask-image: radial-gradient(54rem 34rem at 22% 0%, #000 0%, transparent 78%);
   }
 
-  .hero-aura,
-  .hero-aura-2,
+  .hero-auras,
   .hero-gloed {
     display: none;
+  }
+
+  /* Het masker meet de hoogte van de sectie, dus het uitdoven valt altijd samen
+     met de onderrand, ongeacht hoe hoog de hero is. Bovenaan blijft het vol: daar
+     zit de kop en die mag de gloed hebben. */
+  .hero-auras {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    mask-image: linear-gradient(to bottom, #000 0%, #000 52%, transparent 88%);
   }
 
   @media (pointer: fine) {
@@ -145,12 +164,14 @@ const vrij = introductie.actief && introductie.plaatsenOver > 0;
        Alleen transform, dus dit loopt op de compositor en kost geen herberekening
        van de layout. will-change houdt de twee lagen op de GPU, wat bij een
        animatie die altijd doorloopt precies is wat je wil. */
+    .hero-auras {
+      display: block;
+    }
+
     .hero-aura,
     .hero-aura-2 {
-      display: block;
       position: absolute;
       border-radius: 999px;
-      pointer-events: none;
       will-change: transform;
     }
 
@@ -168,7 +189,7 @@ const vrij = introductie.actief && introductie.plaatsenOver > 0;
     }
 
     .hero-aura-2 {
-      bottom: -26rem;
+      bottom: -32rem;
       left: -12rem;
       width: 42rem;
       height: 42rem;
@@ -304,6 +325,7 @@ const vrij = introductie.actief && introductie.plaatsenOver > 0;
   @media (prefers-reduced-motion: reduce) {
     .hero-raster,
     .hero-aura,
+    .hero-aura-2,
     .hero-in,
     .kop-regel {
       animation: none !important;

@@ -1,9 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <title>VPsites</title>
-  <rect width="64" height="64" rx="13" fill="#080908"/>
+  <!-- Vol klei in plaats van een bijna zwart vlak met een streepje erin. Op 16
+       pixels in een tabblad verliest een donker icoon het altijd van de icoontjes
+       ernaast: er is niets om aan te herkennen. Een gevuld vlak in de accentkleur
+       met de letters eruit gespaard, valt wel op.
+
+       Kleuren gelijk aan de mint en ink tokens uit global.css, donkere set.
+       Let op bij het aanpassen van deze comments: in XML mogen twee koppeltekens
+       naast elkaar niet, ook niet als je naar een CSS-variabele verwijst. Sharp
+       weigert het bestand dan als corrupt. -->
+  <rect width="64" height="64" rx="13" fill="#E8734F"/>
   <!-- Op 16px gaat detail verloren, dus de mark is teruggebracht tot VP plus
-       de mint slash. De volledige brackets zitten in Logo.astro. -->
-  <path fill="#F2F5F3" d="M10 20h6.8l1.8 15 1.8-15h6.8l-8.6 24z"/>
-  <path fill="#F2F5F3" fill-rule="evenodd" d="M30 20h9.6c3.9 0 6.6 2.8 6.6 6.7s-2.7 6.7-6.6 6.7h-3.8V44H30zm5.8 5.2v3.2h3.2c1.1 0 1.8-.7 1.8-1.6s-.7-1.6-1.8-1.6z"/>
-  <path stroke="#79E4AC" stroke-width="4.6" stroke-linecap="round" d="M55 20 49.5 44"/>
+       de slash. De volledige brackets zitten in Logo.astro. -->
+  <path fill="#16130F" d="M10 20h6.8l1.8 15 1.8-15h6.8l-8.6 24z"/>
+  <path fill="#16130F" fill-rule="evenodd" d="M30 20h9.6c3.9 0 6.6 2.8 6.6 6.7s-2.7 6.7-6.6 6.7h-3.8V44H30zm5.8 5.2v3.2h3.2c1.1 0 1.8-.7 1.8-1.6s-.7-1.6-1.8-1.6z"/>
+  <path stroke="#16130F" stroke-width="4.6" stroke-linecap="round" stroke-opacity="0.55" d="M55 20 49.5 44"/>
 </svg>

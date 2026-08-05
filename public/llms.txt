@@ -23,7 +23,6 @@ Kerngegevens:
 
 ## Kennis
 
-- [Wat kost een website in België in 2026?](https://vpsites.be/kennis/wat-kost-een-website-belgie): prijzen van 150 tot 8000 euro per type, verborgen kosten en de rol van btw
 - [Waarom je geen WordPress nodig hebt voor vijf pagina's](https://vpsites.be/kennis/waarom-geen-wordpress): snelheid, veiligheid en onderhoudskosten vergeleken, en wanneer WordPress wél de juiste keuze is
 - [Wat moet er wettelijk op je website staan?](https://vpsites.be/kennis/verplicht-op-je-website): checklist voor Belgische zelfstandigen, van ondernemingsnummer tot toegankelijkheid
 
