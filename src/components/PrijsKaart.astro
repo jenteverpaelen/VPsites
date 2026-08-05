@@ -6,9 +6,12 @@ interface Props {
   pakket: Pakket;
   /** Op de prijzenpagina staat alles, op de home een kortere versie. */
   volledig?: boolean;
+  /** Trap in de scroll-reveal, 0 tot 2, zodat de rij zich opbouwt in plaats
+   *  van er in één keer te staan. */
+  stap?: number;
 }
 
-const { pakket, volledig = false } = Astro.props;
+const { pakket, volledig = false, stap = 0 } = Astro.props;
 
 const toonIntro = introductie.actief && pakket.prijsNormaal !== null;
 const punten = volledig ? pakket.bevat : pakket.bevat.slice(0, 4);
@@ -16,8 +19,9 @@ const restant = pakket.bevat.length - punten.length;
 ---
 
 <article
+  data-stap={String(stap)}
   class:list={[
-    'op-scroll relative flex flex-col rounded-vp border bg-panel p-6 md:p-7',
+    'op-scroll hover-lift relative flex flex-col rounded-vp border bg-panel p-6 md:p-7',
     pakket.uitgelicht ? 'border-mint/45' : 'border-line',
   ]}
 >

@@ -408,6 +408,18 @@
    Index die Google in 2026 introduceerde. Zie CLAUDE.md deel 7.
    ============================================================ */
 
+/* LET OP, twee valkuilen die me al eens beet hebben gehad.
+
+   1. Schrijf een scroll-gedreven animatie nooit met de `animation`-shorthand.
+      Die zet animation-duration op 0s, en Chrome rekent die duur ook echt mee
+      bij een scroll-timeline. Gevolg: de animatie staat meteen op het eind en
+      loopt niet mee met de scroll. In een oudere Chromium werkt het wel, dus je
+      ziet het niet in elke browser. Altijd longhands, altijd duration: auto.
+
+   2. Het reduce-blok onderaan zet animation-duration op 0.01ms met !important.
+      Dat treft ook een scroll-timeline en laat die op het eind springen. Elke
+      scroll-gedreven animatie moet daar dus expliciet uitgezet worden. */
+
 @layer utilities {
   @keyframes vp-op {
     from {
@@ -420,22 +432,101 @@
     }
   }
 
-  /* Scroll-gedreven, dus nul JavaScript. */
+  @keyframes vp-op-zij {
+    from {
+      opacity: 0;
+      transform: translate3d(-1rem, 0, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Scroll-gedreven, dus nul JavaScript.
+
+     data-stap is een optionele trap. Zet data-stap="1" op het tweede item van
+     een kaartenrij en het komt later in beeld dan het eerste. Dan bouwt de rij
+     zich op in plaats van er in één keer te staan.
+
+     Bewust drie vaste regels en geen calc() in animation-range. Een calc() die
+     de browser niet slikt laat de hele declaratie vallen, en dan verdwijnt de
+     reveal in plaats van alleen de trap. Drie kolommen is het maximum, dus drie
+     regels is genoeg. */
   @supports (animation-timeline: view()) {
-    .op-scroll {
-      animation: vp-op linear both;
+    .op-scroll,
+    .op-scroll-zij {
+      animation-name: vp-op;
+      animation-duration: auto;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
       animation-timeline: view();
-      animation-range: entry 5% cover 22%;
+      animation-range: entry 4% cover 24%;
+    }
+
+    .op-scroll[data-stap='1'],
+    .op-scroll-zij[data-stap='1'] {
+      animation-range: entry 9% cover 29%;
+    }
+
+    .op-scroll[data-stap='2'],
+    .op-scroll-zij[data-stap='2'] {
+      animation-range: entry 14% cover 34%;
+    }
+
+    .op-scroll-zij {
+      animation-name: vp-op-zij;
     }
   }
 
   /* Browsers zonder scroll-driven animations tonen alles gewoon. */
   @supports not (animation-timeline: view()) {
-    .op-scroll {
+    .op-scroll,
+    .op-scroll-zij {
       opacity: 1;
       transform: none;
     }
   }
+}
+
+/* Lift bij hover. Alleen transform, dus geen herberekening van de layout.
+   Focus-visible krijgt hetzelfde, anders bestaat het alleen voor een muis. */
+@utility hover-lift {
+  transition:
+    transform 320ms var(--ease-uit),
+    border-color 320ms var(--ease-uit),
+    background-color 320ms var(--ease-uit);
+
+  &:hover,
+  &:focus-within {
+    transform: translate3d(0, -3px, 0);
+    border-color: color-mix(in srgb, var(--color-mint) 45%, var(--color-line));
+  }
+}
+
+@keyframes vp-puls {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.72);
+  }
+}
+
+/* Klein mint bolletje dat traag pulseert. Staat bij "live gemeten" en bij de
+   vrije introductieplaatsen. Bewust een globale utility en geen scoped stijl in
+   een component: Astro hernoemt @keyframes binnen een componentstijl, en dan
+   verwijst animation-name naar iets dat niet meer bestaat. */
+@utility stip-live {
+  width: 0.4375rem;
+  height: 0.4375rem;
+  flex: none;
+  border-radius: 999px;
+  background-color: var(--color-mint);
+  animation: vp-puls 2.6s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -452,9 +543,20 @@
     scroll-behavior: auto !important;
   }
 
-  .op-scroll {
+  /* Zie valkuil 2 hierboven: expliciet uit, niet alleen versnellen. */
+  .op-scroll,
+  .op-scroll-zij {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
+  }
+
+  .hover-lift:hover,
+  .hover-lift:focus-within {
+    transform: none;
+  }
+
+  .stip-live {
+    animation: none !important;
   }
 }

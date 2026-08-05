@@ -42,8 +42,8 @@ const laatsteWijziging = artikels.length
     <div class="container-vp">
       <ul class="grid gap-5 md:grid-cols-3">
         {
-          artikels.map((artikel) => (
-            <li class="op-scroll">
+          artikels.map((artikel, i) => (
+            <li class="op-scroll hover-lift" data-stap={String(i)}>
               <a
                 href={`/kennis/${artikel.id}`}
                 class="group flex h-full flex-col rounded-vp border border-line bg-panel p-7 transition-colors hover:border-line-soft hover:bg-raise"

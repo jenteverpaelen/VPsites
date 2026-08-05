@@ -55,8 +55,9 @@ const stappen = [
 
       {
         stappen.map((stap, i) => (
-          <li class="relative grid gap-x-8 gap-y-3 pb-12 pl-14 last:pb-0 md:grid-cols-12 md:pl-20">
+          <li class="op-scroll relative grid gap-x-8 gap-y-3 pb-12 pl-14 last:pb-0 md:grid-cols-12 md:pl-20">
             <span class="pijplijn-punt" aria-hidden="true">
+              <span class="pijplijn-ring"></span>
               {String(i + 1).padStart(2, '0')}
             </span>
 
@@ -100,14 +101,23 @@ const stappen = [
     background-color: var(--color-mint);
     transform: scaleY(0);
     transform-origin: top;
+    /* Kopje mint licht aan de voorkant, zodat je ziet waar de lijn zit. */
+    box-shadow: 0 0 12px 1px color-mix(in srgb, var(--color-mint) 45%, transparent);
   }
 
-  /* Loopt mee terwijl je door de sectie scrollt. */
+  /* Loopt mee terwijl je door de sectie scrollt.
+
+     Longhands, geen shorthand. De `animation`-shorthand zet duration op 0s en
+     Chrome rekent die duur mee bij een scroll-timeline, waardoor de lijn meteen
+     vol staat in plaats van mee te lopen. Zie de uitleg in global.css. */
   @supports (animation-timeline: view()) {
     .pijplijn-lijn {
-      animation: lijn-groeien linear both;
+      animation-name: lijn-groeien;
+      animation-duration: auto;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
       animation-timeline: view();
-      animation-range: entry 55% cover 72%;
+      animation-range: entry 62% cover 78%;
     }
   }
 
@@ -148,11 +158,43 @@ const stappen = [
     }
   }
 
+  /* De ring licht op wanneer de stap in beeld komt. Enkel opacity, want een
+     border-color animeren mag niet volgens de regel in CLAUDE.md deel 7. */
+  .pijplijn-ring {
+    position: absolute;
+    inset: -1px;
+    border-radius: 999px;
+    border: 1px solid var(--color-mint);
+    opacity: 0;
+  }
+
+  @supports (animation-timeline: view()) {
+    .pijplijn-ring {
+      animation-name: ring-aan;
+      animation-duration: auto;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: view();
+      animation-range: entry 70% entry 100%;
+    }
+  }
+
+  @keyframes ring-aan {
+    to {
+      opacity: 1;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .pijplijn-lijn {
       animation: none !important;
       transform: scaleY(1);
       opacity: 0.35;
+      box-shadow: none;
+    }
+    .pijplijn-ring {
+      animation: none !important;
+      opacity: 0.5;
     }
   }
 </style>

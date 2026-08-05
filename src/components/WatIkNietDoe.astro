@@ -43,8 +43,8 @@ const nietDoen = [
 
     <ul class="mt-14 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
       {
-        nietDoen.map((item) => (
-          <li class="op-scroll border-t border-line pt-5">
+        nietDoen.map((item, i) => (
+          <li class="op-scroll border-t border-line pt-5" data-stap={String(i % 3)}>
             <div class="flex gap-3">
               <svg
                 width="17"

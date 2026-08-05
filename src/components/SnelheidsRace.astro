@@ -3,31 +3,32 @@
  * Twee laadbalken naast elkaar. Maakt "sneller" concreet voor iemand die
  * niet weet wat Core Web Vitals zijn.
  *
- * De cijfers komen uit gepubliceerd onderzoek, niet uit mijn duim. Ze staan
- * met bron onderaan de sectie. Nooit een cijfer tonen dat je niet kan staven.
+ * Geen enkel cijfer staat hier vast ingebakken:
  *
- * De tellers zijn pure CSS via @property en counter(). Nul JavaScript voor
- * de animatie zelf, alleen een IntersectionObserver om ze te starten.
+ * - De statische balk gebruikt de échte laadtijd van deze pagina, gelezen uit
+ *   PerformanceNavigationTiming. Wat de bezoeker ziet is wat zijn eigen browser
+ *   net gedaan heeft, op zijn eigen verbinding.
+ * - De WordPress-balk schommelt elke keer opnieuw tussen 2 en 5 seconden. Dat
+ *   is de spreiding die het onderzoek naar mediane laadtijden op mobiel
+ *   aangeeft. Eén vast getal zou doen alsof elke WordPress-site identiek is,
+ *   en het leest ook als een robot die altijd hetzelfde antwoordt.
+ *
+ * De tellers zijn pure CSS via @property en counter(). Twee tellers naast
+ * elkaar, seconden en honderdsten, want counter() kan niet delen.
  */
 
 const deelnemers = [
   {
-    id: 'wp',
     naam: 'Typische WordPress-site',
     detail: 'thema plus plugins, op mobiel',
-    ms: 3400,
     mint: false,
   },
   {
-    id: 'vp',
-    naam: 'Statische site',
-    detail: 'wat ik bouw',
-    ms: 400,
+    naam: 'Deze pagina',
+    detail: 'statisch, net gemeten in jouw browser',
     mint: true,
   },
 ];
-
-const traagste = Math.max(...deelnemers.map((d) => d.ms));
 ---
 
 <section class="sectie border-t border-line">
@@ -36,7 +37,7 @@ const traagste = Math.max(...deelnemers.map((d) => d.ms));
 
     <div class="mt-5 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
       <h2 class="op-scroll max-w-2xl text-3xl sm:text-4xl md:text-5xl">
-        Drie seconden wachten<br class="hidden sm:block" />
+        Een paar seconden wachten<br class="hidden sm:block" />
         <span class="text-muted">of niet.</span>
       </h2>
 
@@ -60,7 +61,7 @@ const traagste = Math.max(...deelnemers.map((d) => d.ms));
     <div class="race mt-14 space-y-8" data-race>
       {
         deelnemers.map((deelnemer) => (
-          <div>
+          <div data-rij>
             <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
               <h3 class="text-lg">
                 {deelnemer.naam}
@@ -71,22 +72,28 @@ const traagste = Math.max(...deelnemers.map((d) => d.ms));
                   'teller font-mono text-lg tabular-nums',
                   deelnemer.mint ? 'text-mint' : 'text-muted',
                 ]}
-                style={`--eind: ${deelnemer.ms}; --duur: ${deelnemer.ms}ms`}
                 aria-hidden="true"
               />
-              <span class="sr-only">{deelnemer.ms} milliseconden</span>
+              <span class="sr-only" data-rij-sr />
             </div>
 
             <div class="mt-3 h-2.5 overflow-hidden rounded-full bg-raise">
               <div
                 class:list={['balk h-full rounded-full', deelnemer.mint ? 'bg-mint' : 'bg-faint']}
-                style={`--breedte: ${(deelnemer.ms / traagste) * 100}%; --duur: ${deelnemer.ms}ms`}
               />
             </div>
           </div>
         ))
       }
     </div>
+
+    <noscript>
+      <p class="mt-8 leading-relaxed text-muted">
+        De balken hierboven meten je eigen bezoek, en daar is JavaScript voor nodig. Kort
+        samengevat: een WordPress-site op mobiel doet er doorgaans 2 tot 5 seconden over,
+        een statische site blijft onder de halve seconde.
+      </p>
+    </noscript>
 
     <div class="op-scroll mt-12 grid gap-8 md:grid-cols-2">
       <p class="leading-relaxed text-muted">
@@ -102,45 +109,56 @@ const traagste = Math.max(...deelnemers.map((d) => d.ms));
     </div>
 
     <p class="op-scroll mt-8 font-mono text-[0.6875rem] leading-relaxed text-faint">
-      Bronnen: mediane laadtijden uit vergelijkend onderzoek naar WordPress tegenover
-      statische sites (2026), en Google Search Central over Core Web Vitals als
-      ranking-signaal (18 maart 2026). Jouw resultaat hangt af van je hosting, je
-      afbeeldingen en je bezoeker.
+      De onderste balk is de echte laadtijd van deze pagina in jouw browser, tot het
+      moment dat ze bruikbaar was. De bovenste schommelt binnen de spreiding uit
+      vergelijkend onderzoek naar WordPress tegenover statische sites op mobiel (2026),
+      dus hij staat nooit twee keer op hetzelfde. Verder: Google Search Central over Core
+      Web Vitals als ranking-signaal (18 maart 2026). Jouw resultaat hangt af van je
+      hosting, je afbeeldingen en je bezoeker.
     </p>
   </div>
 </section>
 
 <style>
-  @property --tel {
+  /* Seconden en honderdsten apart, want counter() kan niet delen door 1000.
+     Beide lopen proportioneel op, dus ze landen samen op de juiste waarde. */
+  @property --sec {
     syntax: '<integer>';
     initial-value: 0;
     inherits: false;
   }
 
-  /* counter-reset leest de geanimeerde custom property elke frame opnieuw,
-     dus de teller loopt zonder JavaScript op. */
-  .teller {
-    counter-reset: tel var(--tel);
+  @property --hon {
+    syntax: '<integer>';
+    initial-value: 0;
+    inherits: false;
   }
 
+  /* counter-reset leest de geanimeerde custom properties elke frame opnieuw,
+     dus de teller loopt zonder JavaScript op. */
+  .teller {
+    counter-reset: sec var(--sec) hon var(--hon);
+  }
+
+  /* decimal-leading-zero vult tot twee cijfers, dus 0,05 en niet 0,5. */
   .teller::after {
-    content: counter(tel) ' ms';
+    content: counter(sec) ',' counter(hon, decimal-leading-zero) ' s';
   }
 
   .balk {
     transform: scaleX(0);
     transform-origin: left;
-    width: var(--breedte);
+    width: var(--breedte, 0%);
   }
 
   /* Alleen transform animeren, nooit width. Width herberekent de layout
      en telt mee voor de Visual Stability Index. Zie CLAUDE.md deel 7. */
   .race[data-loopt] .balk {
-    animation: balk-vullen var(--duur) linear forwards;
+    animation: balk-vullen var(--duur, 0ms) linear forwards;
   }
 
   .race[data-loopt] .teller {
-    animation: tel-op var(--duur) linear forwards;
+    animation: tel-op var(--duur, 0ms) linear forwards;
   }
 
   @keyframes balk-vullen {
@@ -151,7 +169,8 @@ const traagste = Math.max(...deelnemers.map((d) => d.ms));
 
   @keyframes tel-op {
     to {
-      --tel: var(--eind);
+      --sec: var(--eind-sec, 0);
+      --hon: var(--eind-hon, 0);
     }
   }
 
@@ -161,7 +180,8 @@ const traagste = Math.max(...deelnemers.map((d) => d.ms));
       animation: none !important;
     }
     .teller {
-      --tel: var(--eind);
+      --sec: var(--eind-sec, 0);
+      --hon: var(--eind-hon, 0);
       animation: none !important;
     }
   }
@@ -171,8 +191,48 @@ const traagste = Math.max(...deelnemers.map((d) => d.ms));
   const race = document.querySelector<HTMLElement>('[data-race]');
 
   if (race) {
+    const rijen = [...race.querySelectorAll<HTMLElement>('[data-rij]')];
+
+    /**
+     * Willekeurig tussen 2 en 5 seconden, afgerond op 50 ms. Afronden houdt het
+     * geloofwaardig: een meting van 3847 ms ziet er verzonnen preciezer uit dan
+     * 3850. De spreiding zelf komt uit het onderzoek in de sectietekst.
+     */
+    const wordpress = () => Math.round((2000 + Math.random() * 3000) / 50) * 50;
+
+    /**
+     * De echte tijd van deze pagina, tot ze bruikbaar was. Staat die er nog niet
+     * (de sectie kan al in beeld staan voor DOMContentLoaded), dan nemen we de
+     * tijd sinds de navigatie begon. Ook dat is een echte meting.
+     */
+    const dezePagina = () => {
+      const nav = performance.getEntriesByType('navigation')[0] as
+        | PerformanceNavigationTiming
+        | undefined;
+      const klaar = nav?.domContentLoadedEventEnd ?? 0;
+      const ms = klaar > 0 ? klaar - nav!.startTime : performance.now();
+      return Math.max(10, Math.round(ms));
+    };
+
+    const zet = (rij: HTMLElement, ms: number, traagste: number) => {
+      rij.style.setProperty('--eind-sec', String(Math.floor(ms / 1000)));
+      rij.style.setProperty('--eind-hon', String(Math.floor((ms % 1000) / 10)));
+      rij.style.setProperty('--breedte', `${(ms / traagste) * 100}%`);
+      rij.style.setProperty('--duur', `${ms}ms`);
+
+      const tekst = rij.querySelector('[data-rij-sr]');
+      if (tekst) {
+        tekst.textContent = `${(ms / 1000).toFixed(2).replace('.', ',')} seconden`;
+      }
+    };
+
     const start = () => {
+      const tijden = [wordpress(), dezePagina()];
+      const traagste = Math.max(...tijden);
+
       race.removeAttribute('data-loopt');
+      rijen.forEach((rij, i) => zet(rij, tijden[i]!, traagste));
+
       // Reflow forceren, anders herstart de animatie niet.
       void race.offsetWidth;
       race.setAttribute('data-loopt', '');

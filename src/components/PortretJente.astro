@@ -1,5 +1,5 @@
 ---
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { bedrijf } from '~/data/bedrijf';
 
 /**
@@ -12,7 +12,18 @@ import { bedrijf } from '~/data/bedrijf';
  * stuk uitzien.
  *
  * Er is dus niets aan te passen in de code. Foto erin zetten volstaat.
+ *
+ * De breedtes staan hier niet hardgecodeerd. Het script schaalt nooit op, dus
+ * welke varianten er zijn hangt af van hoe groot jouw foto is. Het schrijft ze
+ * in meta.json en dit component leest dat. Zo bied ik nooit een srcset aan met
+ * een bestand dat er niet is.
  */
+
+type FotoMeta = {
+  breedtes: number[];
+  breedte: number;
+  hoogte: number;
+};
 
 interface Props {
   class?: string;
@@ -22,29 +33,29 @@ interface Props {
 
 const { class: klasse = '', prioriteit = false } = Astro.props;
 
-const heeftFoto = existsSync('public/portret/jente-960.avif');
+const metaPad = 'public/portret/meta.json';
+const foto: FotoMeta | null = existsSync(metaPad)
+  ? (JSON.parse(readFileSync(metaPad, 'utf8')) as FotoMeta)
+  : null;
+
+const sizes = '(min-width: 1024px) 28rem, (min-width: 640px) 24rem, 100vw';
+const srcset = (extensie: string) =>
+  (foto?.breedtes ?? []).map((b) => `/portret/jente-${b}.${extensie} ${b}w`).join(', ');
+
 const initialen = 'JVP';
 ---
 
 <div class:list={['relative aspect-4/5 overflow-hidden rounded-vp', klasse]}>
   {
-    heeftFoto ? (
+    foto ? (
       <picture>
-        <source
-          type="image/avif"
-          srcset="/portret/jente-480.avif 480w, /portret/jente-960.avif 960w"
-          sizes="(min-width: 1024px) 28rem, (min-width: 640px) 24rem, 100vw"
-        />
-        <source
-          type="image/webp"
-          srcset="/portret/jente-480.webp 480w, /portret/jente-960.webp 960w"
-          sizes="(min-width: 1024px) 28rem, (min-width: 640px) 24rem, 100vw"
-        />
+        <source type="image/avif" srcset={srcset('avif')} sizes={sizes} />
+        <source type="image/webp" srcset={srcset('webp')} sizes={sizes} />
         <img
-          src="/portret/jente-960.jpg"
+          src={`/portret/jente-${foto.breedte}.jpg`}
           alt={`${bedrijf.persoon}, de webdesigner achter ${bedrijf.naam}`}
-          width="960"
-          height="1200"
+          width={foto.breedte}
+          height={foto.hoogte}
           loading={prioriteit ? 'eager' : 'lazy'}
           fetchpriority={prioriteit ? 'high' : 'auto'}
           decoding="async"

@@ -40,11 +40,16 @@ Limburg als werkgebied.
 Verder:
 
 - **Je foto** als `public/jente.jpg`. Meer niet. Bij de volgende
-  `npm run build` maakt [`scripts/foto.mjs`](scripts/foto.mjs) er AVIF en
-  WebP van op twee breedtes, en
-  [`PortretJente.astro`](src/components/PortretJente.astro) schakelt vanzelf
-  over. Zolang er geen foto staat, toont de site een typografisch portret in
-  plaats van een leeg vak.
+  `npm run build` maakt [`scripts/foto.mjs`](scripts/foto.mjs) er AVIF, WebP en
+  JPEG van, en [`PortretJente.astro`](src/components/PortretJente.astro)
+  schakelt vanzelf over. Zolang er geen foto staat, toont de site een
+  typografisch portret in plaats van een leeg vak.
+
+  Het script schaalt nooit op. Is je foto 960 breed, dan krijg je een uitsnede
+  tot 768 breed en niet groter, want uitrekken maakt hem alleen zachter. Welke
+  breedtes er gemaakt zijn komt in `public/portret/meta.json` te staan, en het
+  component leest dat. Wil je een scherper portret op een scherm met hoge
+  pixeldichtheid, zet er dan een foto van minstens 1600 pixels breed in.
 - **Je domeinnaam** in [`src/data/site.mjs`](src/data/site.mjs) en onderaan
   `public/robots.txt`.
 - **Je eerste klantproject** zodra het af is: kopieer

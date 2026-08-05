@@ -60,10 +60,13 @@ const badges: Record<string, { label: string; klasse: string }> = {
 
       <div class="grid gap-5 lg:col-span-7 lg:content-start">
         {
-          projecten.map((project) => {
+          projecten.map((project, i) => {
             const badge = badges[project.data.status];
             return (
-              <article class="op-scroll rounded-vp border border-line bg-panel p-7 md:p-8">
+              <article
+                data-stap={String(Math.min(i + 1, 2))}
+                class="op-scroll hover-lift rounded-vp border border-line bg-panel p-7 md:p-8"
+              >
                 <div class="flex flex-wrap items-center gap-3">
                   <span
                     class:list={[

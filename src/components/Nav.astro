@@ -23,6 +23,10 @@ const actief = (href: string) => pad === href || pad.startsWith(`${href}/`);
 <header
   class="sticky top-0 z-50 border-b border-line/70 bg-ink/85 backdrop-blur-md supports-[backdrop-filter]:bg-ink/70"
 >
+  <!-- Hoe ver je op de pagina staat. Ligt op de onderrand van de header, dus
+       het neemt geen hoogte in en kan geen layout shift geven. -->
+  <span class="nav-voortgang" aria-hidden="true"></span>
+
   <div class="container-vp flex h-16 items-center justify-between gap-4 md:h-18">
     <a
       href="/"
@@ -147,6 +151,43 @@ const actief = (href: string) => pad === href || pad.startsWith(`${href}/`);
 </div>
 
 <style>
+  /* Scroll-voortgang. Longhands en duration: auto, anders staat de lijn in
+     Chrome meteen vol. Zie de uitleg bovenaan de animatiesectie in global.css. */
+  .nav-voortgang {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    background-color: var(--color-mint);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  @supports (animation-timeline: scroll(root block)) {
+    .nav-voortgang {
+      animation-name: voortgang;
+      animation-duration: auto;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root block);
+    }
+  }
+
+  @keyframes voortgang {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  /* Een lijn die altijd vol staat is geen voortgang maar een streep.
+     Dan liever niets. */
+  @media (prefers-reduced-motion: reduce) {
+    .nav-voortgang {
+      display: none;
+    }
+  }
+
   .menu-mobiel {
     position: fixed;
     inset: 0;

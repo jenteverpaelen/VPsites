@@ -1,58 +1,77 @@
 ---
 import PerfStrip from '~/components/PerfStrip.astro';
-import { pakketten } from '~/data/prijzen';
+import { pakketten, introductie } from '~/data/prijzen';
 
 const goedkoopste = Math.min(...pakketten.map((p) => p.prijs));
+const vrij = introductie.actief && introductie.plaatsenOver > 0;
 ---
 
 <section class="hero relative overflow-hidden">
-  <!-- Puntenraster met een mint gloed die de muis volgt. Enkel bij een
-       muis, want op touch is er geen cursor en kost het alleen batterij. -->
+  <!-- Drie lagen achtergrond. Het raster drijft heel traag, de aura ademt, en
+       de gloed volgt de muis. Alleen transform en opacity, dus geen enkele
+       herberekening van de layout. De twee lussen staan achter pointer: fine,
+       want een animatie die eeuwig doorloopt kost batterij op een gsm. -->
   <div class="hero-raster" aria-hidden="true"></div>
+  <div class="hero-aura" aria-hidden="true"></div>
   <div class="hero-gloed" aria-hidden="true"></div>
 
-  <div class="container-vp relative pt-16 pb-14 md:pt-28 md:pb-20">
-    <p class="comment-mono">
-      <span class="text-mint-dim">//</span> vaste prijs
-      <span class="text-line-soft">·</span> 2 weken
-      <span class="text-line-soft">·</span> geen abonnement
-    </p>
+  <div class="container-vp relative pt-14 pb-14 md:pt-24 md:pb-20">
+    <div class="grid items-center gap-12 lg:grid-cols-12 lg:gap-14">
+      <div class="lg:col-span-7">
+        {
+          vrij && (
+            <p class="hero-in inline-flex min-h-8 items-center gap-2 rounded-full border border-mint/30 bg-mint-deep/40 pr-3.5 pl-3 font-mono text-xs text-mint">
+              <span class="stip-live" aria-hidden="true" />
+              nog {introductie.plaatsenOver} plaatsen aan introductieprijs
+            </p>
+          )
+        }
 
-    <h1 class="mt-5 max-w-4xl text-[2.75rem] leading-[0.98] tracking-kop-groot sm:text-6xl md:text-7xl">
-      Een site die laadt<br />
-      <span class="relative inline-block">
-        vóór je ademt.
-        <span class="hero-streep" aria-hidden="true"></span>
-      </span>
-    </h1>
+        <p class="comment-mono hero-in mt-4" style="--in: 1">
+          <span class="text-mint-dim">//</span> vaste prijs
+          <span class="text-line-soft">·</span> 2 weken
+          <span class="text-line-soft">·</span> geen abonnement
+        </p>
 
-    <p class="mt-8 max-w-xl text-lg leading-relaxed text-muted md:text-xl">
-      Voor zelfstandigen die geen 4.000 euro willen betalen voor vier pagina's.
-      Vanaf <span class="font-semibold text-fg">€{goedkoopste}</span>, en dat is
-      meteen de eindprijs. <span class="text-fg">Geen btw.</span>
-    </p>
+        <h1 class="mt-4 text-[2.75rem] leading-[0.98] tracking-kop-groot sm:text-6xl lg:text-[4.25rem]">
+          Een site die laadt<br />
+          <span class="relative inline-block">
+            vóór je ademt.
+            <span class="hero-streep" aria-hidden="true"></span>
+          </span>
+        </h1>
 
-    <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-      <a
-        href="/prijzen"
-        class="group inline-flex min-h-13 items-center justify-center gap-2 rounded-vp bg-mint px-6 font-semibold text-ink transition-colors hover:bg-mint-dim"
-      >
-        Bekijk wat het kost
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"
-          class="transition-transform group-hover:translate-x-0.5">
-          <path d="M3 8h9m0 0L8.5 4.5M12 8l-3.5 3.5" stroke="currentColor" stroke-width="1.5"
-            stroke-linecap="round" stroke-linejoin="round"></path>
-        </svg>
-      </a>
-      <a
-        href="/werk"
-        class="inline-flex min-h-13 items-center justify-center rounded-vp border border-line bg-panel px-6 font-medium text-fg transition-colors hover:border-line-soft hover:bg-raise"
-      >
-        Bekijk mijn werk
-      </a>
+        <p class="hero-in mt-7 max-w-xl text-lg leading-relaxed text-muted md:text-xl" style="--in: 2">
+          Voor zelfstandigen die geen 4.000 euro willen betalen voor vier pagina's.
+          Vanaf <span class="font-semibold text-fg">€{goedkoopste}</span>, en dat is
+          meteen de eindprijs. <span class="text-fg">Geen btw.</span>
+        </p>
+
+        <div class="hero-in mt-9 flex flex-col gap-3 sm:flex-row sm:items-center" style="--in: 3">
+          <a
+            href="/prijzen"
+            class="group inline-flex min-h-13 items-center justify-center gap-2 rounded-vp bg-mint px-6 font-semibold text-ink transition-colors hover:bg-mint-dim"
+          >
+            Bekijk wat het kost
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"
+              class="transition-transform group-hover:translate-x-0.5">
+              <path d="M3 8h9m0 0L8.5 4.5M12 8l-3.5 3.5" stroke="currentColor" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </a>
+          <a
+            href="/werk"
+            class="inline-flex min-h-13 items-center justify-center rounded-vp border border-line bg-panel px-6 font-medium text-fg transition-colors hover:border-line-soft hover:bg-raise"
+          >
+            Bekijk mijn werk
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-in lg:col-span-5" style="--in: 4">
+        <PerfStrip />
+      </div>
     </div>
-
-    <PerfStrip />
   </div>
 </section>
 
@@ -70,19 +89,43 @@ const goedkoopste = Math.min(...pakketten.map((p) => p.prijs));
 
   .hero-raster {
     position: absolute;
-    inset: 0;
+    /* Ruimer dan de sectie, zodat het driften nergens een rand laat zien. */
+    inset: -4rem -6rem;
     background-image: radial-gradient(circle at center, var(--color-line) 1px, transparent 1px);
     background-size: 2.25rem 2.25rem;
     /* Naar de randen toe uitfaden, anders wordt het een tafelkleed. */
-    mask-image: radial-gradient(50rem 32rem at 25% 0%, #000 0%, transparent 78%);
+    mask-image: radial-gradient(54rem 34rem at 22% 0%, #000 0%, transparent 78%);
     opacity: 0.7;
   }
 
+  .hero-aura,
   .hero-gloed {
     display: none;
   }
 
   @media (pointer: fine) {
+    /* Eén raster-tegel per 34 seconden. Je ziet het niet bewegen, je merkt
+       alleen dat het beeld niet dood staat. */
+    .hero-raster {
+      animation: raster-drift 34s linear infinite;
+    }
+
+    .hero-aura {
+      display: block;
+      position: absolute;
+      top: -18rem;
+      right: -12rem;
+      width: 46rem;
+      height: 46rem;
+      border-radius: 999px;
+      background: radial-gradient(
+        closest-side,
+        color-mix(in srgb, var(--color-mint) 9%, transparent),
+        transparent 72%
+      );
+      animation: aura-ademen 14s ease-in-out infinite alternate;
+    }
+
     .hero-gloed {
       display: block;
       position: absolute;
@@ -101,6 +144,23 @@ const goedkoopste = Math.min(...pakketten.map((p) => p.prijs));
     }
   }
 
+  @keyframes raster-drift {
+    to {
+      transform: translate3d(-2.25rem, -2.25rem, 0);
+    }
+  }
+
+  @keyframes aura-ademen {
+    from {
+      opacity: 0.55;
+      transform: scale(0.94);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1.06);
+    }
+  }
+
   .hero-streep {
     position: absolute;
     left: 0;
@@ -111,7 +171,22 @@ const goedkoopste = Math.min(...pakketten.map((p) => p.prijs));
     background-color: var(--color-mint);
     transform: scaleX(0);
     transform-origin: left;
-    animation: streep-in 900ms 250ms var(--ease-uit) forwards;
+    animation: streep-in 900ms 320ms var(--ease-uit) forwards;
+  }
+
+  /* Gefaseerde entree. De H1 zit er bewust niet bij: dat is het LCP-element en
+     een element met opacity 0 telt niet als geverfd, dus faden ervan stelt de
+     LCP-meting uit. De kop staat er dus meteen, de rest schuift erbij. */
+  .hero-in {
+    animation: hero-in 620ms var(--ease-uit) both;
+    animation-delay: calc(var(--in, 0) * 70ms + 60ms);
+  }
+
+  @keyframes hero-in {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 0.75rem, 0);
+    }
   }
 
   @keyframes streep-in {
@@ -121,6 +196,16 @@ const goedkoopste = Math.min(...pakketten.map((p) => p.prijs));
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .hero-raster,
+    .hero-aura,
+    .hero-in {
+      animation: none !important;
+      opacity: 1;
+      transform: none;
+    }
+    .hero-raster {
+      opacity: 0.7;
+    }
     .hero-streep {
       animation: none;
       transform: scaleX(1);
